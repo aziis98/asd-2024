@@ -1,5 +1,15 @@
 # Progetto ASD 2023/2024
 
+## Usage
+
+-   `cargo run -- --help`
+
+    Display help message.
+
+-   `cargo run -- show -i ./examples/example.gfa`
+
+    Parses the GFA file and prints the graph and various information.
+
 ## Example GFA
 
 ```

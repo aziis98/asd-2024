@@ -2,7 +2,6 @@ use std::{
     cell::RefCell,
     collections::{HashMap, HashSet},
     rc::Rc,
-    result,
 };
 
 #[derive(Debug)]
@@ -11,6 +10,7 @@ pub struct AdjacencyGraph {
     adjacencies: HashMap<String, HashSet<String>>,
 }
 
+#[allow(dead_code)]
 impl AdjacencyGraph {
     pub fn new() -> Self {
         AdjacencyGraph {
@@ -137,14 +137,17 @@ impl AdjacencyGraph {
             while let Some(node) = stack.pop() {
                 println!("New CC: {:?}", new_cc.borrow());
 
-                new_cc.borrow_mut().insert(node.clone());
-
                 if cc.contains_key(&node) {
                     // merge the two connected components and go to the next node
 
                     let old_cc = cc.get(&node).unwrap();
 
-                    println!("Merging {:?} with {:?}", new_cc.borrow(), old_cc.borrow());
+                    println!(
+                        "Merging {:?} with {:?} due to link to {:?}",
+                        new_cc.borrow(),
+                        old_cc.borrow(),
+                        node
+                    );
 
                     new_cc
                         .borrow_mut()
@@ -156,6 +159,8 @@ impl AdjacencyGraph {
                 if new_cc.borrow().contains(&node) {
                     continue;
                 }
+
+                new_cc.borrow_mut().insert(node.clone());
 
                 if let Some(adjacencies) = self.get_adjacencies(&node) {
                     for adj in adjacencies {

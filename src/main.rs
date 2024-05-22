@@ -76,7 +76,8 @@ fn main() -> std::io::Result<()> {
                 );
             }
 
-            let cc = graph.compute_ccs();
+            let cc = graph.compute_ccs_2();
+            println!("CCs: {:?}", cc);
             println!("Number of connected components: {}", cc.len());
         }
     }

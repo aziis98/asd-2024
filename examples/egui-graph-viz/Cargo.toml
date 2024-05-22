@@ -1,0 +1,11 @@
+[package]
+name = "egui-graph-viz"
+version = "0.1.0"
+license = "MIT"
+edition = "2021"
+
+[dependencies]
+egui = "0.27"
+eframe = "0.27"
+petgraph = "0.6"
+egui_graphs = "0.20.0"

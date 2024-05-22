@@ -6,7 +6,7 @@
 
     Display help message.
 
--   `cargo run -- show -i ./examples/example.gfa`
+-   `cargo run -- show -i ./dataset/example.gfa`
 
     Parses the GFA file and prints the graph and various information.
 

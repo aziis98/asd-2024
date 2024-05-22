@@ -1,52 +1,18 @@
-use std::str::FromStr;
+use std::{
+    io::{self, BufRead, BufReader, Read},
+    str::FromStr,
+};
 
-#[derive(Debug)]
-pub enum Orientation {
-    Forward,
-    Reverse,
-}
+use crate::gfa::{Entry, Orientation};
 
-impl From<&str> for Orientation {
-    fn from(s: &str) -> Self {
-        match s {
-            "+" => Orientation::Forward,
-            ">" => Orientation::Forward,
-            "-" => Orientation::Reverse,
-            "<" => Orientation::Reverse,
-            _ => panic!("Invalid orientation: {}", s),
-        }
+fn parse_orientation(s: &str) -> Orientation {
+    match s {
+        "+" => Orientation::Forward,
+        ">" => Orientation::Forward,
+        "-" => Orientation::Reverse,
+        "<" => Orientation::Reverse,
+        _ => panic!("Invalid orientation: {}", s),
     }
-}
-
-#[derive(Debug)]
-pub enum Entry {
-    Header {
-        version: String,
-    },
-    Segment {
-        id: String,
-        sequence: String,
-    },
-    Link {
-        from: String,
-        from_orient: Orientation,
-        to: String,
-        to_orient: Orientation,
-    },
-    Path {
-        name: String,
-        segments: Vec<(String, Orientation)>,
-    },
-    Walk {
-        sample: String,
-
-        haplotype_index: usize,
-        seq_id: String,
-        seq_start: usize,
-        seq_end: usize,
-
-        segments: Vec<(String, Orientation)>,
-    },
 }
 
 /// Parse a line of the source file into a Header struct
@@ -87,9 +53,9 @@ fn parse_link(line: &str) -> Entry {
 
     Entry::Link {
         from: columns[1].to_string(),
-        from_orient: columns[2].into(),
+        from_orient: parse_orientation(columns[2]),
         to: columns[3].to_string(),
-        to_orient: columns[4].into(),
+        to_orient: parse_orientation(columns[4]),
     }
 }
 
@@ -107,7 +73,7 @@ fn parse_path(line: &str) -> Entry {
             .split(',')
             .map(|s| {
                 let (name, orient) = s.split_at(s.len() - 1);
-                (name.to_string(), orient.into())
+                (name.to_string(), parse_orientation(orient))
             })
             .collect(),
     }
@@ -126,7 +92,7 @@ fn parse_path_segments(s: &str) -> Vec<(String, Orientation)> {
         let (name, r) = r.split_at(r.find(['<', '>']).unwrap_or(r.len()));
 
         rest = r;
-        result.push((name.to_string(), orient.into()));
+        result.push((name.to_string(), parse_orientation(orient)));
 
         if rest.is_empty() {
             break;
@@ -156,10 +122,12 @@ fn parse_walk(line: &str) -> Entry {
     }
 }
 
-pub fn parse_source(source: &str) -> Vec<Entry> {
+pub fn parse_source<R: Read>(reader: R) -> io::Result<Vec<Entry>> {
     let mut entries = Vec::new();
-    for line in source.lines() {
+    for line in BufReader::new(reader).lines() {
+        let line = line?;
         let line = line.trim();
+
         if line.is_empty() || line.starts_with('#') {
             continue;
         }
@@ -180,5 +148,6 @@ pub fn parse_source(source: &str) -> Vec<Entry> {
         };
         entries.push(entry);
     }
-    entries
+
+    Ok(entries)
 }

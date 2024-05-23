@@ -1,5 +1,9 @@
+use std::collections::HashMap;
+use std::env;
 use std::time::Instant;
 
+use asd::gfa::{Entry, Orientation};
+use asd::parser;
 use crossbeam::channel::{unbounded, Receiver, Sender};
 use eframe::{run_native, App, CreationContext};
 use egui::{CollapsingHeader, Context, Pos2, ScrollArea, Slider, Ui};
@@ -10,7 +14,7 @@ use fdg_sim::{ForceGraph, ForceGraphHelper, Simulation, SimulationParameters};
 use petgraph::stable_graph::{DefaultIx, EdgeIndex, NodeIndex, StableGraph};
 use petgraph::Directed;
 use rand::Rng;
-use settings::{SettingsGraph, SettingsInteraction, SettingsNavigation, SettingsStyle};
+use settings::{SettingsInteraction, SettingsNavigation, SettingsStyle};
 
 mod settings;
 
@@ -18,10 +22,10 @@ const SIMULATION_DT: f32 = 0.035;
 const EVENTS_LIMIT: usize = 100;
 
 pub struct ConfigurableApp {
-    g: Graph<(), (), Directed, DefaultIx>,
+    g: Graph<(String, Orientation), (), Directed, DefaultIx>,
     sim: Simulation<(), f32>,
 
-    settings_graph: SettingsGraph,
+    // settings_graph: SettingsGraph,
     settings_interaction: SettingsInteraction,
     settings_navigation: SettingsNavigation,
     settings_style: SettingsStyle,
@@ -43,8 +47,8 @@ pub struct ConfigurableApp {
 
 impl ConfigurableApp {
     fn new(_: &CreationContext<'_>) -> Self {
-        let settings_graph = SettingsGraph::default();
-        let (g, sim) = generate(&settings_graph);
+        // let settings_graph = SettingsGraph::default();
+        let (g, sim) = generate();
         let (event_publisher, event_consumer) = unbounded();
         Self {
             g,
@@ -53,8 +57,7 @@ impl ConfigurableApp {
             event_consumer,
             event_publisher,
 
-            settings_graph,
-
+            // settings_graph,
             settings_interaction: SettingsInteraction::default(),
             settings_navigation: SettingsNavigation::default(),
             settings_style: SettingsStyle::default(),
@@ -149,12 +152,12 @@ impl ConfigurableApp {
     }
 
     fn reset_graph(&mut self, ui: &mut Ui) {
-        let settings_graph = SettingsGraph::default();
-        let (g, sim) = generate(&settings_graph);
+        // let settings_graph = SettingsGraph::default();
+        let (g, sim) = generate();
 
         self.g = g;
         self.sim = sim;
-        self.settings_graph = settings_graph;
+        // self.settings_graph = settings_graph;
         self.last_events = Vec::default();
 
         GraphView::<(), (), Directed, DefaultIx>::reset_metadata(ui);
@@ -198,92 +201,92 @@ impl ConfigurableApp {
         });
     }
 
-    fn random_node_idx(&self) -> Option<NodeIndex> {
-        let nodes_cnt = self.g.node_count();
-        if nodes_cnt == 0 {
-            return None;
-        }
+    // fn random_node_idx(&self) -> Option<NodeIndex> {
+    //     let nodes_cnt = self.g.node_count();
+    //     if nodes_cnt == 0 {
+    //         return None;
+    //     }
 
-        let random_n_idx = rand::thread_rng().gen_range(0..nodes_cnt);
-        self.g.g.node_indices().nth(random_n_idx)
-    }
+    //     let random_n_idx = rand::thread_rng().gen_range(0..nodes_cnt);
+    //     self.g.g.node_indices().nth(random_n_idx)
+    // }
 
-    fn random_edge_idx(&self) -> Option<EdgeIndex> {
-        let edges_cnt = self.g.edge_count();
-        if edges_cnt == 0 {
-            return None;
-        }
+    // fn random_edge_idx(&self) -> Option<EdgeIndex> {
+    //     let edges_cnt = self.g.edge_count();
+    //     if edges_cnt == 0 {
+    //         return None;
+    //     }
 
-        let random_e_idx = rand::thread_rng().gen_range(0..edges_cnt);
-        self.g.g.edge_indices().nth(random_e_idx)
-    }
+    //     let random_e_idx = rand::thread_rng().gen_range(0..edges_cnt);
+    //     self.g.g.edge_indices().nth(random_e_idx)
+    // }
 
-    fn remove_random_node(&mut self) {
-        let idx = self.random_node_idx().unwrap();
-        self.remove_node(idx);
-    }
+    // fn remove_random_node(&mut self) {
+    //     let idx = self.random_node_idx().unwrap();
+    //     self.remove_node(idx);
+    // }
 
-    fn add_random_node(&mut self) {
-        let random_n_idx = self.random_node_idx();
-        if random_n_idx.is_none() {
-            return;
-        }
+    // fn add_random_node(&mut self) {
+    //     let random_n_idx = self.random_node_idx();
+    //     if random_n_idx.is_none() {
+    //         return;
+    //     }
 
-        let random_n = self.g.node(random_n_idx.unwrap()).unwrap();
+    //     let random_n = self.g.node(random_n_idx.unwrap()).unwrap();
 
-        // location of new node is in surrounging of random existing node
-        let mut rng = rand::thread_rng();
-        let location = Pos2::new(
-            random_n.location().x + 10. + rng.gen_range(0. ..50.),
-            random_n.location().y + 10. + rng.gen_range(0. ..50.),
-        );
+    //     // location of new node is in surrounging of random existing node
+    //     let mut rng = rand::thread_rng();
+    //     let location = Pos2::new(
+    //         random_n.location().x + 10. + rng.gen_range(0. ..50.),
+    //         random_n.location().y + 10. + rng.gen_range(0. ..50.),
+    //     );
 
-        let idx = self.g.add_node_with_location((), location);
+    //     let idx = self.g.add_node_with_location((), location);
 
-        let mut sim_node = fdg_sim::Node::new(idx.index().to_string().as_str(), ());
-        sim_node.location = Vec3::new(location.x, location.y, 0.);
-        self.sim.get_graph_mut().add_node(sim_node);
-    }
+    //     let mut sim_node = fdg_sim::Node::new(idx.index().to_string().as_str(), ());
+    //     sim_node.location = Vec3::new(location.x, location.y, 0.);
+    //     self.sim.get_graph_mut().add_node(sim_node);
+    // }
 
-    fn remove_node(&mut self, idx: NodeIndex) {
-        self.g.remove_node(idx);
+    // fn remove_node(&mut self, idx: NodeIndex) {
+    //     self.g.remove_node(idx);
 
-        self.sim.get_graph_mut().remove_node(idx).unwrap();
+    //     self.sim.get_graph_mut().remove_node(idx).unwrap();
 
-        // update edges count
-        self.settings_graph.count_edge = self.g.edge_count();
-    }
+    //     // update edges count
+    //     self.settings_graph.count_edge = self.g.edge_count();
+    // }
 
-    fn add_random_edge(&mut self) {
-        let random_start = self.random_node_idx().unwrap();
-        let random_end = self.random_node_idx().unwrap();
+    // fn add_random_edge(&mut self) {
+    //     let random_start = self.random_node_idx().unwrap();
+    //     let random_end = self.random_node_idx().unwrap();
 
-        self.add_edge(random_start, random_end);
-    }
+    //     self.add_edge(random_start, random_end);
+    // }
 
-    fn add_edge(&mut self, start: NodeIndex, end: NodeIndex) {
-        self.g.add_edge(start, end, ());
+    // fn add_edge(&mut self, start: NodeIndex, end: NodeIndex) {
+    //     self.g.add_edge(start, end, ());
 
-        self.sim.get_graph_mut().add_edge(start, end, 1.);
-    }
+    //     self.sim.get_graph_mut().add_edge(start, end, 1.);
+    // }
 
-    fn remove_random_edge(&mut self) {
-        let random_e_idx = self.random_edge_idx();
-        if random_e_idx.is_none() {
-            return;
-        }
-        let endpoints = self.g.edge_endpoints(random_e_idx.unwrap()).unwrap();
+    // fn remove_random_edge(&mut self) {
+    //     let random_e_idx = self.random_edge_idx();
+    //     if random_e_idx.is_none() {
+    //         return;
+    //     }
+    //     let endpoints = self.g.edge_endpoints(random_e_idx.unwrap()).unwrap();
 
-        self.remove_edge(endpoints.0, endpoints.1);
-    }
+    //     self.remove_edge(endpoints.0, endpoints.1);
+    // }
 
-    fn remove_edge(&mut self, start: NodeIndex, end: NodeIndex) {
-        let (g_idx, _) = self.g.edges_connecting(start, end).next().unwrap();
-        self.g.remove_edge(g_idx);
+    // fn remove_edge(&mut self, start: NodeIndex, end: NodeIndex) {
+    //     let (g_idx, _) = self.g.edges_connecting(start, end).next().unwrap();
+    //     self.g.remove_edge(g_idx);
 
-        let sim_idx = self.sim.get_graph_mut().find_edge(start, end).unwrap();
-        self.sim.get_graph_mut().remove_edge(sim_idx).unwrap();
-    }
+    //     let sim_idx = self.sim.get_graph_mut().find_edge(start, end).unwrap();
+    //     self.sim.get_graph_mut().remove_edge(sim_idx).unwrap();
+    // }
 
     fn draw_section_app(&mut self, ui: &mut Ui) {
         CollapsingHeader::new("App Config")
@@ -444,35 +447,35 @@ impl ConfigurableApp {
     }
 
     fn draw_counts_sliders(&mut self, ui: &mut Ui) {
-        ui.horizontal(|ui| {
-            let before = self.settings_graph.count_node as i32;
+        // ui.horizontal(|ui| {
+        //     let before = self.settings_graph.count_node as i32;
 
-            ui.add(Slider::new(&mut self.settings_graph.count_node, 1..=2500).text("nodes"));
+        //     ui.add(Slider::new(&mut self.settings_graph.count_node, 1..=2500).text("nodes"));
 
-            let delta = self.settings_graph.count_node as i32 - before;
-            (0..delta.abs()).for_each(|_| {
-                if delta > 0 {
-                    self.add_random_node();
-                    return;
-                };
-                self.remove_random_node();
-            });
-        });
+        //     let delta = self.settings_graph.count_node as i32 - before;
+        //     (0..delta.abs()).for_each(|_| {
+        //         if delta > 0 {
+        //             self.add_random_node();
+        //             return;
+        //         };
+        //         self.remove_random_node();
+        //     });
+        // });
 
-        ui.horizontal(|ui| {
-            let before = self.settings_graph.count_edge as i32;
+        // ui.horizontal(|ui| {
+        //     let before = self.settings_graph.count_edge as i32;
 
-            ui.add(Slider::new(&mut self.settings_graph.count_edge, 0..=5000).text("edges"));
+        //     ui.add(Slider::new(&mut self.settings_graph.count_edge, 0..=5000).text("edges"));
 
-            let delta = self.settings_graph.count_edge as i32 - before;
-            (0..delta.abs()).for_each(|_| {
-                if delta > 0 {
-                    self.add_random_edge();
-                    return;
-                };
-                self.remove_random_edge();
-            });
-        });
+        //     let delta = self.settings_graph.count_edge as i32 - before;
+        //     (0..delta.abs()).for_each(|_| {
+        //         if delta > 0 {
+        //             self.add_random_edge();
+        //             return;
+        //         };
+        //         self.remove_random_edge();
+        //     });
+        // });
     }
 }
 
@@ -526,14 +529,53 @@ impl App for ConfigurableApp {
     }
 }
 
-fn generate(settings: &SettingsGraph) -> (Graph<(), (), Directed, DefaultIx>, Simulation<(), f32>) {
-    let g = generate_random_graph(settings.count_node, settings.count_edge);
+fn generate() -> (
+    Graph<(String, Orientation), (), Directed, DefaultIx>,
+    Simulation<(), f32>,
+) {
+    let mut g: StableGraph<(String, Orientation), ()> = StableGraph::new();
+
+    let file = std::fs::File::open(env::args().nth(1).expect("missing gfa file argument")).unwrap();
+    let entries = parser::parse_source(file).unwrap();
+
+    let mut index_map = HashMap::new();
+
+    for entry in entries {
+        // println!("{:?}", entry);
+
+        if let Entry::Link {
+            from,
+            from_orient,
+            to,
+            to_orient,
+        } = entry
+        {
+            // add first node if not present
+            let a = index_map
+                .entry(from.clone())
+                .or_insert_with(|| g.add_node((from.clone(), from_orient)))
+                .to_owned();
+
+            // add second node if not present
+            let b = index_map
+                .entry(to.clone())
+                .or_insert_with(|| g.add_node((to.clone(), to_orient)))
+                .to_owned();
+
+            g.add_edge(a, b, ());
+        }
+    }
+
+    let g = Graph::from(&g);
+
     let sim = construct_simulation(&g);
 
     (g, sim)
 }
 
-fn construct_simulation(g: &Graph<(), (), Directed, DefaultIx>) -> Simulation<(), f32> {
+fn construct_simulation(
+    g: &Graph<(String, Orientation), (), Directed, DefaultIx>,
+) -> Simulation<(), f32> {
     // create force graph
     let mut force_graph = ForceGraph::with_capacity(g.g.node_count(), g.g.edge_count());
     g.g.node_indices().for_each(|idx| {
@@ -547,31 +589,31 @@ fn construct_simulation(g: &Graph<(), (), Directed, DefaultIx>) -> Simulation<()
 
     // initialize simulation
     let mut params = SimulationParameters::default();
-    let force = fdg_sim::force::fruchterman_reingold_weighted(100., 0.5);
+    let force = fdg_sim::force::fruchterman_reingold_weighted(100., 0.75);
     params.set_force(force);
 
     Simulation::from_graph(force_graph, params)
 }
 
-fn generate_random_graph(node_count: usize, edge_count: usize) -> Graph<(), ()> {
-    let mut rng = rand::thread_rng();
-    let mut graph = StableGraph::new();
+// fn generate_random_graph(node_count: usize, edge_count: usize) -> Graph<(), ()> {
+//     let mut rng = rand::thread_rng();
+//     let mut graph = StableGraph::new();
 
-    // add nodes
-    for _ in 0..node_count {
-        graph.add_node(());
-    }
+//     // add nodes
+//     for _ in 0..node_count {
+//         graph.add_node(());
+//     }
 
-    // add random edges
-    for _ in 0..edge_count {
-        let source = rng.gen_range(0..node_count);
-        let target = rng.gen_range(0..node_count);
+//     // add random edges
+//     for _ in 0..edge_count {
+//         let source = rng.gen_range(0..node_count);
+//         let target = rng.gen_range(0..node_count);
 
-        graph.add_edge(NodeIndex::new(source), NodeIndex::new(target), ());
-    }
+//         graph.add_edge(NodeIndex::new(source), NodeIndex::new(target), ());
+//     }
 
-    to_graph(&graph)
-}
+//     to_graph(&graph)
+// }
 
 fn main() {
     let native_options = eframe::NativeOptions::default();

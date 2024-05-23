@@ -1,100 +1,120 @@
 use std::{
     cell::RefCell,
     collections::{HashMap, HashSet},
+    fmt::Debug,
+    hash::Hash,
     rc::Rc,
 };
 
 #[derive(Debug)]
-pub struct AdjacencyGraph {
-    nodes: HashMap<String, String>,
-    adjacencies: HashMap<String, HashSet<String>>,
+pub struct AdjacencyGraph<V>
+where
+    V: Hash + Eq + Clone,
+{
+    nodes: HashSet<V>,
+    adjacencies: HashMap<V, HashSet<V>>,
 }
 
 #[allow(dead_code)]
-impl AdjacencyGraph {
+impl<V> AdjacencyGraph<V>
+where
+    V: Hash + Eq + Clone + Debug,
+{
     pub fn new() -> Self {
         AdjacencyGraph {
-            nodes: HashMap::new(),
+            nodes: HashSet::new(),
             adjacencies: HashMap::new(),
         }
     }
 
-    pub fn add_node(&mut self, key: String, value: String) {
-        self.nodes.insert(key, value);
+    pub fn add_node(&mut self, node: V) {
+        // O(1)
+        self.nodes.insert(node);
     }
 
-    pub fn add_edge(&mut self, from: String, to: String) {
+    pub fn add_edge(&mut self, from: V, to: V) {
+        // O(1)
+        self.add_node(from.clone());
+        self.add_node(to.clone());
+
+        // O(1)
         self.adjacencies
             .entry(from)
-            .or_insert(HashSet::new())
+            .or_insert_with(HashSet::new)
             .insert(to);
     }
 
-    pub fn get_adjacencies(&self, node: &str) -> Option<&HashSet<String>> {
+    pub fn get_adjacencies(&self, node: &V) -> Option<&HashSet<V>> {
         self.adjacencies.get(node)
     }
 
-    pub fn adjacencies(&self) -> &HashMap<String, HashSet<String>> {
+    pub fn adjacencies(&self) -> &HashMap<V, HashSet<V>> {
         &self.adjacencies
     }
 
-    pub fn opposite(&self) -> AdjacencyGraph {
+    pub fn edges(&self) -> impl Iterator<Item = (&V, &V)> {
+        self.adjacencies
+            .iter()
+            .flat_map(|(from, tos)| tos.iter().map(move |to| (from, to)))
+    }
+
+    pub fn opposite(&self) -> AdjacencyGraph<&V> {
         let mut opposite = AdjacencyGraph::new();
 
-        for (from, adjacencies) in self.adjacencies.iter() {
-            for to in adjacencies {
-                opposite.add_edge(to.clone(), from.clone());
-            }
+        // O(|E|)
+        for (from, to) in self.edges() {
+            opposite.add_edge(to, from);
         }
 
         opposite
     }
 
-    pub fn has_edge(&self, from: &str, to: &str) -> bool {
+    pub fn has_edge(&self, from: &V, to: &V) -> bool {
+        // O(1)
         if let Some(adjacencies) = self.get_adjacencies(from) {
-            adjacencies.contains(&to.to_string())
+            // O(1)
+            adjacencies.contains(&to.to_owned())
         } else {
             false
         }
     }
 
-    // pub fn dfs(&self, node: String) -> HashSet<String> {
-    //     let mut visited = HashSet::new();
-    //     let mut stack = vec![node];
+    pub fn dfs(&self, node: V) -> HashSet<V> {
+        let mut visited: HashSet<V> = HashSet::new();
+        let mut stack = vec![&node];
 
-    //     while let Some(node) = stack.pop() {
-    //         if visited.contains(&node) {
-    //             continue;
-    //         }
+        // O(|V| + |E|)
+        while let Some(node) = stack.pop() {
+            visited.insert(node.clone());
 
-    //         visited.insert(node.clone());
+            if let Some(adjacencies) = self.get_adjacencies(&node) {
+                for adj in adjacencies {
+                    if !visited.contains(adj) {
+                        stack.push(adj);
+                    }
+                }
+            }
+        }
 
-    //         if let Some(adjacencies) = self.get_adjacencies(&node) {
-    //             for adj in adjacencies {
-    //                 stack.push(adj.clone());
-    //             }
-    //         }
-    //     }
+        visited
+    }
 
-    //     visited
-    // }
-
-    pub fn compute_ccs(&self) -> Vec<Vec<String>> {
+    pub fn compute_ccs(&self) -> Vec<Vec<V>> {
         let mut visited = HashSet::new();
         let mut result = Vec::new();
 
         let op = self.opposite();
 
-        for node in self.nodes.keys() {
+        for node in self.nodes.iter() {
             if visited.contains(node) {
                 continue;
             }
 
-            let mut cc = HashSet::new();
-            let mut stack = vec![node.to_string()];
+            let mut cc: HashSet<V> = HashSet::new();
+            let mut stack: Vec<&V> = vec![node];
 
             while let Some(node) = stack.pop() {
-                if cc.contains(&node) {
+                if cc.contains(node) {
                     continue;
                 }
 
@@ -102,16 +122,18 @@ impl AdjacencyGraph {
 
                 if let Some(adjacencies) = self.get_adjacencies(&node) {
                     for adj in adjacencies {
-                        stack.push(adj.clone());
+                        stack.push(adj);
                     }
                 }
 
                 if let Some(adjacencies) = op.get_adjacencies(&node) {
                     for adj in adjacencies {
-                        stack.push(adj.clone());
+                        stack.push(adj);
                     }
                 }
             }
+
+            // println!("CC: {:?}", cc);
 
             visited.extend(cc.iter().map(|x| x.to_owned()));
             result.push(cc.iter().map(|x| x.to_owned()).collect());
@@ -120,11 +142,11 @@ impl AdjacencyGraph {
         result
     }
 
-    pub fn compute_ccs_2(&self) -> Vec<Vec<String>> {
-        let mut cc = HashMap::<String, Rc<RefCell<HashSet<String>>>>::new();
+    pub fn compute_ccs_2(&self) -> Vec<Vec<V>> {
+        let mut cc: HashMap<V, Rc<RefCell<HashSet<V>>>> = HashMap::new();
 
-        for node in self.nodes.keys() {
-            if cc.contains_key(node) {
+        for node in self.nodes.iter() {
+            if cc.contains_key(&node) {
                 continue;
             }
 
@@ -132,7 +154,7 @@ impl AdjacencyGraph {
 
             let new_cc = Rc::new(RefCell::new(HashSet::new()));
 
-            let mut stack = vec![node.to_string()];
+            let mut stack: Vec<&V> = vec![node];
 
             while let Some(node) = stack.pop() {
                 println!("New CC: {:?}", new_cc.borrow());
@@ -140,7 +162,7 @@ impl AdjacencyGraph {
                 if cc.contains_key(&node) {
                     // merge the two connected components and go to the next node
 
-                    let old_cc = cc.get(&node).unwrap();
+                    let old_cc: &Rc<RefCell<HashSet<V>>> = cc.get(&node).unwrap();
 
                     println!(
                         "Merging {:?} with {:?} due to link to {:?}",
@@ -164,7 +186,7 @@ impl AdjacencyGraph {
 
                 if let Some(adjacencies) = self.get_adjacencies(&node) {
                     for adj in adjacencies {
-                        stack.push(adj.clone());
+                        stack.push(adj);
                     }
                 }
             }
@@ -178,7 +200,7 @@ impl AdjacencyGraph {
         let mut result = Vec::new();
         let mut seen = HashSet::new();
 
-        for node in self.nodes.keys() {
+        for node in self.nodes.iter() {
             if seen.contains(node) {
                 continue;
             }

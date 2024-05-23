@@ -13,3 +13,4 @@ serde_json = "1.0"
 fdg-sim = "0.9"
 rand = "0.8"
 crossbeam = "0.8"
+asd = { path = "../../" }

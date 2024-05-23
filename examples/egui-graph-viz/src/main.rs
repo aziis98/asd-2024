@@ -1,3 +1,9 @@
+use std::collections::HashMap;
+
+use asd::{
+    gfa::{Entry, Orientation},
+    parser,
+};
 use eframe::{run_native, App, CreationContext};
 use egui::Context;
 use egui_graphs::{
@@ -6,7 +12,7 @@ use egui_graphs::{
 use petgraph::stable_graph::StableGraph;
 
 pub struct InteractiveApp {
-    g: Graph<(), ()>,
+    g: Graph<(String, Orientation), ()>,
 }
 
 impl InteractiveApp {
@@ -37,18 +43,39 @@ impl App for InteractiveApp {
     }
 }
 
-fn generate_graph() -> Graph<(), ()> {
-    let mut g = StableGraph::new();
+fn generate_graph() -> Graph<(String, Orientation), ()> {
+    let mut g: StableGraph<(String, Orientation), ()> = StableGraph::new();
 
-    let a = g.add_node(());
-    let b = g.add_node(());
-    let c = g.add_node(());
+    let file = std::fs::File::open("../../dataset/example.gfa").unwrap();
+    let entries = parser::parse_source(file).unwrap();
 
-    g.add_edge(a, a, ());
-    g.add_edge(a, b, ());
-    g.add_edge(a, b, ());
-    g.add_edge(b, c, ());
-    g.add_edge(c, a, ());
+    let mut index_map = HashMap::new();
+
+    for entry in entries {
+        println!("{:?}", entry);
+
+        if let Entry::Link {
+            from,
+            from_orient,
+            to,
+            to_orient,
+        } = entry
+        {
+            // add first node if not present
+            let a = index_map
+                .entry(from.clone())
+                .or_insert_with(|| g.add_node((from.clone(), from_orient)))
+                .to_owned();
+
+            // add second node if not present
+            let b = index_map
+                .entry(to.clone())
+                .or_insert_with(|| g.add_node((to.clone(), to_orient)))
+                .to_owned();
+
+            g.add_edge(a, b, ());
+        }
+    }
 
     Graph::from(&g)
 }

@@ -84,7 +84,7 @@ fn parse_path_segments(s: &str) -> Vec<(String, Orientation)> {
     let mut rest = s;
 
     loop {
-        println!("Rest: {}", rest);
+        // println!("Rest: {}", rest);
 
         let r = rest;
 
@@ -132,7 +132,7 @@ pub fn parse_source<R: Read>(reader: R) -> io::Result<Vec<Entry>> {
             continue;
         }
 
-        println!("Parsing: {}", line);
+        // println!("Parsing: {}", line);
 
         let first_char = line.chars().next().unwrap();
         let entry = match first_char {

@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use argh::FromArgs;
 use gfa::{Entry, Orientation};
 use graph::AdjacencyGraph;
@@ -36,48 +38,45 @@ fn main() -> std::io::Result<()> {
             let file = std::fs::File::open(show.input)?;
             let entries = parser::parse_source(file)?;
 
-            let mut graph = AdjacencyGraph::new();
+            let mut sequence_map = HashMap::new();
+            let mut graph: AdjacencyGraph<(String, Orientation)> = AdjacencyGraph::new();
 
             for entry in entries {
                 println!("{:?}", entry);
 
                 match entry {
                     Entry::Segment { id, sequence } => {
-                        graph.add_node(id, sequence);
+                        sequence_map.insert(id.clone(), sequence);
                     }
                     Entry::Link {
                         from,
                         from_orient,
                         to,
                         to_orient,
-                    } => match (from_orient, to_orient) {
-                        (Orientation::Forward, Orientation::Forward)
-                        | (Orientation::Reverse, Orientation::Reverse) => {
-                            graph.add_edge(from, to);
-                        }
-                        (Orientation::Forward, Orientation::Reverse)
-                        | (Orientation::Reverse, Orientation::Forward) => {
-                            graph.add_edge(to, from);
-                        }
-                    },
+                    } => {
+                        graph.add_edge((from.clone(), from_orient), (to.clone(), to_orient));
+                    }
                     _ => {}
                 }
             }
 
-            for (from, adjacencies) in graph.adjacencies().iter() {
-                println!(
-                    "{} -> {}",
-                    from,
-                    adjacencies
-                        .iter()
-                        .map(|to| to.to_owned())
-                        .collect::<Vec<String>>()
-                        .join(", ")
-                );
-            }
+            // Print the graph
+            // for ((from, orient), adjacencies) in graph.adjacencies().iter() {
+            //     println!(
+            //         "{}{} -> {}",
+            //         from,
+            //         orient,
+            //         adjacencies
+            //             .iter()
+            //             .map(|(to, orient)| format!("{}{}", to, orient))
+            //             .collect::<Vec<String>>()
+            //             .join(", ")
+            //     );
+            // }
 
-            let cc = graph.compute_ccs_2();
-            println!("CCs: {:?}", cc);
+            let cc = graph.compute_ccs();
+
+            // println!("CCs: {:?}", cc);
             println!("Number of connected components: {}", cc.len());
         }
     }

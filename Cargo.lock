@@ -1627,6 +1627,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "graphs_1"
+version = "0.1.0"
+dependencies = [
+ "asd",
+ "fdg",
+ "macroquad",
+ "nalgebra",
+ "num-traits",
+ "petgraph",
+ "petgraph-gen",
+ "rand",
+ "rayon",
+]
+
+[[package]]
 name = "hashbrown"
 version = "0.13.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"

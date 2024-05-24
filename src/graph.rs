@@ -1,6 +1,6 @@
 use std::{
     cell::RefCell,
-    collections::{HashMap, HashSet},
+    collections::{HashMap, HashSet, VecDeque},
     fmt::Debug,
     hash::Hash,
     rc::Rc,
@@ -69,6 +69,18 @@ where
         opposite
     }
 
+    pub fn undirected(&self) -> AdjacencyGraph<&V> {
+        let mut undirected = AdjacencyGraph::new();
+
+        // O(|E|)
+        for (from, to) in self.edges() {
+            undirected.add_edge(from, to);
+            undirected.add_edge(to, from);
+        }
+
+        undirected
+    }
+
     pub fn has_edge(&self, from: &V, to: &V) -> bool {
         // O(1)
         if let Some(adjacencies) = self.get_adjacencies(from) {
@@ -79,24 +91,59 @@ where
         }
     }
 
-    pub fn dfs(&self, node: V) -> HashSet<V> {
-        let mut visited: HashSet<V> = HashSet::new();
-        let mut stack = vec![&node];
+    pub fn dfs<'a>(&'a self, node: &'a V) -> impl Iterator<Item = V> + 'a {
+        let mut visited = HashSet::new();
+        let mut stack = VecDeque::from([node]);
 
-        // O(|V| + |E|)
-        while let Some(node) = stack.pop() {
-            visited.insert(node.clone());
+        std::iter::from_fn(move || {
+            while let Some(node) = stack.pop_back() {
+                if !visited.insert(node.clone()) {
+                    continue;
+                }
 
-            if let Some(adjacencies) = self.get_adjacencies(&node) {
-                for adj in adjacencies {
-                    if !visited.contains(adj) {
-                        stack.push(adj);
+                if let Some(adjacencies) = self.get_adjacencies(node) {
+                    stack.extend(adjacencies);
+                }
+
+                return Some(node.clone());
+            }
+            None
+        })
+    }
+
+    pub fn shortest_path_matrix(&self) -> HashMap<&V, HashMap<&V, usize>> {
+        let mut result = HashMap::new();
+
+        for node in self.nodes.iter() {
+            let mut distances = HashMap::new();
+            let mut visited = HashSet::new();
+            let mut queue = VecDeque::from([node]);
+
+            distances.insert(node, 0);
+
+            while let Some(node) = queue.pop_front() {
+                if visited.contains(node) {
+                    continue;
+                }
+
+                visited.insert(node.clone());
+
+                let distance = *distances.get(node).unwrap();
+
+                if let Some(adjacencies) = self.get_adjacencies(node) {
+                    for adj in adjacencies {
+                        if !distances.contains_key(adj) {
+                            distances.insert(adj, distance + 1);
+                            queue.push_back(adj);
+                        }
                     }
                 }
             }
+
+            result.insert(node, distances);
         }
 
-        visited
+        result
     }
 
     pub fn compute_ccs(&self) -> Vec<Vec<V>> {

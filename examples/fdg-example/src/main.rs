@@ -4,6 +4,7 @@ use asd::{
     gfa::{Entry, Orientation},
     parser,
 };
+
 use fdg::{
     fruchterman_reingold::{FruchtermanReingoldConfiguration, FruchtermanReingoldParallel},
     petgraph::Graph,
@@ -11,6 +12,8 @@ use fdg::{
     Force,
     ForceGraph,
 };
+
+mod stress_majorization;
 
 use macroquad::prelude::*;
 

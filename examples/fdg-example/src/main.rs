@@ -5,9 +5,7 @@ use asd::{
     parser,
 };
 use fdg::{
-    fruchterman_reingold::{
-        FruchtermanReingold, FruchtermanReingoldConfiguration, FruchtermanReingoldParallel,
-    },
+    fruchterman_reingold::{FruchtermanReingoldConfiguration, FruchtermanReingoldParallel},
     petgraph::Graph,
     // simple::Center,
     Force,

@@ -5,11 +5,13 @@ use asd::{
     parser,
 };
 use fdg::{
-    fruchterman_reingold::{FruchtermanReingold, FruchtermanReingoldConfiguration},
-    nalgebra::Rotation2,
+    fruchterman_reingold::{
+        FruchtermanReingold, FruchtermanReingoldConfiguration, FruchtermanReingoldParallel,
+    },
     petgraph::Graph,
-    simple::Center,
-    Force, ForceGraph,
+    // simple::Center,
+    Force,
+    ForceGraph,
 };
 
 use macroquad::prelude::*;
@@ -50,7 +52,7 @@ async fn main() {
     }
 
     let mut force_graph: ForceGraph<f32, 2, (String, Orientation), ()> =
-        fdg::init_force_graph_uniform(graph, 200.0);
+        fdg::init_force_graph_uniform(graph, 1000.0);
 
     // custom closure force which rotates each node
     // let mut rotate = |graph: &mut ForceGraph<f32, 2, (String, Orientation), ()>| {
@@ -58,9 +60,9 @@ async fn main() {
     //         .node_weights_mut()
     //         .for_each(|(_, p)| *p = Rotation2::new(0.005).transform_point(p))
     // };
-    let mut force = FruchtermanReingold {
+    let mut force = FruchtermanReingoldParallel {
         conf: FruchtermanReingoldConfiguration {
-            scale: 400.0,
+            scale: 100.0,
             ..Default::default()
         },
         ..Default::default()
@@ -68,9 +70,9 @@ async fn main() {
 
     loop {
         println!("frame");
-        force.apply_many(&mut force_graph, 1);
+        force.apply_many(&mut force_graph, 2);
 
-        Center::default().apply(&mut force_graph);
+        // Center::default().apply(&mut force_graph);
         // rotate.apply(&mut force_graph);
 
         let scale = calculate_scale(&force_graph);
@@ -93,23 +95,23 @@ async fn main() {
                 translate_y(source.coords.column(0)[1], scale),
                 translate_x(target.coords.column(0)[0], scale),
                 translate_y(target.coords.column(0)[1], scale),
-                4.0,
+                1.0,
                 BLACK,
             );
         }
 
-        for ((name, orient), pos) in force_graph.node_weights() {
+        for ((_name, _orient), pos) in force_graph.node_weights() {
             let x = translate_x(pos.coords.column(0)[0], scale);
             let y = translate_y(pos.coords.column(0)[1], scale);
 
-            draw_circle(x, y, 20.0 * scale, RED);
-            draw_text(
-                format!("{}{}", name, orient).as_str(),
-                x - 30.0 * scale,
-                y - 30.0 * scale,
-                40.0 * scale,
-                BLACK,
-            );
+            draw_circle(x, y, 2.0, RED);
+            // draw_text(
+            //     format!("{}{}", name, orient).as_str(),
+            //     x - 30.0 * scale,
+            //     y - 30.0 * scale,
+            //     40.0 * scale,
+            //     BLACK,
+            // );
         }
 
         next_frame().await

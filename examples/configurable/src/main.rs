@@ -6,19 +6,19 @@ use asd::gfa::{Entry, Orientation};
 use asd::parser;
 use crossbeam::channel::{unbounded, Receiver, Sender};
 use eframe::{run_native, App, CreationContext};
-use egui::{CollapsingHeader, Context, Pos2, ScrollArea, Slider, Ui};
+use egui::{CollapsingHeader, Context, Pos2, ScrollArea, Ui};
 use egui_graphs::events::Event;
-use egui_graphs::{to_graph, DefaultEdgeShape, DefaultNodeShape, Graph, GraphView};
+use egui_graphs::{DefaultEdgeShape, DefaultNodeShape, Graph, GraphView};
 use fdg_sim::glam::Vec3;
 use fdg_sim::{ForceGraph, ForceGraphHelper, Simulation, SimulationParameters};
-use petgraph::stable_graph::{DefaultIx, EdgeIndex, NodeIndex, StableGraph};
+use petgraph::stable_graph::{DefaultIx, NodeIndex, StableGraph};
 use petgraph::Directed;
-use rand::Rng;
 use settings::{SettingsInteraction, SettingsNavigation, SettingsStyle};
 
 mod settings;
 
-const SIMULATION_DT: f32 = 0.035;
+// const SIMULATION_DT: f32 = 0.035;
+const SIMULATION_DT: f32 = 0.075;
 const EVENTS_LIMIT: usize = 100;
 
 pub struct ConfigurableApp {
@@ -314,10 +314,6 @@ impl ConfigurableApp {
 
                 ui.add_space(10.);
 
-                self.draw_counts_sliders(ui);
-
-                ui.add_space(10.);
-
                 ui.separator();
             });
     }
@@ -443,40 +439,42 @@ impl ConfigurableApp {
                 };
 
                 ui.label(format!("FPS: {:.1}", self.fps));
+                ui.label(format!("Nodes: {}", self.g.node_count()));
+                ui.label(format!("Edges: {}", self.g.edge_count()));
             });
     }
 
-    fn draw_counts_sliders(&mut self, ui: &mut Ui) {
-        // ui.horizontal(|ui| {
-        //     let before = self.settings_graph.count_node as i32;
+    // fn draw_counts_sliders(&mut self, ui: &mut Ui) {
+    //     // ui.horizontal(|ui| {
+    //     //     let before = self.settings_graph.count_node as i32;
 
-        //     ui.add(Slider::new(&mut self.settings_graph.count_node, 1..=2500).text("nodes"));
+    //     //     ui.add(Slider::new(&mut self.settings_graph.count_node, 1..=2500).text("nodes"));
 
-        //     let delta = self.settings_graph.count_node as i32 - before;
-        //     (0..delta.abs()).for_each(|_| {
-        //         if delta > 0 {
-        //             self.add_random_node();
-        //             return;
-        //         };
-        //         self.remove_random_node();
-        //     });
-        // });
+    //     //     let delta = self.settings_graph.count_node as i32 - before;
+    //     //     (0..delta.abs()).for_each(|_| {
+    //     //         if delta > 0 {
+    //     //             self.add_random_node();
+    //     //             return;
+    //     //         };
+    //     //         self.remove_random_node();
+    //     //     });
+    //     // });
 
-        // ui.horizontal(|ui| {
-        //     let before = self.settings_graph.count_edge as i32;
+    //     // ui.horizontal(|ui| {
+    //     //     let before = self.settings_graph.count_edge as i32;
 
-        //     ui.add(Slider::new(&mut self.settings_graph.count_edge, 0..=5000).text("edges"));
+    //     //     ui.add(Slider::new(&mut self.settings_graph.count_edge, 0..=5000).text("edges"));
 
-        //     let delta = self.settings_graph.count_edge as i32 - before;
-        //     (0..delta.abs()).for_each(|_| {
-        //         if delta > 0 {
-        //             self.add_random_edge();
-        //             return;
-        //         };
-        //         self.remove_random_edge();
-        //     });
-        // });
-    }
+    //     //     let delta = self.settings_graph.count_edge as i32 - before;
+    //     //     (0..delta.abs()).for_each(|_| {
+    //     //         if delta > 0 {
+    //     //             self.add_random_edge();
+    //     //             return;
+    //     //         };
+    //     //         self.remove_random_edge();
+    //     //     });
+    //     // });
+    // }
 }
 
 impl App for ConfigurableApp {

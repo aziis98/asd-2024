@@ -45,7 +45,7 @@ async fn main() {
                                 // println!("correction: {:?}", correction);
 
                                 if distance > 0.0 && dist > 1e-6 {
-                                    0.001 * delta.normalize() * correction.clamp(-10.0, 10.0)
+                                    0.01 * delta.normalize() * correction.atan()
                                 } else {
                                     SVector::<f32, 2>::zeros()
                                 }
@@ -107,6 +107,8 @@ async fn main() {
 }
 
 fn load_graph() -> StableGraph<(String, Point2<f32>), ()> {
+    println!("Loading graph");
+
     let mut graph = StableGraph::new();
 
     let file = std::fs::File::open(env::args().nth(1).expect("missing gfa file argument")).unwrap();
@@ -114,15 +116,17 @@ fn load_graph() -> StableGraph<(String, Point2<f32>), ()> {
 
     let mut index_map = HashMap::new();
 
-    // let node_count = entries
-    //     .iter()
-    //     .filter_map(|entry| match entry {
-    //         Entry::Segment { id, .. } => Some(id),
-    //         _ => None,
-    //     })
-    //     .count();
+    let node_count = entries
+        .iter()
+        .filter_map(|entry| match entry {
+            Entry::Segment { id, .. } => Some(id),
+            _ => None,
+        })
+        .count();
 
-    // let radius = (node_count as f32).sqrt();
+    println!("Node count: {}", node_count);
+
+    let radius = (node_count as f32).sqrt();
 
     let mut i = -10.0;
 
@@ -148,8 +152,8 @@ fn load_graph() -> StableGraph<(String, Point2<f32>), ()> {
 
                     graph.add_node((
                         format!("{}{}", from, from_orient),
-                        // Point2::new(rand::gen_range(0.0, radius), rand::gen_range(0.0, radius)),
-                        Point2::new(i, 50.0 + rand::gen_range(0.0, 100.0)),
+                        Point2::new(rand::gen_range(0.0, radius), rand::gen_range(0.0, radius)),
+                        // Point2::new(i, 50.0 + rand::gen_range(0.0, 100.0)),
                     ))
                 })
                 .to_owned();
@@ -162,8 +166,8 @@ fn load_graph() -> StableGraph<(String, Point2<f32>), ()> {
 
                     graph.add_node((
                         format!("{}{}", from, to_orient),
-                        // Point2::new(rand::gen_range(0.0, radius), rand::gen_range(0.0, radius)),
-                        Point2::new(i, 50.0 + rand::gen_range(0.0, 100.0)),
+                        Point2::new(rand::gen_range(0.0, radius), rand::gen_range(0.0, radius)),
+                        // Point2::new(i, 50.0 + rand::gen_range(0.0, 100.0)),
                     ))
                 })
                 .to_owned();
@@ -172,6 +176,8 @@ fn load_graph() -> StableGraph<(String, Point2<f32>), ()> {
             graph.add_edge(b, a, ());
         }
     }
+
+    println!("Loading completed");
 
     graph
 }

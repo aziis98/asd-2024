@@ -1,9 +1,9 @@
 use std::{collections::HashMap, env, ops::AddAssign, time::Instant};
 
 use asd::{gfa::Entry, parser};
-use macroquad::{prelude::*, rand};
+use macroquad::{prelude::*, rand, ui::root_ui};
 use nalgebra::{Point2, SVector};
-use petgraph::{algo::dijkstra, stable_graph::StableGraph};
+use petgraph::{algo::dijkstra, graph::NodeIndex, stable_graph::StableGraph};
 
 use rayon::prelude::*;
 
@@ -24,85 +24,101 @@ async fn main() {
     loop {
         // Update
 
-        for _ in 1..2 {
-            let forces = graph
-                .node_indices()
-                .par_bridge()
-                .map(|idx| {
-                    (
-                        idx,
-                        desired_distance_matrix
-                            .get(&idx)
-                            .unwrap()
-                            .par_iter()
-                            .map(|(&other_idx, &distance)| {
-                                let pos = graph.node_weight(idx).unwrap().1;
-                                let other_pos = graph.node_weight(other_idx).unwrap().1;
-                                let delta = other_pos - pos;
-                                let dist = delta.norm_squared();
-                                let correction = dist - (distance * distance);
+        let start_update = Instant::now();
 
-                                // println!("correction: {:?}", correction);
+        update(&mut graph, &desired_distance_matrix);
 
-                                if distance > 0.0 && dist > 1e-6 {
-                                    0.01 * delta.normalize() * correction.atan()
-                                } else {
-                                    SVector::<f32, 2>::zeros()
-                                }
-                            })
-                            .sum::<SVector<f32, 2>>()
-                            + {
-                                let pos = graph.node_weight(idx).unwrap().1;
-
-                                let delta = pos - Point2::new(0.0, 0.0);
-
-                                let dist = delta.norm_squared();
-
-                                if dist > 1e-6 {
-                                    -0.01 * delta.normalize() / dist.max(1.0)
-                                } else {
-                                    SVector::<f32, 2>::zeros()
-                                }
-                            }
-                            + graph
-                                .node_indices()
-                                .par_bridge()
-                                .filter(|&other_idx| other_idx != idx)
-                                .map(|other_idx| {
-                                    let pos = graph.node_weight(idx).unwrap().1;
-                                    let other_pos = graph.node_weight(other_idx).unwrap().1;
-                                    let delta = other_pos - pos;
-                                    let dist = delta.norm();
-                                    if dist > 1e-3 {
-                                        -0.001 * delta.normalize() / (dist * dist)
-                                    } else {
-                                        SVector::<f32, 2>::zeros()
-                                    }
-                                })
-                                .sum::<SVector<f32, 2>>(),
-                    )
-                })
-                .collect::<HashMap<_, _>>();
-
-            forces.iter().for_each(|(idx, force)| {
-                let (_, pos) = graph.node_weight_mut(*idx).unwrap();
-                pos.add_assign(force);
-            });
-        }
+        let update_elapsed = start_update.elapsed();
 
         // Render
 
-        let now = Instant::now();
+        let start_render = Instant::now();
 
         clear_background(WHITE);
 
         draw_graph(&graph);
 
-        let elapsed = now.elapsed();
+        let render_elapsed = start_render.elapsed();
 
-        println!("frame: {:?}", elapsed);
+        root_ui().label(
+            None,
+            format!("update: {:?}, render: {:?}", update_elapsed, render_elapsed).as_str(),
+        );
+
+        // println!("update: {:?}, render: {:?}", update_elapsed, render_elapsed);
 
         next_frame().await
+    }
+}
+
+fn update(
+    graph: &mut StableGraph<(String, Point2<f32>), ()>,
+    desired_distance_matrix: &HashMap<NodeIndex, HashMap<NodeIndex, f32>>,
+) {
+    for _ in 1..2 {
+        let forces = graph
+            .node_indices()
+            .par_bridge()
+            .map(|idx| {
+                (
+                    idx,
+                    desired_distance_matrix
+                        .get(&idx)
+                        .unwrap()
+                        .par_iter()
+                        .map(|(&other_idx, &distance)| {
+                            let pos = graph.node_weight(idx).unwrap().1;
+                            let other_pos = graph.node_weight(other_idx).unwrap().1;
+                            let delta = other_pos - pos;
+                            let dist = delta.norm_squared();
+                            let correction = dist - (distance * distance);
+
+                            // println!("correction: {:?}", correction);
+
+                            if distance > 0.0 && dist > 1e-6 {
+                                0.01 * delta.normalize() * correction.atan()
+                            } else {
+                                SVector::<f32, 2>::zeros()
+                            }
+                        })
+                        .sum::<SVector<f32, 2>>()
+                        + {
+                            let pos = graph.node_weight(idx).unwrap().1;
+
+                            let delta = pos - Point2::new(0.0, 0.0);
+
+                            let dist = delta.norm_squared();
+
+                            if dist > 1e-6 {
+                                -0.01 * delta.normalize() / dist.max(1.0)
+                            } else {
+                                SVector::<f32, 2>::zeros()
+                            }
+                        }
+                        + graph
+                            .node_indices()
+                            .par_bridge()
+                            .filter(|&other_idx| other_idx != idx)
+                            .map(|other_idx| {
+                                let pos = graph.node_weight(idx).unwrap().1;
+                                let other_pos = graph.node_weight(other_idx).unwrap().1;
+                                let delta = other_pos - pos;
+                                let dist = delta.norm();
+                                if dist > 1e-3 {
+                                    -0.001 * delta.normalize() / (dist * dist)
+                                } else {
+                                    SVector::<f32, 2>::zeros()
+                                }
+                            })
+                            .sum::<SVector<f32, 2>>(),
+                )
+            })
+            .collect::<HashMap<_, _>>();
+
+        forces.iter().for_each(|(idx, force)| {
+            let (_, pos) = graph.node_weight_mut(*idx).unwrap();
+            pos.add_assign(force);
+        });
     }
 }
 

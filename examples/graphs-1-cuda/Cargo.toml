@@ -1,0 +1,18 @@
+[package]
+name = "graphs_1-cuda"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+nalgebra = { version = "0.32.3", features = ["rand"] }
+petgraph = { version = "0.6.4", features = [
+    "stable_graph",
+], default-features = false }
+num-traits = "0.2.17"
+rand = "0.8.5"
+macroquad = "0.4.4"
+petgraph-gen = "0.1.3"
+fdg = { git = "https://github.com/grantshandy/fdg" }
+asd = { path = "../../" }
+rayon = "1.10.0"
+cust = "0.3.2"

@@ -71,26 +71,27 @@ impl<F: Field + Measure + Sum, const D: usize> StressMajorization<F, D> {
         &mut self,
         graph: &mut StableGraph<(N, Point<F, D>), E>,
     ) -> F {
-        graph
-            .node_indices()
-            .flat_map(|v| {
-                graph.node_indices().skip(v.index() + 1).map(move |w| {
-                    let dist = nalgebra::distance(
-                        &graph.node_weight(v).unwrap().1,
-                        &graph.node_weight(w).unwrap().1,
-                    );
+        // graph
+        //     .node_indices()
+        //     .flat_map(|v| {
+        //         graph.node_indices().skip(v.index() + 1).map(move |w| {
+        //             let dist = nalgebra::distance(
+        //                 &graph.node_weight(v).unwrap().1,
+        //                 &graph.node_weight(w).unwrap().1,
+        //             );
 
-                    if dist != F::zero() {
-                        let dij = self.shortest_path_matrix[&v][&w];
+        //             if dist != F::zero() {
+        //                 let dij = self.shortest_path_matrix[&v][&w];
 
-                        let sp_diff = self.shortest_path_matrix[&v][&w] - dist;
-                        dij.simd_sqrt().abs() * sp_diff * sp_diff
-                    } else {
-                        F::zero()
-                    }
-                })
-            })
-            .sum()
+        //                 let sp_diff = self.shortest_path_matrix[&v][&w] - dist;
+        //                 dij.simd_sqrt().abs() * sp_diff * sp_diff
+        //             } else {
+        //                 F::zero()
+        //             }
+        //         })
+        //     })
+        //     .sum()
+        F::default()
     }
 }
 

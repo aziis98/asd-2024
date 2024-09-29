@@ -1,7 +1,11 @@
 use std::{
     io::{self, BufRead, BufReader, Read},
     str::FromStr,
+    thread,
+    time::Duration,
 };
+
+use indicatif::ProgressIterator;
 
 use crate::gfa::{Entry, Orientation};
 
@@ -122,9 +126,20 @@ fn parse_walk(line: &str) -> Entry {
     }
 }
 
-pub fn parse_source<R: Read>(reader: R) -> io::Result<Vec<Entry>> {
+pub fn parse_source<R: Read>(reader: R, line_count: u64) -> io::Result<Vec<Entry>> {
     let mut entries = Vec::new();
-    for line in BufReader::new(reader).lines() {
+    let mut skipped = Vec::new();
+
+    for line in BufReader::new(reader)
+        .lines()
+        .progress_count(line_count)
+        .with_style(
+            indicatif::ProgressStyle::default_bar()
+                .template("{prefix} {spinner} [{elapsed_precise}] [{wide_bar}] {pos}/{len}")
+                .unwrap(),
+        )
+        .with_prefix("parsing source file")
+    {
         let line = line?;
         let line = line.trim();
 
@@ -132,21 +147,24 @@ pub fn parse_source<R: Read>(reader: R) -> io::Result<Vec<Entry>> {
             continue;
         }
 
-        // println!("Parsing: {}", line);
-
         let first_char = line.chars().next().unwrap();
         let entry = match first_char {
             'H' => parse_header(line),
             'S' => parse_segment(line),
             'L' => parse_link(line),
-            'P' => parse_path(line),
-            'W' => parse_walk(line),
+            // 'P' => parse_path(line),
+            // 'W' => parse_walk(line),
             _ => {
-                eprintln!("Unknown line type: {}", line);
+                skipped.push(line.chars().next().expect("got empty line"));
                 continue;
             }
         };
+
         entries.push(entry);
+    }
+
+    for s in skipped {
+        eprintln!("skipped line type: {}", s);
     }
 
     Ok(entries)

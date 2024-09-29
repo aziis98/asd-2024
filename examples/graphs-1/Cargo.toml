@@ -15,3 +15,4 @@ petgraph-gen = "0.1.3"
 fdg = { git = "https://github.com/grantshandy/fdg" }
 asd = { path = "../../" }
 rayon = "1.10.0"
+indicatif = "0.17.8"

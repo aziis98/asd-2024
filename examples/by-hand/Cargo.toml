@@ -1,11 +1,8 @@
 [package]
-name = "asd"
+name = "by-hand"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-argh = "0.1.12"
 indicatif = "0.17.8"
-
-[workspace]
-members = ["examples/*"]
+macroquad = "0.4.13"

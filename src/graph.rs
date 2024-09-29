@@ -6,6 +6,8 @@ use std::{
     rc::Rc,
 };
 
+use indicatif::{ProgressIterator, ProgressStyle};
+
 #[derive(Debug)]
 pub struct AdjacencyGraph<V>
 where
@@ -152,7 +154,17 @@ where
 
         let op = self.opposite();
 
-        for node in self.nodes.iter() {
+        for node in self
+            .nodes
+            .iter()
+            .progress()
+            .with_style(
+                indicatif::ProgressStyle::default_bar()
+                    .template("{prefix} {spinner} [{elapsed_precise}] [{wide_bar}] {pos}/{len}")
+                    .unwrap(),
+            )
+            .with_prefix("computing connected components")
+        {
             if visited.contains(node) {
                 continue;
             }
@@ -180,8 +192,6 @@ where
                 }
             }
 
-            // println!("CC: {:?}", cc);
-
             visited.extend(cc.iter().map(|x| x.to_owned()));
             result.push(cc.iter().map(|x| x.to_owned()).collect());
         }
@@ -197,26 +207,26 @@ where
                 continue;
             }
 
-            println!("All CC: {:?}", cc);
+            // println!("All CC: {:?}", cc);
 
             let new_cc = Rc::new(RefCell::new(HashSet::new()));
 
             let mut stack: Vec<&V> = vec![node];
 
             while let Some(node) = stack.pop() {
-                println!("New CC: {:?}", new_cc.borrow());
+                // println!("New CC: {:?}", new_cc.borrow());
 
                 if cc.contains_key(&node) {
                     // merge the two connected components and go to the next node
 
                     let old_cc: &Rc<RefCell<HashSet<V>>> = cc.get(&node).unwrap();
 
-                    println!(
-                        "Merging {:?} with {:?} due to link to {:?}",
-                        new_cc.borrow(),
-                        old_cc.borrow(),
-                        node
-                    );
+                    // println!(
+                    //     "Merging {:?} with {:?} due to link to {:?}",
+                    //     new_cc.borrow(),
+                    //     old_cc.borrow(),
+                    //     node
+                    // );
 
                     new_cc
                         .borrow_mut()

@@ -1,11 +1,20 @@
-use std::{collections::HashMap, env, ops::AddAssign, time::Instant};
+use std::{
+    collections::HashMap,
+    env,
+    io::{BufRead, BufReader},
+    ops::AddAssign,
+    time::Instant,
+};
 
 use asd::{gfa::Entry, parser};
+use indicatif::ProgressIterator;
 use macroquad::{prelude::*, rand, ui::root_ui};
 use nalgebra::{Point2, SVector};
 use petgraph::{algo::dijkstra, graph::NodeIndex, stable_graph::StableGraph};
 
 use rayon::prelude::*;
+
+mod gd;
 
 #[macroquad::main("graphs_1")]
 async fn main() {
@@ -127,8 +136,16 @@ fn load_graph() -> StableGraph<(String, Point2<f32>), ()> {
 
     let mut graph = StableGraph::new();
 
-    let file = std::fs::File::open(env::args().nth(1).expect("missing gfa file argument")).unwrap();
-    let entries = parser::parse_source(file).unwrap();
+    let filename = env::args().nth(1).expect("missing gfa file argument");
+
+    let file_lines_count = BufReader::new(std::fs::File::open(&filename).expect("file not found"))
+        .lines()
+        .progress_with(indicatif::ProgressBar::new_spinner())
+        .count() as u64;
+
+    let file = std::fs::File::open(filename).unwrap();
+
+    let entries = parser::parse_source(file, file_lines_count).unwrap();
 
     let mut index_map = HashMap::new();
 

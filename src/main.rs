@@ -1,8 +1,12 @@
-use std::collections::HashMap;
+use std::{
+    collections::HashMap,
+    io::{BufRead, BufReader},
+};
 
 use argh::FromArgs;
 use gfa::{Entry, Orientation};
 use graph::AdjacencyGraph;
+use indicatif::ProgressIterator;
 
 mod gfa;
 mod graph;
@@ -35,15 +39,21 @@ fn main() -> std::io::Result<()> {
 
     match opts.nested {
         MySubCommandEnum::Show(show) => {
+            let file_lines_count = BufReader::new(std::fs::File::open(&show.input)?)
+                .lines()
+                .progress_with(indicatif::ProgressBar::new_spinner().with_message("counting lines"))
+                .count() as u64;
+
             let file = std::fs::File::open(show.input)?;
-            let entries = parser::parse_source(file)?;
+
+            let entries = parser::parse_source(file, file_lines_count)?;
+
+            println!("Number of entries: {}", entries.len());
 
             let mut sequence_map = HashMap::new();
             let mut graph: AdjacencyGraph<(String, Orientation)> = AdjacencyGraph::new();
 
             for entry in entries {
-                println!("{:?}", entry);
-
                 match entry {
                     Entry::Segment { id, sequence } => {
                         sequence_map.insert(id.clone(), sequence);

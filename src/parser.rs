@@ -1,9 +1,8 @@
+#![allow(dead_code)]
+
 use std::{
-    borrow::Cow,
     io::{self, BufRead, BufReader, Read},
     str::FromStr,
-    thread,
-    time::Duration,
 };
 
 use indicatif::ProgressIterator;

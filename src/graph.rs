@@ -6,7 +6,7 @@ use std::{
     rc::Rc,
 };
 
-use indicatif::{ProgressIterator, ProgressStyle};
+use indicatif::ProgressIterator;
 
 #[derive(Debug)]
 pub struct AdjacencyGraph<V>

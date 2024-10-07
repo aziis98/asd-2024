@@ -1,6 +1,8 @@
+#![allow(dead_code)]
+
 use std::collections::HashMap;
 
-struct Graph {
+pub struct Graph {
     edges_from: Vec<u32>,
     edges_to: Vec<u32>,
 }
@@ -27,7 +29,7 @@ impl Graph {
 }
 
 pub fn update(
-    graph: &Graph,
+    _graph: &Graph,
     xs: &Vec<f32>,
     ys: &Vec<f32>,
     desired_distance_matrix: &HashMap<usize, HashMap<usize, f32>>,

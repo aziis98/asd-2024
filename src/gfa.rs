@@ -15,6 +15,7 @@ impl Display for Orientation {
     }
 }
 
+#[allow(dead_code)]
 #[derive(Debug)]
 pub enum Entry {
     Header {

@@ -1,13 +1,6 @@
-use std::{
-    collections::HashMap,
-    env,
-    io::{BufRead, BufReader},
-    ops::AddAssign,
-    time::Instant,
-};
+use std::{collections::HashMap, env, ops::AddAssign, time::Instant};
 
 use asd::{gfa::Entry, parser};
-use indicatif::ProgressIterator;
 use macroquad::{prelude::*, rand, ui::root_ui};
 use nalgebra::{Point2, SVector};
 use petgraph::{algo::dijkstra, graph::NodeIndex, stable_graph::StableGraph};

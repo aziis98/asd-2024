@@ -137,15 +137,7 @@ fn load_graph() -> StableGraph<(String, Point2<f32>), ()> {
     let mut graph = StableGraph::new();
 
     let filename = env::args().nth(1).expect("missing gfa file argument");
-
-    let file_lines_count = BufReader::new(std::fs::File::open(&filename).expect("file not found"))
-        .lines()
-        .progress_with(indicatif::ProgressBar::new_spinner())
-        .count() as u64;
-
-    let file = std::fs::File::open(filename).unwrap();
-
-    let entries = parser::parse_source(file, file_lines_count).unwrap();
+    let entries = parser::parse_file(filename).expect("failed to parse file");
 
     let mut index_map = HashMap::new();
 

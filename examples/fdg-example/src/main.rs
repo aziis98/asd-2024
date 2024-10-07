@@ -21,8 +21,9 @@ use macroquad::prelude::*;
 async fn main() {
     let mut graph = Graph::<(String, Orientation), ()>::new();
 
-    let file = std::fs::File::open(env::args().nth(1).expect("missing gfa file argument")).unwrap();
-    let entries = parser::parse_source(file).unwrap();
+    let filename = env::args().nth(1).expect("missing gfa file argument");
+
+    let entries = parser::parse_file(filename).expect("failed to parse file");
 
     let mut index_map = HashMap::new();
 

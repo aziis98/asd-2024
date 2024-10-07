@@ -533,8 +533,8 @@ fn generate() -> (
 ) {
     let mut g: StableGraph<(String, Orientation), ()> = StableGraph::new();
 
-    let file = std::fs::File::open(env::args().nth(1).expect("missing gfa file argument")).unwrap();
-    let entries = parser::parse_source(file).unwrap();
+    let entries =
+        parser::parse_file(env::args().nth(1).expect("missing gfa file argument")).unwrap();
 
     let mut index_map = HashMap::new();
 

@@ -46,8 +46,7 @@ impl App for InteractiveApp {
 fn generate_graph() -> Graph<(String, Orientation), ()> {
     let mut g: StableGraph<(String, Orientation), ()> = StableGraph::new();
 
-    let file = std::fs::File::open("../../dataset/example.gfa").unwrap();
-    let entries = parser::parse_source(file).unwrap();
+    let entries = parser::parse_file("../../dataset/example.gfa").unwrap();
 
     let mut index_map = HashMap::new();
 

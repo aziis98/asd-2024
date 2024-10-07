@@ -1,6 +1,6 @@
 use std::time::Instant;
 
-use macroquad::{prelude::*, rand, ui::root_ui};
+use macroquad::{prelude::*, ui::root_ui};
 
 #[macroquad::main("by-hand")]
 async fn main() {

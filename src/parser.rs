@@ -1,4 +1,5 @@
 use std::{
+    borrow::Cow,
     io::{self, BufRead, BufReader, Read},
     str::FromStr,
     thread,
@@ -124,6 +125,17 @@ fn parse_walk(line: &str) -> Entry {
 
         segments: parse_path_segments(columns[6]),
     }
+}
+
+pub fn parse_file<R: AsRef<str>>(file: R) -> io::Result<Vec<Entry>> {
+    let file_lines_count = BufReader::new(std::fs::File::open(file.as_ref())?)
+        .lines()
+        .progress_count(0)
+        .count() as u64;
+
+    let file = std::fs::File::open(file.as_ref())?;
+
+    parse_source(file, file_lines_count)
 }
 
 pub fn parse_source<R: Read>(reader: R, line_count: u64) -> io::Result<Vec<Entry>> {

@@ -1,12 +1,20 @@
 use std::{
     cell::RefCell,
-    collections::{HashMap, HashSet, VecDeque},
+    collections::{BTreeMap, HashMap, HashSet, VecDeque},
     fmt::Debug,
     hash::Hash,
     rc::Rc,
 };
 
-use indicatif::ProgressIterator;
+use indicatif::{ProgressBar, ProgressIterator};
+
+#[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
+pub enum EdgeType {
+    TreeEdge,
+    BackEdge,
+    ForwardEdge,
+    CrossEdge,
+}
 
 #[derive(Debug)]
 pub struct AdjacencyGraph<V>
@@ -109,8 +117,169 @@ where
 
                 return Some(node.clone());
             }
+
             None
         })
+    }
+
+    /// This computes if this undirected graph is cyclic or not by searching for an oriented cycle in the graph
+    pub fn is_cyclic(&self) -> bool {
+        let mut remaining_nodes = self.nodes.iter().collect::<HashSet<_>>();
+
+        // let progress_bar = ProgressBar::new(self.nodes.len() as u64);
+        // let mut visited_count = 0;
+
+        while !remaining_nodes.is_empty() {
+            let start: &V = remaining_nodes.iter().next().unwrap();
+
+            // visited_count += 1;
+            remaining_nodes.remove(start);
+            // progress_bar.inc(1);
+
+            let mut dfs_visited = HashSet::new();
+            let mut stack = VecDeque::new();
+            stack.push_back(start);
+
+            // start a new dfs from the current node
+            while let Some(node) = stack.pop_back() {
+                if dfs_visited.contains(node) {
+                    // println!("Found cycle after {} nodes", visited_count);
+                    // progress_bar.finish();
+                    return true;
+                }
+
+                // visited_count += 1;
+                remaining_nodes.remove(node);
+                // progress_bar.inc(1);
+
+                dfs_visited.insert(node.clone());
+
+                if let Some(adjacencies) = self.get_adjacencies(node) {
+                    stack.extend(adjacencies);
+                }
+            }
+        }
+
+        // println!("Found cycle after {} nodes", visited_count);
+        // progress_bar.finish();
+        false
+    }
+
+    pub fn compute_edge_types(&self) -> HashMap<(&V, &V), EdgeType> {
+        /// To correctly compute the start and end times of the nodes in the graph, we need to keep do work before and after the recursion
+        /// call
+        enum RecurseState {
+            Before,
+            AfterNeighbor,
+        }
+
+        let mut edge_types = HashMap::new();
+
+        let mut visited = HashSet::new();
+        let mut start_times = HashMap::new();
+        let mut end_times = HashMap::new();
+
+        let mut time = 0;
+
+        let progress_bar = ProgressBar::new(self.nodes.len() as u64);
+
+        for node in self.nodes.iter() {
+            if visited.contains(node) {
+                continue;
+            }
+
+            let mut stack = Vec::new();
+
+            stack.push((node, RecurseState::Before));
+
+            while let Some((node, state)) = stack.pop() {
+                match state {
+                    RecurseState::Before => {
+                        progress_bar.inc(1);
+                        visited.insert(node.clone());
+                        start_times.insert(node, time);
+                        time += 1;
+
+                        // this is extremely important that is before the adjacencies to correctly
+                        // iterate over the graph
+
+                        if let Some(adjacencies) = self.get_adjacencies(node) {
+                            for adj in adjacencies {
+                                // if visited.contains(adj) {
+                                //     if start_times.get(adj) < start_times.get(node) {
+                                //         edge_types.insert((node, adj), EdgeType::BackEdge);
+                                //     } else {
+                                //         edge_types.insert((node, adj), EdgeType::CrossEdge);
+                                //     }
+                                // } else {
+                                //     edge_types.insert((node, adj), EdgeType::ForwardEdge);
+                                //     stack.push((adj, RecurseState::Before));
+                                // }
+
+                                stack.push((node, RecurseState::AfterNeighbor));
+
+                                if !visited.contains(adj) {
+                                    edge_types.insert((node, adj), EdgeType::TreeEdge);
+                                    stack.push((adj, RecurseState::Before));
+                                } else {
+                                    let start_time_node = start_times.get(node).unwrap();
+                                    let start_time_adj = start_times.get(adj).unwrap();
+                                    let end_time_node = end_times.get(node).unwrap_or(&0);
+                                    let end_time_adj = end_times.get(adj).unwrap_or(&0);
+
+                                    if start_time_node < start_time_adj
+                                        && end_time_node > end_time_adj
+                                    {
+                                        edge_types.insert((node, adj), EdgeType::ForwardEdge);
+                                    } else if start_time_node > start_time_adj
+                                        && end_time_node < end_time_adj
+                                    {
+                                        edge_types.insert((node, adj), EdgeType::BackEdge);
+                                    // } else if start_time_node > start_time_adj
+                                    //     && end_time_node > end_time_adj
+                                    // {
+                                    //     edge_types.insert((node, adj), EdgeType::CrossEdge);
+                                    } else {
+                                        edge_types.insert((node, adj), EdgeType::CrossEdge);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    RecurseState::AfterNeighbor => {
+                        end_times.insert(node, time);
+                        time += 1;
+                    }
+                }
+            }
+        }
+
+        // for node in self.nodes.iter() {
+        //     let mut stack = Vec::new();
+
+        //     if visited.contains(node) {
+        //         continue;
+        //     }
+
+        //     stack.push(node);
+
+        //     while let Some(node) = stack.pop() {
+        //         visited.insert(node.clone());
+
+        //         if let Some(adjacencies) = self.get_adjacencies(node) {
+        //             for adj in adjacencies {
+        //                 if visited.contains(adj) {
+        //                     // ...
+        //                 } else {
+        //                     edge_types.insert((node, adj), EdgeType::TreeEdge);
+        //                     stack.push(adj);
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+
+        edge_types
     }
 
     pub fn shortest_path_matrix(&self) -> HashMap<&V, HashMap<&V, usize>> {
@@ -269,5 +438,46 @@ where
         }
 
         result
+    }
+
+    /// This function prints the number of nodes, edges and a histogram of the degrees of the nodes
+    /// in the graph (computing the degrees might take a long time)
+    pub fn print_stats(&self) {
+        let mut vertices_degrees = HashMap::new();
+
+        for (from, tos) in self
+            .adjacencies
+            .iter()
+            .progress()
+            .with_style(
+                indicatif::ProgressStyle::default_bar()
+                    .template("{prefix} {spinner} [{elapsed_precise}] [{wide_bar}] {pos}/{len}")
+                    .unwrap(),
+            )
+            .with_prefix("computing nodes degrees")
+        {
+            *vertices_degrees.entry(from).or_insert(0) += tos.len();
+
+            for to in tos {
+                *vertices_degrees.entry(to).or_insert(0) += 1;
+            }
+        }
+
+        let histogram: BTreeMap<usize, usize> = vertices_degrees
+            .iter()
+            .map(|(_, degree)| *degree)
+            .fold(BTreeMap::new(), |mut acc, degree| {
+                *acc.entry(degree).or_insert(0) += 1;
+                acc
+            });
+
+        println!("Stats:");
+        println!("Nodes: {}", self.nodes.len());
+        println!("Edges: {}", self.edges().count());
+
+        println!("Histogram:");
+        for (degree, count) in histogram.iter() {
+            println!("{}: {}", degree, count);
+        }
     }
 }

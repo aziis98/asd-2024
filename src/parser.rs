@@ -174,8 +174,24 @@ pub fn parse_source<R: Read>(reader: R, line_count: u64) -> io::Result<Vec<Entry
         entries.push(entry);
     }
 
-    for s in skipped {
-        eprintln!("skipped line type: {}", s);
+    for (s, count) in skipped.iter().fold(Vec::new(), |mut acc, s| {
+        if let Some((last, count)) = acc.last_mut() {
+            if *last == s {
+                *count += 1;
+            } else {
+                acc.push((s, 1));
+            }
+        } else {
+            acc.push((s, 1));
+        }
+
+        acc
+    }) {
+        if count > 1 {
+            eprintln!("skipped {} lines of type: {}", count, s);
+        } else {
+            eprintln!("skipped line type: {}", s);
+        }
     }
 
     Ok(entries)

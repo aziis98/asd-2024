@@ -1,5 +1,5 @@
 use std::{
-    collections::HashMap,
+    collections::{BTreeMap, HashMap},
     io::{BufRead, BufReader},
 };
 
@@ -16,12 +16,12 @@ mod parser;
 /// Strumento CLI per il progetto di Algoritmi e Strutture Dati 2024
 struct CliTool {
     #[argh(subcommand)]
-    nested: MySubCommandEnum,
+    nested: CliSubcommands,
 }
 
 #[derive(FromArgs, PartialEq, Debug)]
 #[argh(subcommand)]
-enum MySubCommandEnum {
+enum CliSubcommands {
     Show(CommandShow),
 }
 
@@ -38,10 +38,12 @@ fn main() -> std::io::Result<()> {
     let opts = argh::from_env::<CliTool>();
 
     match opts.nested {
-        MySubCommandEnum::Show(show) => {
+        CliSubcommands::Show(show) => {
             let file_lines_count = BufReader::new(std::fs::File::open(&show.input)?)
                 .lines()
-                .progress_with(indicatif::ProgressBar::new_spinner().with_message("counting lines"))
+                .progress_with(
+                    indicatif::ProgressBar::new_spinner().with_message("estimating line count"),
+                )
                 .count() as u64;
 
             let file = std::fs::File::open(show.input)?;
@@ -84,10 +86,28 @@ fn main() -> std::io::Result<()> {
             //     );
             // }
 
-            let cc = graph.compute_ccs();
+            // let cc = graph.compute_ccs();
 
             // println!("CCs: {:?}", cc);
-            println!("Number of connected components: {}", cc.len());
+            // println!("Number of connected components: {}", cc.len());
+
+            // graph.print_stats();
+
+            println!("Graph has cycles: {}", graph.is_cyclic());
+
+            let edge_types = graph.compute_edge_types();
+
+            let edge_type_histogram: BTreeMap<_, _> = edge_types
+                .iter()
+                .map(|(_, edge_type)| edge_type)
+                .fold(BTreeMap::new(), |mut acc, edge_type| {
+                    *acc.entry(edge_type).or_insert(0) += 1;
+                    acc
+                });
+
+            println!("Edge types histogram: {:?}", edge_type_histogram);
+
+            println!("Cleaning up...");
         }
     }
 

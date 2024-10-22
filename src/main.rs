@@ -1,3 +1,6 @@
+mod gfa;
+mod graph;
+
 use std::{
     collections::{BTreeMap, HashMap},
     io::{BufRead, BufReader},
@@ -7,10 +10,6 @@ use argh::FromArgs;
 use gfa::{Entry, Orientation};
 use graph::AdjacencyGraph;
 use indicatif::ProgressIterator;
-
-mod gfa;
-mod graph;
-mod parser;
 
 #[derive(FromArgs, PartialEq, Debug)]
 /// Strumento CLI per il progetto di Algoritmi e Strutture Dati 2024
@@ -48,7 +47,7 @@ fn main() -> std::io::Result<()> {
 
             let file = std::fs::File::open(show.input)?;
 
-            let entries = parser::parse_source(file, file_lines_count)?;
+            let entries = gfa::parser::parse_source(file, file_lines_count)?;
 
             println!("Number of entries: {}", entries.len());
 

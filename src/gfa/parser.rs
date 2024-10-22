@@ -1,4 +1,4 @@
-#![allow(dead_code)]
+// #![allow(dead_code)]
 
 use std::{
     io::{self, BufRead, BufReader, Read},
@@ -126,13 +126,13 @@ fn parse_walk(line: &str) -> Entry {
     }
 }
 
-pub fn parse_file<R: AsRef<str>>(file: R) -> io::Result<Vec<Entry>> {
-    let file_lines_count = BufReader::new(std::fs::File::open(file.as_ref())?)
+pub fn parse_file(file: &str) -> io::Result<Vec<Entry>> {
+    let file_lines_count = BufReader::new(std::fs::File::open(file)?)
         .lines()
         .progress_count(0)
         .count() as u64;
 
-    let file = std::fs::File::open(file.as_ref())?;
+    let file = std::fs::File::open(file)?;
 
     parse_source(file, file_lines_count)
 }

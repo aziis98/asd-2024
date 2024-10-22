@@ -2,8 +2,6 @@ use std::collections::HashMap;
 use std::env;
 use std::time::Instant;
 
-use asd::gfa::{Entry, Orientation};
-use asd::parser;
 use crossbeam::channel::{unbounded, Receiver, Sender};
 use eframe::{run_native, App, CreationContext};
 use egui::{CollapsingHeader, Context, Pos2, ScrollArea, Ui};
@@ -11,6 +9,8 @@ use egui_graphs::events::Event;
 use egui_graphs::{DefaultEdgeShape, DefaultNodeShape, Graph, GraphView};
 use fdg_sim::glam::Vec3;
 use fdg_sim::{ForceGraph, ForceGraphHelper, Simulation, SimulationParameters};
+// use gfa::parser;
+// use gfa::{Entry, Orientation};
 use petgraph::stable_graph::{DefaultIx, NodeIndex, StableGraph};
 use petgraph::Directed;
 use settings::{SettingsInteraction, SettingsNavigation, SettingsStyle};

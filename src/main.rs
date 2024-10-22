@@ -93,7 +93,7 @@ fn main() -> std::io::Result<()> {
 
             // graph.print_stats();
 
-            println!("Graph has cycles: {}", graph.is_cyclic());
+            // println!("Graph has cycles: {}", graph.is_cyclic());
 
             let edge_types = graph.compute_edge_types();
 
@@ -106,6 +106,26 @@ fn main() -> std::io::Result<()> {
                 });
 
             println!("Edge types histogram: {:?}", edge_type_histogram);
+
+            // println!("Convert to undirected graph...");
+            // let undir_graph = graph.undirected();
+
+            // println!("Computing connected components...");
+            // let cc = undir_graph.connected_components();
+
+            // println!("Computing histogram...");
+            // let cc_histogram: BTreeMap<_, _> = cc
+            //     .iter()
+            //     .map(|cc| cc.len()) // map to size of each cc
+            //     .fold(BTreeMap::new(), |mut acc, len| {
+            //         *acc.entry(len).or_insert(0) += 1;
+            //         acc
+            //     });
+
+            // println!("Connected Components Size Histogram:");
+            // for (size, count) in cc_histogram.iter() {
+            //     println!("{}: {}", size, count);
+            // }
 
             println!("Cleaning up...");
         }

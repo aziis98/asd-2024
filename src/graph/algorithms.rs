@@ -6,24 +6,9 @@ use std::{
     rc::Rc,
 };
 
-use indicatif::{ProgressBar, ProgressIterator};
+use indicatif::ProgressIterator;
 
-#[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
-pub enum EdgeType {
-    TreeEdge,
-    BackEdge,
-    ForwardEdge,
-    CrossEdge,
-}
-
-#[derive(Debug)]
-pub struct AdjacencyGraph<V>
-where
-    V: Hash + Eq + Clone,
-{
-    nodes: HashSet<V>,
-    adjacencies: HashMap<V, HashSet<V>>,
-}
+use super::{AdjacencyGraph, UndirectedGraph};
 
 #[allow(dead_code)]
 impl<V> AdjacencyGraph<V>
@@ -62,6 +47,10 @@ where
         &self.adjacencies
     }
 
+    pub fn nodes(&self) -> &HashSet<V> {
+        &self.nodes
+    }
+
     pub fn edges(&self) -> impl Iterator<Item = (&V, &V)> {
         self.adjacencies
             .iter()
@@ -79,7 +68,7 @@ where
         opposite
     }
 
-    pub fn undirected(&self) -> AdjacencyGraph<&V> {
+    pub fn undirected(&self) -> UndirectedGraph<&V> {
         let mut undirected = AdjacencyGraph::new();
 
         // O(|E|)
@@ -88,7 +77,7 @@ where
             undirected.add_edge(to, from);
         }
 
-        undirected
+        UndirectedGraph { graph: undirected }
     }
 
     pub fn has_edge(&self, from: &V, to: &V) -> bool {
@@ -163,123 +152,6 @@ where
         // println!("Found cycle after {} nodes", visited_count);
         // progress_bar.finish();
         false
-    }
-
-    pub fn compute_edge_types(&self) -> HashMap<(&V, &V), EdgeType> {
-        /// To correctly compute the start and end times of the nodes in the graph, we need to keep do work before and after the recursion
-        /// call
-        enum RecurseState {
-            Before,
-            AfterNeighbor,
-        }
-
-        let mut edge_types = HashMap::new();
-
-        let mut visited = HashSet::new();
-        let mut start_times = HashMap::new();
-        let mut end_times = HashMap::new();
-
-        let mut time = 0;
-
-        let progress_bar = ProgressBar::new(self.nodes.len() as u64);
-
-        for node in self.nodes.iter() {
-            if visited.contains(node) {
-                continue;
-            }
-
-            let mut stack = Vec::new();
-
-            stack.push((node, RecurseState::Before));
-
-            while let Some((node, state)) = stack.pop() {
-                match state {
-                    RecurseState::Before => {
-                        progress_bar.inc(1);
-                        visited.insert(node.clone());
-                        start_times.insert(node, time);
-                        time += 1;
-
-                        // this is extremely important that is before the adjacencies to correctly
-                        // iterate over the graph
-
-                        if let Some(adjacencies) = self.get_adjacencies(node) {
-                            for adj in adjacencies {
-                                // if visited.contains(adj) {
-                                //     if start_times.get(adj) < start_times.get(node) {
-                                //         edge_types.insert((node, adj), EdgeType::BackEdge);
-                                //     } else {
-                                //         edge_types.insert((node, adj), EdgeType::CrossEdge);
-                                //     }
-                                // } else {
-                                //     edge_types.insert((node, adj), EdgeType::ForwardEdge);
-                                //     stack.push((adj, RecurseState::Before));
-                                // }
-
-                                stack.push((node, RecurseState::AfterNeighbor));
-
-                                if !visited.contains(adj) {
-                                    edge_types.insert((node, adj), EdgeType::TreeEdge);
-                                    stack.push((adj, RecurseState::Before));
-                                } else {
-                                    let start_time_node = start_times.get(node).unwrap();
-                                    let start_time_adj = start_times.get(adj).unwrap();
-                                    let end_time_node = end_times.get(node).unwrap_or(&0);
-                                    let end_time_adj = end_times.get(adj).unwrap_or(&0);
-
-                                    if start_time_node < start_time_adj
-                                        && end_time_node > end_time_adj
-                                    {
-                                        edge_types.insert((node, adj), EdgeType::ForwardEdge);
-                                    } else if start_time_node > start_time_adj
-                                        && end_time_node < end_time_adj
-                                    {
-                                        edge_types.insert((node, adj), EdgeType::BackEdge);
-                                    // } else if start_time_node > start_time_adj
-                                    //     && end_time_node > end_time_adj
-                                    // {
-                                    //     edge_types.insert((node, adj), EdgeType::CrossEdge);
-                                    } else {
-                                        edge_types.insert((node, adj), EdgeType::CrossEdge);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    RecurseState::AfterNeighbor => {
-                        end_times.insert(node, time);
-                        time += 1;
-                    }
-                }
-            }
-        }
-
-        // for node in self.nodes.iter() {
-        //     let mut stack = Vec::new();
-
-        //     if visited.contains(node) {
-        //         continue;
-        //     }
-
-        //     stack.push(node);
-
-        //     while let Some(node) = stack.pop() {
-        //         visited.insert(node.clone());
-
-        //         if let Some(adjacencies) = self.get_adjacencies(node) {
-        //             for adj in adjacencies {
-        //                 if visited.contains(adj) {
-        //                     // ...
-        //                 } else {
-        //                     edge_types.insert((node, adj), EdgeType::TreeEdge);
-        //                     stack.push(adj);
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-
-        edge_types
     }
 
     pub fn shortest_path_matrix(&self) -> HashMap<&V, HashMap<&V, usize>> {
@@ -479,5 +351,43 @@ where
         for (degree, count) in histogram.iter() {
             println!("{}: {}", degree, count);
         }
+    }
+}
+
+impl<V> UndirectedGraph<V>
+where
+    V: Hash + Eq + Clone + Debug,
+{
+    pub fn connected_components(&self) -> Vec<Vec<V>> {
+        let mut visited = HashSet::new();
+        let mut result = Vec::new();
+
+        for node in self.graph.nodes.iter() {
+            if visited.contains(node) {
+                continue;
+            }
+
+            let mut cc: HashSet<V> = HashSet::new();
+            let mut stack: Vec<&V> = vec![node];
+
+            while let Some(node) = stack.pop() {
+                if cc.contains(node) {
+                    continue;
+                }
+
+                cc.insert(node.clone());
+
+                if let Some(adjacencies) = self.graph.get_adjacencies(&node) {
+                    for adj in adjacencies {
+                        stack.push(adj);
+                    }
+                }
+            }
+
+            visited.extend(cc.iter().map(|x| x.to_owned()));
+            result.push(cc.iter().map(|x| x.to_owned()).collect());
+        }
+
+        result
     }
 }

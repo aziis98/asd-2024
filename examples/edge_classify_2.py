@@ -53,9 +53,7 @@ def classify_iter(g):
             ('node:start', u, None),
         ]
 
-        print("Stack:")
-        for cont in continuations:
-            print("-", cont)
+        print("Stack:", continuations)
         
         while len(continuations) > 0:
             state, u, more = continuations.pop()
@@ -94,15 +92,12 @@ def classify_iter(g):
                         edges[(u, v)] = 'forward'
                     else:
                         edges[(u, v)] = 'cross'
-                
+
             elif state == 'node:end':
                 t += 1
                 finish_time[u] = t
 
-            print("Stack:")
-            for cont in continuations:
-                print("-", cont)
-            
+            print("Stack:", continuations)
 
 
                 
@@ -128,26 +123,26 @@ class Graph:
 
 # Example usage:
 g = Graph()
-g.add_edge(0, 1)
-g.add_edge(1, 2)
-g.add_edge(2, 3)
-g.add_edge(3, 0)
-g.add_edge(3, 4)
-g.add_edge(4, 5)
-g.add_edge(5, 0)
-g.add_edge(4, 2)
+# g.add_edge(0, 1)
+# g.add_edge(1, 2)
+# g.add_edge(2, 3)
+# g.add_edge(3, 0)
+# g.add_edge(3, 4)
+# g.add_edge(4, 5)
+# g.add_edge(5, 0)
+# g.add_edge(4, 2)
 
 # g.add_edge(0, 1)
 # g.add_edge(1, 2)
 # g.add_edge(0, 2)
 
-# g.add_edge("u", "v")
-# g.add_edge("u", "x")
-# g.add_edge("v", "y")
-# g.add_edge("y", "x")
-# g.add_edge("x", "v")
-# g.add_edge("w", "y")
-# g.add_edge("w", "z")
+g.add_edge("u", "v")
+g.add_edge("u", "x")
+g.add_edge("v", "y")
+g.add_edge("y", "x")
+g.add_edge("x", "v")
+g.add_edge("w", "y")
+g.add_edge("w", "z")
 
 # Running DFS
 # results = dfs(g)

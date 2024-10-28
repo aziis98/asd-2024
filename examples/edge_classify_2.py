@@ -38,6 +38,77 @@ def dfs_visit(g, v, results, parent=None):
     results.finish_time[v] = results.t
     results.order.append(v)
 
+def classify_iter(g):
+    edges = {}
+    visited = set()
+    t = 0
+    start_time = {}
+    finish_time = {}
+
+    for u in g.vertices():
+        if u in visited:
+            continue
+
+        continuations = [
+            ('node:start', u, None),
+        ]
+
+        print("Stack:")
+        for cont in continuations:
+            print("-", cont)
+        
+        while len(continuations) > 0:
+            state, u, more = continuations.pop()
+
+            if state == 'node:start':
+                continuations.append(('node:end', u, None))
+
+                parent = more
+
+                print("Recurse:", u, parent)
+
+                visited.add(u)
+                t += 1
+                start_time[u] = t
+
+
+                if parent is not None:
+                    edges[(parent, u)] = 'tree'
+
+                continuations.append(('node:neighbors', u, 0))
+            elif state == 'node:neighbors':
+                i = more
+                print("Remaining Neighbors:", g.neighbors(u)[i:])
+                
+                neighbors = g.neighbors(u)[i:]
+                for i in range(len(neighbors)):
+                    v = neighbors[i]
+
+                    if v not in visited:
+                        continuations.append(('node:neighbors', u, i + 1))
+                        continuations.append(('node:start', v, u))
+                        break
+                    elif v not in finish_time:
+                        edges[(u, v)] = 'back'
+                    elif start_time[u] < start_time[v]:
+                        edges[(u, v)] = 'forward'
+                    else:
+                        edges[(u, v)] = 'cross'
+                
+            elif state == 'node:end':
+                t += 1
+                finish_time[u] = t
+
+            print("Stack:")
+            for cont in continuations:
+                print("-", cont)
+            
+
+
+                
+
+    return edges
+
 # Graph structure
 class Graph:
     def __init__(self):
@@ -57,24 +128,36 @@ class Graph:
 
 # Example usage:
 g = Graph()
-# g.add_edge(0, 1)
-# g.add_edge(1, 2)
-# g.add_edge(2, 3)
-# g.add_edge(3, 0)
-# g.add_edge(3, 4)
-# g.add_edge(4, 5)
-# g.add_edge(5, 0)
-# g.add_edge(4, 2)
-
 g.add_edge(0, 1)
 g.add_edge(1, 2)
-g.add_edge(0, 2)
+g.add_edge(2, 3)
+g.add_edge(3, 0)
+g.add_edge(3, 4)
+g.add_edge(4, 5)
+g.add_edge(5, 0)
+g.add_edge(4, 2)
+
+# g.add_edge(0, 1)
+# g.add_edge(1, 2)
+# g.add_edge(0, 2)
+
+# g.add_edge("u", "v")
+# g.add_edge("u", "x")
+# g.add_edge("v", "y")
+# g.add_edge("y", "x")
+# g.add_edge("x", "v")
+# g.add_edge("w", "y")
+# g.add_edge("w", "z")
 
 # Running DFS
-results = dfs(g)
+# results = dfs(g)
+# print("Parent Map:", results.parent)
+# print("Start Times:", results.start_time)
+# print("Finish Times:", results.finish_time)
+# print("Edge Classifications:", results.edges)
+# print("DFS Order:", results.order)
 
-print("Parent Map:", results.parent)
-print("Start Times:", results.start_time)
-print("Finish Times:", results.finish_time)
-print("Edge Classifications:", results.edges)
-print("DFS Order:", results.order)
+# Running Iterative DFS
+edges = classify_iter(g)
+print("Edge Classifications:", edges)
+

@@ -49,9 +49,7 @@ def classify_iter(g):
         if u in visited:
             continue
 
-        continuations = [
-            ('node:start', u, None),
-        ]
+        continuations = [('node:start', u, None)]
 
         while len(continuations) > 0:
             state, u, more = continuations.pop()

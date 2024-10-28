@@ -94,7 +94,7 @@ fn main() -> std::io::Result<()> {
 
             // println!("Graph has cycles: {}", graph.is_cyclic());
 
-            let edge_types = graph.compute_edge_types();
+            let edge_types = graph.compute_edge_types_rec();
 
             let edge_type_histogram: BTreeMap<_, _> = edge_types
                 .iter()

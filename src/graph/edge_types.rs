@@ -1,6 +1,6 @@
 use std::{
     cmp::Ordering,
-    collections::{HashMap, HashSet},
+    collections::{BTreeMap, BTreeSet, HashMap, HashSet},
     fmt::Debug,
     hash::Hash,
 };
@@ -17,106 +17,202 @@ pub enum EdgeType {
     CrossEdge,
 }
 
-impl<V> AdjacencyGraph<V>
+struct ClassifyState<V> {
+    progress_bar: ProgressBar,
+
+    edge_types: BTreeMap<(V, V), EdgeType>,
+
+    visited: BTreeSet<V>,
+
+    start_times: BTreeMap<V, i32>,
+    finished_nodes: BTreeSet<V>,
+
+    time: i32,
+}
+
+impl<V> ClassifyState<V>
 where
-    V: Hash + Eq + Clone + Debug,
+    V: Ord + Eq + Clone + Debug,
 {
-    pub fn compute_edge_types(&self) -> HashMap<(&V, &V), EdgeType> {
-        let mut edge_types = HashMap::new();
+    pub fn classify_edges_rec(mut self, graph: &AdjacencyGraph<V>) -> BTreeMap<(V, V), EdgeType> {
+        for start in graph.nodes().iter() {
+            if self.visited.contains(start) {
+                continue;
+            }
 
-        // TODO: ...
+            self.dfs(graph, start, None);
+        }
 
-        return edge_types;
+        self.progress_bar.finish();
+        return self.edge_types;
     }
 
-    // pub fn compute_edge_types(&self) -> HashMap<(&V, &V), EdgeType> {
-    //     /// To correctly compute the start and end times of the nodes in the
-    //     /// graph, we need to keep do work before and after the recursion call
-    //     enum RecurseState<'a, V> {
-    //         Before(&'a V),
-    //         BeforeNeighbor(&'a V, &'a V),
-    //         AfterNeighbor(&'a V),
+    pub fn dfs(&mut self, graph: &AdjacencyGraph<V>, node: &V, parent: Option<&V>) {
+        if self.visited.contains(node) {
+            return;
+        }
+
+        self.progress_bar.inc(1);
+        self.visited.insert(node.clone());
+        self.time += 1;
+        self.start_times.insert(node.clone(), self.time);
+
+        if let Some(parent) = parent {
+            self.edge_types
+                .insert((parent.clone(), node.clone()), EdgeType::TreeEdge);
+        }
+
+        if let Some(adjacencies) = graph.get_adjacencies(node) {
+            for adj in adjacencies.iter() {
+                if !self.visited.contains(adj) {
+                    self.dfs(graph, adj, Some(node));
+                } else {
+                    if !self.finished_nodes.contains(adj) {
+                        self.edge_types
+                            .insert((node.clone(), adj.clone()), EdgeType::BackEdge);
+                    } else if self.start_times.get(node) < self.start_times.get(adj) {
+                        self.edge_types
+                            .insert((node.clone(), adj.clone()), EdgeType::ForwardEdge);
+                    } else {
+                        self.edge_types
+                            .insert((node.clone(), adj.clone()), EdgeType::CrossEdge);
+                    }
+                }
+            }
+        }
+
+        self.time += 1;
+        self.finished_nodes.insert(node.clone());
+    }
+}
+
+impl<V> AdjacencyGraph<V>
+where
+    V: Ord + Eq + Clone + Debug,
+{
+    pub fn compute_edge_types_rec(&self) -> BTreeMap<(V, V), EdgeType> {
+        return ClassifyState {
+            progress_bar: ProgressBar::new(self.nodes().len() as u64),
+
+            edge_types: BTreeMap::new(),
+            visited: BTreeSet::new(),
+            start_times: BTreeMap::new(),
+            finished_nodes: BTreeSet::new(),
+            time: 0,
+        }
+        .classify_edges_rec(self);
+    }
+
+    // pub fn compute_edge_types(&self) -> BTreeMap<(V, V), EdgeType> {
+    //     println!("{:?}", self);
+
+    //     let mut edge_types: BTreeMap<(V, V), EdgeType> = BTreeMap::new();
+    //     let mut visited: BTreeSet<V> = BTreeSet::new();
+
+    //     let mut start_times: BTreeMap<V, i32> = BTreeMap::new();
+    //     let mut finished_nodes: BTreeSet<V> = BTreeSet::new();
+
+    //     #[derive(Debug)]
+    //     enum RecurseState<V> {
+    //         Visit { node: V, parent: Option<V> },
+    //         End { node: V },
     //     }
-
-    //     let mut edge_types = HashMap::new();
-
-    //     let mut visited = HashSet::new();
-    //     let mut start_times = HashMap::new();
-    //     let mut finished_nodes = HashSet::new();
 
     //     let mut time = 0;
 
-    //     let progress_bar = ProgressBar::new(self.nodes().len() as u64);
+    //     // let progress_bar = ProgressBar::new(self.nodes().len() as u64);
 
-    //     for node in self.nodes().iter() {
-    //         if visited.contains(node) {
+    //     for start in self.nodes().iter() {
+    //         if visited.contains(start) {
     //             continue;
     //         }
 
-    //         let mut stack = Vec::new();
+    //         let mut stack: Vec<RecurseState<V>> = Vec::new();
 
-    //         stack.push(RecurseState::Before(node));
+    //         // The first node does not have a parent
+    //         stack.push(RecurseState::End {
+    //             node: start.clone(),
+    //         });
+    //         stack.push(RecurseState::Visit {
+    //             node: start.clone(),
+    //             parent: None,
+    //         });
+
+    //         println!("Starting DFS from {:?}", start);
 
     //         while let Some(state) = stack.pop() {
+    //             println!("Current: {:?}", state);
+    //             println!("Finished Nodes: {:?}", finished_nodes);
+
     //             match state {
-    //                 RecurseState::Before(node) => {
-    //                     progress_bar.inc(1);
-    //                     visited.insert(node.clone());
-    //                     start_times.insert(node, time);
+    //                 RecurseState::Visit { node, parent } => {
+    //                     if visited.contains(&node) {
+    //                         // progress_bar.inc(1);
+    //                     }
+
+    //                     if let Some(parent) = parent.clone() {
+    //                         if !visited.contains(&node) {
+    //                             println!("{:?} => TreeEdge", (parent.clone(), node.clone()));
+    //                             edge_types
+    //                                 .insert((parent.clone(), node.clone()), EdgeType::TreeEdge);
+    //                         } else {
+    //                             if !finished_nodes.contains(&parent) {
+    //                                 println!("{:?} => BackEdge", (parent.clone(), node.clone()));
+    //                                 edge_types
+    //                                     .insert((node.clone(), parent.clone()), EdgeType::BackEdge);
+    //                             } else if start_times.get(&node) < start_times.get(&parent) {
+    //                                 println!("{:?} => ForwardEdge", (parent.clone(), node.clone()));
+    //                                 edge_types.insert(
+    //                                     (node.clone(), parent.clone()),
+    //                                     EdgeType::ForwardEdge,
+    //                                 );
+    //                             } else {
+    //                                 println!("{:?} => CrossEdge", (parent.clone(), node.clone()));
+    //                                 edge_types.insert(
+    //                                     (node.clone(), parent.clone()),
+    //                                     EdgeType::CrossEdge,
+    //                                 );
+    //                             }
+    //                         }
+    //                     }
+
     //                     time += 1;
+    //                     start_times.insert(node.clone(), time);
+
+    //                     visited.insert(node.clone());
 
     //                     // it is extremely important that this before the adjacencies to correctly
     //                     // iterate over the graph
+    //                     // stack.push(RecurseState::AfterNeighbors { node });
 
-    //                     if let Some(adjacencies) = self.get_adjacencies(node) {
-    //                         for adj in adjacencies {
-    //                             println!("Node: {:?} Adj: {:?}", node, adj,);
-
-    //                             stack.push(RecurseState::AfterNeighbor(node));
-
-    //                             if !visited.contains(adj) {
-    //                                 edge_types.insert((node, adj), EdgeType::TreeEdge);
-    //                                 stack.push(RecurseState::Before(adj));
-    //                             } else {
-    //                                 stack.push(RecurseState::BeforeNeighbor(node, adj));
+    //                     if let Some(adjacencies) = self.get_adjacencies(&node) {
+    //                         println!("adjacencies: {:?}", adjacencies);
+    //                         for adj in adjacencies.iter().rev() {
+    //                             if !visited.contains(&adj) {
+    //                                 stack.push(RecurseState::End { node: adj.clone() });
+    //                                 stack.push(RecurseState::Visit {
+    //                                     node: adj.clone(),
+    //                                     parent: Some(node.clone()),
+    //                                 });
     //                             }
     //                         }
     //                     }
     //                 }
-    //                 RecurseState::AfterNeighbor(node) => {
-    //                     finished_nodes.insert(node);
+    //                 RecurseState::End { node } => {
     //                     time += 1;
-    //                 }
-    //                 RecurseState::BeforeNeighbor(node, adj) => {
-    //                     let start_time_node = start_times.get(node).unwrap();
-    //                     let start_time_adj = start_times.get(adj).unwrap();
-    //                     let end_time_node = finished_nodes.get(node).unwrap_or(&0);
-    //                     let end_time_adj = finished_nodes.get(adj).unwrap_or(&0);
-
-    //                     println!(
-    //                         "Times: ({:?}, {:?}) ({:?}, {:?})",
-    //                         start_time_node, end_time_node, start_time_adj, end_time_adj
-    //                     );
-
-    //                     match (
-    //                         start_time_node.cmp(start_time_adj),
-    //                         end_time_node.cmp(end_time_adj),
-    //                     ) {
-    //                         (Ordering::Less, Ordering::Greater) => {
-    //                             edge_types.insert((node, adj), EdgeType::ForwardEdge);
-    //                         }
-    //                         (Ordering::Greater, Ordering::Less) => {
-    //                             edge_types.insert((node, adj), EdgeType::BackEdge);
-    //                         }
-    //                         _ => {
-    //                             edge_types.insert((node, adj), EdgeType::CrossEdge);
-    //                         }
-    //                     }
+    //                     finished_nodes.insert(node.clone());
     //                 }
     //             }
+
+    //             println!();
+
+    //             // println!("after:");
+    //             // println!("~> {:?}", stack);
     //         }
     //     }
 
-    //     edge_types
+    //     // progress_bar.finish();
+
+    //     return edge_types;
     // }
 }

@@ -46,6 +46,7 @@ class Graph:
     def add_edge(self, u, v):
         if u not in self.adjacency_list:
             self.adjacency_list[u] = []
+
         self.adjacency_list[u].append(v)
 
     def vertices(self):
@@ -56,10 +57,18 @@ class Graph:
 
 # Example usage:
 g = Graph()
+# g.add_edge(0, 1)
+# g.add_edge(1, 2)
+# g.add_edge(2, 3)
+# g.add_edge(3, 0)
+# g.add_edge(3, 4)
+# g.add_edge(4, 5)
+# g.add_edge(5, 0)
+# g.add_edge(4, 2)
+
 g.add_edge(0, 1)
 g.add_edge(1, 2)
-g.add_edge(2, 3)
-g.add_edge(3, 0)  # Creating the cycle 0 -> 1 -> 2 -> 3 -> 0
+g.add_edge(0, 2)
 
 # Running DFS
 results = dfs(g)

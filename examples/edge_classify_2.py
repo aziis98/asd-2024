@@ -1,3 +1,6 @@
+# Algorithm from MIT OpenCourseWare (seems correct)
+# https://courses.csail.mit.edu/6.006/fall11/rec/rec14.pdf
+
 class DFSResult:
     def __init__(self):
         self.parent = {}

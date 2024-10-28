@@ -1,6 +1,7 @@
-# code
-import random
+# Algorithm from GeeksforGeeks (wrong)
+# https://www.geeksforgeeks.org/tree-back-edge-and-cross-edges-in-dfs-of-graph/
 
+import random
 
 class Graph:
 	# instance variables

@@ -53,8 +53,6 @@ def classify_iter(g):
             ('node:start', u, None),
         ]
 
-        print("Stack:", continuations)
-        
         while len(continuations) > 0:
             state, u, more = continuations.pop()
 
@@ -63,12 +61,9 @@ def classify_iter(g):
 
                 parent = more
 
-                print("Recurse:", u, parent)
-
                 visited.add(u)
                 t += 1
                 start_time[u] = t
-
 
                 if parent is not None:
                     edges[(parent, u)] = 'tree'
@@ -76,7 +71,6 @@ def classify_iter(g):
                 continuations.append(('node:neighbors', u, 0))
             elif state == 'node:neighbors':
                 i = more
-                print("Remaining Neighbors:", g.neighbors(u)[i:])
                 
                 neighbors = g.neighbors(u)[i:]
                 for i in range(len(neighbors)):
@@ -96,11 +90,6 @@ def classify_iter(g):
             elif state == 'node:end':
                 t += 1
                 finish_time[u] = t
-
-            print("Stack:", continuations)
-
-
-                
 
     return edges
 

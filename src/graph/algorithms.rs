@@ -1,19 +1,55 @@
+#![allow(dead_code)]
+
 use std::{
-    cell::RefCell,
-    collections::{BTreeMap, BTreeSet, HashMap, HashSet, VecDeque},
+    collections::{BTreeMap, BTreeSet, VecDeque},
     fmt::Debug,
-    hash::Hash,
-    rc::Rc,
 };
 
-use indicatif::ProgressIterator;
+use indicatif::{ProgressBar, ProgressIterator};
 
-use super::{AdjacencyGraph, UndirectedGraph};
+use super::{AdjacencyGraph, Graph, UndirectedGraph};
+
+impl<V> Graph<V> for AdjacencyGraph<V>
+where
+    V: Ord + Clone,
+{
+    fn nodes(&self) -> &BTreeSet<V> {
+        &self.nodes
+    }
+
+    fn adjacencies(&self) -> &BTreeMap<V, BTreeSet<V>> {
+        &self.adjacencies
+    }
+
+    fn edges(&self) -> BTreeMap<V, V> {
+        self.adjacencies
+            .iter()
+            .flat_map(|(from, tos)| tos.iter().map(move |to| (from.clone(), to.clone())))
+            .collect()
+    }
+}
+
+impl<V> Graph<V> for UndirectedGraph<V>
+where
+    V: Ord + Clone,
+{
+    fn nodes(&self) -> &BTreeSet<V> {
+        self.directed.nodes()
+    }
+
+    fn adjacencies(&self) -> &BTreeMap<V, BTreeSet<V>> {
+        self.directed.adjacencies()
+    }
+
+    fn edges(&self) -> BTreeMap<V, V> {
+        self.directed.edges()
+    }
+}
 
 #[allow(dead_code)]
 impl<V> AdjacencyGraph<V>
 where
-    V: Ord + Clone + Debug,
+    V: Ord + Eq + Clone + Debug,
 {
     pub fn new() -> Self {
         AdjacencyGraph {
@@ -46,6 +82,12 @@ where
             .insert(to);
     }
 
+    pub fn remove_edge(&mut self, from: &V, to: &V) {
+        if let Some(adjacencies) = self.adjacencies.get_mut(from) {
+            adjacencies.remove(to);
+        }
+    }
+
     pub fn get_adjacencies(&self, node: &V) -> Option<&BTreeSet<V>> {
         self.adjacencies.get(node)
     }
@@ -75,16 +117,37 @@ where
         opposite
     }
 
-    pub fn undirected(&self) -> UndirectedGraph<&V> {
+    pub fn undirected(&self) -> UndirectedGraph<V> {
         let mut undirected = AdjacencyGraph::new();
 
         // O(|E|)
         for (from, to) in self.edges() {
-            undirected.add_edge(from, to);
-            undirected.add_edge(to, from);
+            undirected.add_edge(from.clone(), to.clone());
+            undirected.add_edge(to.clone(), from.clone());
         }
 
-        UndirectedGraph { graph: undirected }
+        UndirectedGraph {
+            directed: undirected,
+        }
+    }
+
+    pub fn restricted(&self, nodes: &Vec<V>) -> AdjacencyGraph<V> {
+        let index = nodes.iter().collect::<BTreeSet<_>>();
+        let mut restricted = AdjacencyGraph::new();
+
+        for node in nodes {
+            restricted.add_node(node.clone());
+
+            if let Some(adjacencies) = self.get_adjacencies(&node) {
+                for adj in adjacencies {
+                    if index.contains(adj) {
+                        restricted.add_edge(node.clone(), adj.clone());
+                    }
+                }
+            }
+        }
+
+        restricted
     }
 
     pub fn has_edge(&self, from: &V, to: &V) -> bool {
@@ -116,49 +179,6 @@ where
 
             None
         })
-    }
-
-    /// This computes if this undirected graph is cyclic or not by searching for an oriented cycle in the graph
-    pub fn is_cyclic(&self) -> bool {
-        let mut remaining_nodes = self.nodes.iter().collect::<BTreeSet<_>>();
-
-        // let progress_bar = ProgressBar::new(self.nodes.len() as u64);
-        // let mut visited_count = 0;
-
-        while !remaining_nodes.is_empty() {
-            let start: &V = remaining_nodes.iter().next().unwrap();
-
-            // visited_count += 1;
-            remaining_nodes.remove(start);
-            // progress_bar.inc(1);
-
-            let mut dfs_visited = BTreeSet::new();
-            let mut stack = VecDeque::new();
-            stack.push_back(start);
-
-            // start a new dfs from the current node
-            while let Some(node) = stack.pop_back() {
-                if dfs_visited.contains(node) {
-                    // println!("Found cycle after {} nodes", visited_count);
-                    // progress_bar.finish();
-                    return true;
-                }
-
-                // visited_count += 1;
-                remaining_nodes.remove(node);
-                // progress_bar.inc(1);
-
-                dfs_visited.insert(node.clone());
-
-                if let Some(adjacencies) = self.get_adjacencies(node) {
-                    stack.extend(adjacencies);
-                }
-            }
-        }
-
-        // println!("Found cycle after {} nodes", visited_count);
-        // progress_bar.finish();
-        false
     }
 
     pub fn shortest_path_matrix(&self) -> BTreeMap<&V, BTreeMap<&V, usize>> {
@@ -247,116 +267,20 @@ where
         result
     }
 
-    // pub fn compute_ccs_2(&self) -> Vec<Vec<V>> {
-    //     let mut cc: BTreeMap<V, Rc<RefCell<BTreeSet<V>>>> = BTreeMap::new();
+    fn gc(&mut self) {
+        let mut to_remove = Vec::new();
 
-    //     for node in self.nodes.iter() {
-    //         if cc.contains_key(&node) {
-    //             continue;
-    //         }
-
-    //         // println!("All CC: {:?}", cc);
-
-    //         let new_cc = Rc::new(RefCell::new(HashSet::new()));
-
-    //         let mut stack: Vec<&V> = vec![node];
-
-    //         while let Some(node) = stack.pop() {
-    //             // println!("New CC: {:?}", new_cc.borrow());
-
-    //             if cc.contains_key(&node) {
-    //                 // merge the two connected components and go to the next node
-
-    //                 let old_cc: &Rc<RefCell<HashSet<V>>> = cc.get(&node).unwrap();
-
-    //                 // println!(
-    //                 //     "Merging {:?} with {:?} due to link to {:?}",
-    //                 //     new_cc.borrow(),
-    //                 //     old_cc.borrow(),
-    //                 //     node
-    //                 // );
-
-    //                 new_cc
-    //                     .borrow_mut()
-    //                     .extend(old_cc.borrow().iter().map(|x| x.to_owned()));
-
-    //                 break;
-    //             }
-
-    //             if new_cc.borrow().contains(&node) {
-    //                 continue;
-    //             }
-
-    //             new_cc.borrow_mut().insert(node.clone());
-
-    //             if let Some(adjacencies) = self.get_adjacencies(&node) {
-    //                 for adj in adjacencies {
-    //                     stack.push(adj);
-    //                 }
-    //             }
-    //         }
-
-    //         for n in new_cc.borrow().iter() {
-    //             cc.insert(n.to_owned(), new_cc.clone());
-    //         }
-    //     }
-
-    //     // extract the unique connected components by pointers
-    //     let mut result = Vec::new();
-    //     let mut seen = HashSet::new();
-
-    //     for node in self.nodes.iter() {
-    //         if seen.contains(node) {
-    //             continue;
-    //         }
-
-    //         let cc = cc.get(node).unwrap();
-    //         seen.extend(cc.borrow().iter().map(|x| x.to_owned()));
-
-    //         result.push(cc.borrow().iter().map(|x| x.to_owned()).collect());
-    //     }
-
-    //     result
-    // }
-
-    /// This function prints the number of nodes, edges and a histogram of the degrees of the nodes
-    /// in the graph (computing the degrees might take a long time)
-    pub fn print_stats(&self) {
-        let mut vertices_degrees = BTreeMap::new();
-
-        for (from, tos) in self
-            .adjacencies
-            .iter()
-            .progress()
-            .with_style(
-                indicatif::ProgressStyle::default_bar()
-                    .template("{prefix} {spinner} [{elapsed_precise}] [{wide_bar}] {pos}/{len}")
-                    .unwrap(),
-            )
-            .with_prefix("computing nodes degrees")
-        {
-            *vertices_degrees.entry(from).or_insert(0) += tos.len();
-
-            for to in tos {
-                *vertices_degrees.entry(to).or_insert(0) += 1;
+        for node in self.nodes.iter() {
+            if let Some(adjacencies) = self.get_adjacencies(node) {
+                if adjacencies.is_empty() {
+                    to_remove.push(node.clone());
+                }
             }
         }
 
-        let histogram: BTreeMap<usize, usize> = vertices_degrees
-            .iter()
-            .map(|(_, degree)| *degree)
-            .fold(BTreeMap::new(), |mut acc, degree| {
-                *acc.entry(degree).or_insert(0) += 1;
-                acc
-            });
-
-        println!("Stats:");
-        println!("Nodes: {}", self.nodes.len());
-        println!("Edges: {}", self.edges().count());
-
-        println!("Histogram:");
-        for (degree, count) in histogram.iter() {
-            println!("{}: {}", degree, count);
+        for node in to_remove {
+            self.nodes.remove(&node);
+            self.adjacencies.remove(&node);
         }
     }
 }
@@ -365,11 +289,23 @@ impl<V> UndirectedGraph<V>
 where
     V: Ord + Eq + Clone + Debug,
 {
+    pub fn add_edge(&mut self, from: V, to: V) {
+        self.directed.add_edge(from.clone(), to.clone());
+        self.directed.add_edge(to.clone(), from.clone());
+    }
+
+    pub fn remove_edge(&mut self, from: &V, to: &V) {
+        self.directed.remove_edge(from, to);
+        self.directed.remove_edge(to, from);
+    }
+
     pub fn connected_components(&self) -> Vec<Vec<V>> {
         let mut visited = BTreeSet::new();
         let mut result = Vec::new();
 
-        for node in self.graph.nodes.iter() {
+        let pb = ProgressBar::new(self.directed.nodes.len() as u64);
+
+        for node in self.directed.nodes.iter() {
             if visited.contains(node) {
                 continue;
             }
@@ -382,9 +318,10 @@ where
                     continue;
                 }
 
+                pb.inc(1);
                 cc.insert(node.clone());
 
-                if let Some(adjacencies) = self.graph.get_adjacencies(&node) {
+                if let Some(adjacencies) = self.directed.get_adjacencies(&node) {
                     for adj in adjacencies {
                         stack.push(adj);
                     }
@@ -395,6 +332,81 @@ where
             result.push(cc.iter().map(|x| x.to_owned()).collect());
         }
 
+        pb.finish();
+
         result
+    }
+
+    // This runs a depth-first search on the graph searching for o--o--o paths and removes the middle node
+    // recursively until no more o--o--o paths are found.
+    pub fn compact_chains(&mut self) {
+        let mut visited = BTreeSet::new();
+
+        let nodes = self.directed.nodes.clone();
+
+        let pb = ProgressBar::new(nodes.len() as u64);
+
+        let mut compacted_count = 0;
+
+        for node in nodes {
+            if visited.contains(&node) {
+                continue;
+            }
+
+            let mut stack = vec![node];
+
+            while let Some(node) = stack.pop() {
+                if visited.contains(&node) {
+                    continue;
+                }
+
+                pb.inc(1);
+                visited.insert(node.clone());
+
+                // while adj has only one neighbor
+                let mut curr = node;
+                let mut path = vec![curr.clone()];
+
+                while let Some(adjacencies) = self.directed.get_adjacencies(&curr) {
+                    let probes = adjacencies
+                        .iter()
+                        .filter(|&x| !path.contains(x))
+                        .collect::<Vec<_>>();
+
+                    if probes.len() != 1 {
+                        break;
+                    }
+
+                    curr = probes[0].clone();
+
+                    visited.insert(curr.clone());
+                    path.push(curr.clone());
+                }
+
+                if path.len() < 3 {
+                    continue;
+                }
+
+                path.windows(2).for_each(|x| {
+                    self.remove_edge(&x[0], &x[1]);
+                });
+
+                self.add_edge(path[0].clone(), path[path.len() - 1].clone());
+
+                compacted_count += path.len() - 2;
+
+                if let Some(adjacencies) = self.directed.get_adjacencies(&curr) {
+                    for adj in adjacencies {
+                        stack.push(adj.clone());
+                    }
+                }
+            }
+        }
+
+        println!("Compacted {} nodes", compacted_count);
+
+        self.directed.gc();
+
+        pb.finish();
     }
 }

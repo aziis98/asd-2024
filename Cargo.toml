@@ -6,6 +6,7 @@ edition = "2021"
 [dependencies]
 argh = "0.1.12"
 indicatif = "0.17.8"
+rand = "0.8.5"
 
-[workspace]
-members = ["examples/*"]
+# [workspace]
+# members = ["examples/*"]

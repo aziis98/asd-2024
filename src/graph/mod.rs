@@ -1,8 +1,16 @@
 use std::{
-    collections::{BTreeMap, BTreeSet, HashSet},
+    collections::{BTreeMap, BTreeSet},
     fmt::Debug,
-    hash::Hash,
 };
+
+pub trait Graph<V>
+where
+    V: Clone,
+{
+    fn nodes(&self) -> &BTreeSet<V>;
+    fn adjacencies(&self) -> &BTreeMap<V, BTreeSet<V>>;
+    fn edges(&self) -> BTreeMap<V, V>;
+}
 
 #[derive(Debug)]
 pub struct AdjacencyGraph<V>
@@ -13,11 +21,12 @@ where
     adjacencies: BTreeMap<V, BTreeSet<V>>,
 }
 
+#[derive(Debug)]
 pub struct UndirectedGraph<V>
 where
     V: Clone,
 {
-    graph: AdjacencyGraph<V>,
+    pub directed: AdjacencyGraph<V>,
 }
 
 pub mod algorithms;
@@ -59,7 +68,7 @@ mod tests {
     fn test_compute_edge_types_cycle() {
         let g = AdjacencyGraph::from_edges(&[(0, 1), (1, 2), (2, 3), (3, 0)]);
 
-        let edge_types = g.compute_edge_types_rec();
+        let edge_types = g.compute_edge_types();
         print_edge_types(&edge_types);
 
         assert_eq!(edge_types.len(), 4);
@@ -73,7 +82,7 @@ mod tests {
     fn test_compute_edge_types_forward() {
         let g = AdjacencyGraph::from_edges(&[(0, 1), (1, 2), (0, 2)]);
 
-        let edge_types = g.compute_edge_types_rec();
+        let edge_types = g.compute_edge_types();
         print_edge_types(&edge_types);
 
         assert_eq!(edge_types.len(), 3);
@@ -86,7 +95,7 @@ mod tests {
     fn test_compute_edge_types_cross() {
         let g = AdjacencyGraph::from_edges(&[(0, 1), (1, 2), (0, 3), (3, 4), (2, 4)]);
 
-        let edge_types = g.compute_edge_types_rec();
+        let edge_types = g.compute_edge_types();
         print_edge_types(&edge_types);
 
         assert_eq!(edge_types.len(), 5);
@@ -110,7 +119,7 @@ mod tests {
             ("w", "z"),
         ]);
 
-        let edge_types = g.compute_edge_types_rec();
+        let edge_types = g.compute_edge_types();
         print_edge_types(&edge_types);
 
         assert_eq!(edge_types.len(), 7);
@@ -121,5 +130,15 @@ mod tests {
         assert_eq!(edge_types[&("x", "v")], edge_types::EdgeType::BackEdge);
         assert_eq!(edge_types[&("w", "y")], edge_types::EdgeType::CrossEdge);
         assert_eq!(edge_types[&("w", "z")], edge_types::EdgeType::TreeEdge);
+    }
+
+    #[test]
+    fn test_compact_chains() {
+        let mut g = AdjacencyGraph::from_edges(&[(0, 1), (1, 2), (2, 3), (3, 4)]).undirected();
+
+        println!("Compacting chains...");
+        println!("{:?}", g);
+        g.compact_chains();
+        println!("{:?}", g);
     }
 }

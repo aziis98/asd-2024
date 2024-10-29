@@ -49,7 +49,7 @@ struct CommandShow {
 
     #[argh(option, short = 'k', default = "4")]
     /// k-mer length
-    k: usize,
+    kmer_size: usize,
 }
 
 fn main() -> std::io::Result<()> {
@@ -63,25 +63,32 @@ fn main() -> std::io::Result<()> {
                 process::exit(1);
             }
 
+            println!("Estimating line count...");
+
             let file_lines_count = BufReader::new(std::fs::File::open(&opts.input)?)
                 .lines()
-                .progress_with(
-                    indicatif::ProgressBar::new_spinner().with_message("estimating line count"),
-                )
+                .progress_with(indicatif::ProgressBar::new_spinner())
                 .count() as u64;
 
-            let file = std::fs::File::open(opts.input)?;
-
-            let entries = gfa::parser::parse_source(file, file_lines_count)?;
+            let entries =
+                gfa::parser::parse_source(std::fs::File::open(opts.input)?, file_lines_count)?;
 
             println!("Number of entries: {}", entries.len());
 
             let mut sequence_map = HashMap::new();
             let mut graph: AdjacencyGraph<(String, Orientation)> = AdjacencyGraph::new();
 
+            let mut invalid_nodes = vec![];
+
             for entry in entries {
                 match entry {
                     Entry::Segment { id, sequence } => {
+                        // validate sequence is a valid DNA sequence
+                        if sequence.chars().any(|c| !"ACGT".contains(c)) {
+                            invalid_nodes.push(id.clone());
+                            continue;
+                        }
+
                         sequence_map.insert(id.clone(), sequence);
                     }
                     Entry::Link {
@@ -96,20 +103,17 @@ fn main() -> std::io::Result<()> {
                 }
             }
 
+            println!("Removing {} invalid nodes...", invalid_nodes.len());
+            // remove invalid nodes
+            for id in invalid_nodes.iter().progress() {
+                graph.remove_node(&(id.clone(), Orientation::Forward));
+                graph.remove_node(&(id.clone(), Orientation::Reverse));
+            }
+            println!();
+
             compute_graph_degrees(&graph);
 
             let dag = graph.dag();
-
-            // let edge_types = compute_edge_types(&graph);
-
-            // for ((from, to), edge_type) in edge_types.iter() {
-            //     match edge_type {
-            //         graph::edge_types::EdgeType::BackEdge => {
-            //             graph.remove_edge(from, to);
-            //         }
-            //         _ => {}
-            //     }
-            // }
 
             compute_edge_types(&dag.0);
 
@@ -151,23 +155,75 @@ fn main() -> std::io::Result<()> {
             for (i, sequence) in sequences.iter().enumerate() {
                 println!("Sequence #{} of length {}", i + 1, sequence.len());
 
-                println!("Searching {} in the sequence (naive)...", opts.pattern);
-                let occurrences = compute_sequence_occurrences_naive(sequence, &opts.pattern);
-                println!("Occurrences: {:?}\n", occurrences);
-
+                println!("Searching {} (naive)...", opts.pattern);
                 println!(
-                    "Searching {} in the sequence (rolling hash)...",
-                    opts.pattern
+                    "Occurrences: {:?}\n",
+                    compute_sequence_occurrences_naive(sequence, &opts.pattern)
                 );
-                let occurrences =
-                    compute_sequence_occurrences_rolling_hash(sequence, &opts.pattern);
-                println!("Occurrences: {:?}\n", occurrences);
+
+                println!("Searching {} (rolling hash)...", opts.pattern);
+                println!(
+                    "Occurrences: {:?}\n",
+                    compute_sequence_occurrences_rolling_hash(sequence, &opts.pattern)
+                );
             }
+
+            compute_kmer_histogram_lb(&sequence_map, &largest_cc_graph, opts.kmer_size);
 
             println!("Cleaning up...");
             process::exit(0);
         }
     }
+}
+
+fn compute_kmer_histogram_lb(
+    sequence_map: &HashMap<String, String>,
+    graph: &DirectedAcyclicGraph<(String, Orientation)>,
+    k: usize,
+) {
+    println!("Computing k-mer histogram...");
+
+    let mut kmer_counts = HashMap::new();
+
+    for node in graph.nodes().iter().progress() {
+        let sequence = get_node_sequence(sequence_map, &node);
+        let kmer_counts_node = sequence_kmer_histogram(&sequence, k);
+
+        for (kmer, count) in kmer_counts_node {
+            *kmer_counts.entry(kmer).or_insert(0) += count;
+        }
+    }
+
+    let mut kmer_counts = kmer_counts.into_iter().collect::<Vec<_>>();
+
+    kmer_counts.sort_by(|a, b| b.1.cmp(&a.1).reverse());
+
+    println!("K-mer histogram (kmers/count):");
+    for (kmer, count) in &kmer_counts {
+        println!("- {}: {}", kmer, count);
+    }
+
+    println!(
+        "Found {} of {} possible kmers (about {:.2}% coverage)",
+        kmer_counts.len(),
+        4usize.pow(k as u32),
+        (kmer_counts.len() as f64 / 4usize.pow(k as u32) as f64) * 100.0
+    );
+}
+
+fn sequence_kmer_histogram(sequence: &str, k: usize) -> BTreeMap<String, usize> {
+    let mut counts: BTreeMap<String, usize> = BTreeMap::new();
+
+    if sequence.len() < k {
+        return counts;
+    }
+
+    for i in 0..sequence.len() - k {
+        let kmer = &sequence[i..i + k];
+        *counts.entry(kmer.to_string()).or_insert(0) += 1;
+    }
+
+    counts
 }
 
 fn letter_to_number(letter: char) -> u64 {
@@ -177,6 +233,29 @@ fn letter_to_number(letter: char) -> u64 {
         'G' => 3,
         'T' => 4,
         _ => panic!("Invalid letter: {}", letter),
+    }
+}
+
+fn letter_complement(letter: char) -> char {
+    match letter {
+        'A' => 'T',
+        'T' => 'A',
+        'C' => 'G',
+        'G' => 'C',
+        _ => panic!("Invalid letter: {}", letter),
+    }
+}
+
+fn get_node_sequence<'a>(
+    sequence_map: &'a HashMap<String, String>,
+    node: &(String, Orientation),
+) -> String {
+    let (id, orientation) = node;
+    let seq = sequence_map.get(id).expect("sequence not found");
+
+    match orientation {
+        Orientation::Forward => seq.clone(),
+        Orientation::Reverse => seq.chars().map(letter_complement).rev().collect::<String>(),
     }
 }
 
@@ -191,7 +270,6 @@ fn compute_sequence_occurrences_rolling_hash(sequence: &str, pattern: &str) -> V
     let pattern_hash = rl.hash_pattern(&pattern.chars().map(letter_to_number).collect::<Vec<_>>());
 
     for i in 0..pattern.len() {
-        // println!("Adding letter: {}", chars[i]);
         rl.add_last(chars[i]);
     }
 
@@ -242,23 +320,8 @@ fn compute_sequences(
 
         let mut sequence = String::new();
         for node in path {
-            let (id, orientation) = node;
-            let seq = sequence_map.get(&id).expect("sequence not found");
-            match orientation {
-                Orientation::Forward => sequence.push_str(seq),
-                Orientation::Reverse => sequence.push_str(
-                    &seq.chars()
-                        .map(|c| match c {
-                            'A' => 'T',
-                            'T' => 'A',
-                            'C' => 'G',
-                            'G' => 'C',
-                            _ => panic!("Invalid letter: {}", c),
-                        })
-                        .rev()
-                        .collect::<String>(),
-                ),
-            }
+            let piece = get_node_sequence(sequence_map, &node);
+            sequence.push_str(&piece);
         }
 
         sequences.push(sequence);
@@ -285,6 +348,7 @@ fn compute_orientation_histogram(graph: &impl Graph<(String, Orientation)>) {
     for (orientation, count) in orientation_histogram.iter() {
         println!("- {:?}: {}", orientation, count);
     }
+    println!();
 }
 
 fn compute_ccs<V>(graph: &AdjacencyGraph<V>) -> Vec<Vec<V>>
@@ -307,6 +371,7 @@ where
     for (size, count) in hist.iter() {
         println!("- {}: {}", size, count);
     }
+    println!();
 
     ccs
 }
@@ -333,10 +398,12 @@ where
         graph.edges().len(),
         edge_types.len()
     );
+
     println!("Edge types histogram (type/count):");
     for (edge_type, count) in histogram.iter() {
         println!("- {:?}: {}", edge_type, count);
     }
+    println!();
 
     edge_types
 }
@@ -447,35 +514,34 @@ where
     for (degree, count) in histogram.iter() {
         println!("- {}: {}", degree, count);
     }
-
     println!("In-degrees histogram (degree/count):");
     for (degree, count) in histogram_in.iter() {
         println!("- {}: {}", degree, count);
     }
-
     println!("Out-degrees histogram (degree/count):");
     for (degree, count) in histogram_out.iter() {
         println!("- {}: {}", degree, count);
     }
+    println!();
 
-    let mut node_degrees = BTreeMap::new();
-
-    for node in graph.nodes() {
-        node_degrees.insert(
-            node.clone(),
-            NodeDegree {
-                degree: *vertices_degrees.get(&node).expect("node already computed"),
-                in_degree: *vertices_in_degrees
-                    .get(&node)
-                    .expect("node already computed"),
-                out_degree: *vertices_out_degrees
-                    .get(&node)
-                    .expect("node already computed"),
-            },
-        );
-    }
-
-    node_degrees
+    graph
+        .nodes()
+        .iter()
+        .map(|node| {
+            (
+                node.clone(),
+                NodeDegree {
+                    degree: *vertices_degrees.get(node).expect("node already computed"),
+                    in_degree: *vertices_in_degrees
+                        .get(node)
+                        .expect("node already computed"),
+                    out_degree: *vertices_out_degrees
+                        .get(node)
+                        .expect("node already computed"),
+                },
+            )
+        })
+        .collect()
 }
 
 // fn compute_compact_graph<V>(graph: &mut UndirectedGraph<V>) -> UndirectedGraph<V>

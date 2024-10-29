@@ -1,0 +1,917 @@
+Estimating line count...
+Parsing GFA file...
+Skipped 2418 lines of type: P
+Number of entries: 8347110
+Removing 78 invalid nodes...
+
+Computing graph stats...
+Computing nodes degrees...
+Computing histogram...
+Stats:
+- Nodes: 3460777
+- Edges: 4886726
+Graph degrees histogram (degree/count):
+- 0: 3
+- 1: 2121
+- 2: 2017208
+- 3: 280128
+- 4: 1047576
+- 5: 69562
+- 6: 20938
+- 7: 8895
+- 8: 4708
+- 9: 2768
+- 10: 1740
+- 11: 1140
+- 12: 873
+- 13: 644
+- 14: 436
+- 15: 339
+- 16: 267
+- 17: 210
+- 18: 183
+- 19: 127
+- 20: 100
+- 21: 97
+- 22: 77
+- 23: 55
+- 24: 48
+- 25: 48
+- 26: 28
+- 27: 33
+- 28: 32
+- 29: 39
+- 30: 29
+- 31: 19
+- 32: 18
+- 33: 17
+- 34: 8
+- 35: 15
+- 36: 7
+- 37: 12
+- 38: 14
+- 39: 10
+- 40: 8
+- 41: 6
+- 42: 8
+- 43: 8
+- 44: 6
+- 45: 10
+- 46: 5
+- 47: 5
+- 48: 6
+- 49: 5
+- 50: 9
+- 51: 2
+- 52: 6
+- 53: 3
+- 54: 4
+- 55: 2
+- 56: 1
+- 57: 8
+- 58: 1
+- 59: 3
+- 60: 3
+- 61: 1
+- 62: 1
+- 63: 5
+- 64: 1
+- 65: 3
+- 66: 1
+- 67: 6
+- 68: 2
+- 69: 1
+- 71: 3
+- 72: 3
+- 73: 2
+- 74: 2
+- 75: 1
+- 78: 1
+- 79: 1
+- 80: 2
+- 81: 1
+- 83: 1
+- 84: 2
+- 85: 2
+- 87: 2
+- 90: 1
+- 91: 1
+- 93: 1
+- 96: 2
+- 97: 3
+- 99: 1
+- 100: 1
+- 101: 2
+- 105: 2
+- 108: 1
+- 110: 1
+- 112: 1
+- 115: 2
+- 116: 1
+- 118: 1
+- 119: 2
+- 126: 1
+- 127: 1
+- 130: 1
+- 131: 1
+- 132: 1
+- 135: 1
+- 136: 1
+- 142: 1
+- 143: 1
+- 150: 1
+- 151: 2
+- 164: 1
+- 165: 1
+- 168: 2
+- 176: 1
+- 183: 1
+- 186: 1
+- 197: 1
+- 206: 1
+- 208: 1
+- 211: 1
+- 229: 1
+- 235: 1
+- 269: 1
+- 310: 1
+- 439: 1
+- 454: 1
+In-degrees histogram (degree/count):
+- 0: 1312
+- 1: 2153708
+- 2: 1239763
+- 3: 49275
+- 4: 9903
+- 5: 2894
+- 6: 1249
+- 7: 663
+- 8: 366
+- 9: 240
+- 10: 199
+- 11: 146
+- 12: 118
+- 13: 92
+- 14: 90
+- 15: 62
+- 16: 59
+- 17: 59
+- 18: 41
+- 19: 39
+- 20: 41
+- 21: 33
+- 22: 29
+- 23: 30
+- 24: 26
+- 25: 24
+- 26: 15
+- 27: 15
+- 28: 14
+- 29: 19
+- 30: 15
+- 31: 12
+- 32: 10
+- 33: 10
+- 34: 7
+- 35: 6
+- 36: 14
+- 37: 9
+- 38: 3
+- 39: 7
+- 40: 7
+- 41: 5
+- 42: 2
+- 43: 9
+- 44: 8
+- 45: 5
+- 46: 4
+- 47: 8
+- 48: 3
+- 50: 2
+- 51: 2
+- 52: 3
+- 53: 4
+- 54: 2
+- 55: 3
+- 56: 3
+- 57: 1
+- 58: 2
+- 59: 1
+- 60: 1
+- 62: 1
+- 63: 3
+- 64: 2
+- 65: 4
+- 66: 4
+- 67: 1
+- 68: 1
+- 69: 1
+- 70: 2
+- 71: 1
+- 72: 1
+- 74: 3
+- 78: 3
+- 79: 1
+- 80: 1
+- 81: 2
+- 83: 2
+- 84: 1
+- 85: 2
+- 88: 1
+- 90: 2
+- 92: 2
+- 94: 1
+- 96: 1
+- 97: 1
+- 100: 3
+- 101: 1
+- 102: 1
+- 104: 1
+- 108: 2
+- 110: 1
+- 111: 1
+- 115: 2
+- 117: 1
+- 118: 1
+- 124: 1
+- 125: 1
+- 129: 1
+- 131: 4
+- 140: 1
+- 147: 1
+- 149: 1
+- 162: 2
+- 163: 1
+- 166: 2
+- 179: 2
+- 184: 1
+- 204: 2
+- 209: 1
+- 226: 1
+- 232: 1
+- 256: 1
+- 302: 1
+- 434: 1
+- 450: 1
+Out-degrees histogram (degree/count):
+- 0: 887
+- 1: 2203729
+- 2: 1169135
+- 3: 54639
+- 4: 15245
+- 5: 6598
+- 6: 3677
+- 7: 2248
+- 8: 1376
+- 9: 897
+- 10: 672
+- 11: 482
+- 12: 320
+- 13: 226
+- 14: 155
+- 15: 119
+- 16: 94
+- 17: 62
+- 18: 48
+- 19: 44
+- 20: 34
+- 21: 23
+- 22: 17
+- 23: 15
+- 24: 1
+- 25: 3
+- 26: 5
+- 27: 9
+- 28: 3
+- 29: 1
+- 30: 5
+- 32: 1
+- 34: 1
+- 35: 1
+- 41: 1
+- 43: 1
+- 44: 2
+- 58: 1
+
+Computing edge types...
+Computing edge types histogram...
+Node count: 3460774
+Edge count: 4853330, Total edge count: 4853330
+Edge types histogram (type/count):
+- TreeEdge: 3459200
+- ForwardEdge: 352721
+- CrossEdge: 1041409
+
+Computing connected components...
+Computing sizes histogram...
+Connected components histogram (size/count):
+- 2: 530
+- 3: 1
+- 4: 2
+- 8: 1
+- 92: 1
+- 135: 1
+- 293: 1
+- 305: 1
+- 2286: 1
+- 5040: 1
+- 5639: 1
+- 9714: 1
+- 12885: 1
+- 30694: 1
+- 40082: 1
+- 50661: 1
+- 58952: 1
+- 101785: 1
+- 149492: 1
+- 160217: 1
+- 518117: 1
+- 951450: 1
+- 1361856: 1
+
+Picking largest connected component...
+Computing graph stats...
+Computing nodes degrees...
+Computing histogram...
+Stats:
+- Nodes: 1361856
+- Edges: 1914711
+Graph degrees histogram (degree/count):
+- 1: 2545
+- 2: 790746
+- 3: 124057
+- 4: 397682
+- 5: 29479
+- 6: 8481
+- 7: 3512
+- 8: 1819
+- 9: 1032
+- 10: 666
+- 11: 448
+- 12: 346
+- 13: 207
+- 14: 167
+- 15: 139
+- 16: 92
+- 17: 81
+- 18: 58
+- 19: 44
+- 20: 35
+- 21: 29
+- 22: 28
+- 23: 24
+- 24: 24
+- 25: 11
+- 26: 4
+- 27: 13
+- 28: 9
+- 29: 13
+- 30: 5
+- 31: 4
+- 32: 2
+- 33: 3
+- 34: 5
+- 35: 2
+- 36: 4
+- 37: 1
+- 38: 1
+- 39: 1
+- 40: 1
+- 41: 1
+- 42: 1
+- 43: 5
+- 44: 4
+- 45: 2
+- 47: 1
+- 50: 1
+- 52: 1
+- 54: 2
+- 57: 1
+- 64: 1
+- 67: 1
+- 72: 1
+- 73: 1
+- 78: 1
+- 83: 1
+- 96: 1
+- 99: 1
+- 100: 1
+- 109: 1
+- 115: 1
+- 119: 1
+- 129: 1
+- 149: 1
+- 163: 1
+- 182: 1
+- 235: 1
+In-degrees histogram (degree/count):
+- 0: 223
+- 1: 859347
+- 2: 472782
+- 3: 21590
+- 4: 4517
+- 5: 1479
+- 6: 669
+- 7: 371
+- 8: 218
+- 9: 126
+- 10: 97
+- 11: 81
+- 12: 52
+- 13: 46
+- 14: 36
+- 15: 24
+- 16: 31
+- 17: 22
+- 18: 10
+- 19: 13
+- 20: 12
+- 21: 16
+- 22: 8
+- 23: 8
+- 24: 7
+- 25: 8
+- 26: 4
+- 27: 3
+- 28: 4
+- 29: 5
+- 30: 2
+- 31: 2
+- 32: 3
+- 33: 1
+- 34: 1
+- 35: 1
+- 36: 3
+- 37: 1
+- 38: 1
+- 39: 1
+- 40: 1
+- 41: 2
+- 43: 5
+- 44: 1
+- 45: 1
+- 48: 1
+- 51: 1
+- 53: 1
+- 56: 1
+- 63: 1
+- 66: 1
+- 70: 1
+- 71: 1
+- 74: 1
+- 83: 1
+- 96: 1
+- 97: 1
+- 100: 1
+- 108: 1
+- 115: 1
+- 118: 1
+- 129: 1
+- 149: 1
+- 162: 1
+- 179: 1
+- 232: 1
+Out-degrees histogram (degree/count):
+- 0: 5593
+- 1: 864226
+- 2: 455228
+- 3: 24556
+- 4: 6340
+- 5: 2439
+- 6: 1296
+- 7: 684
+- 8: 444
+- 9: 289
+- 10: 212
+- 11: 136
+- 12: 101
+- 13: 74
+- 14: 48
+- 15: 41
+- 16: 29
+- 17: 22
+- 18: 24
+- 19: 20
+- 20: 12
+- 21: 7
+- 22: 8
+- 23: 3
+- 25: 3
+- 26: 4
+- 27: 6
+- 29: 3
+- 30: 3
+- 33: 1
+- 41: 1
+- 42: 1
+- 44: 1
+- 52: 1
+
+Computing edge types...
+Computing edge types histogram...
+Node count: 1361856
+Edge count: 1914711, Total edge count: 1914711
+Edge types histogram (type/count):
+- TreeEdge: 1361619
+- ForwardEdge: 110203
+- CrossEdge: 442889
+
+Searching for a start node...
+Start node: ("1125070", Reverse)
+NodeDegree { degree: 2, in_degree: 0, out_degree: 2 }
+Orientation histogram:
+- Forward: 1361803
+- Reverse: 53
+
+Visiting the graph, searching 1 paths...
+Path #1 of length 4146
+Sequence #1 of length 390758
+Searching ACGT in the sequence (naive)...
+Occurrences: [224, 516, 1163, 2921, 3458, 3487, 4201, 4506, 4778, 5847, 5949, 6053, 6266, 6532, 6568, 7026, 7564, 7816, 7935, 7950, 8998, 10867, 12258, 12779, 12970, 14877, 15383, 16423, 20017, 20535, 20802, 22518, 23177, 23947, 24491, 24597, 25118, 26238, 26363, 26926, 26944, 28530, 28798, 30151, 30571, 31459, 32440, 33105, 35476, 35585, 40104, 41617, 42223, 42423, 44627, 44660, 45366, 45588, 47850, 52405, 54283, 56647, 57635, 57942, 58069, 59830, 60076, 63424, 64128, 65087, 65197, 65791, 66269, 66791, 68001, 68581, 68931, 70623, 70907, 71916, 73213, 73445, 75357, 76757, 78201, 79140, 79723, 81794, 82887, 83147, 85157, 87135, 90712, 91304, 91700, 92410, 93060, 93948, 94493, 95003, 96089, 96977, 97917, 99575, 99922, 101150, 101372, 102309, 103486, 104836, 106491, 107057, 107146, 107710, 108252, 108838, 110492, 112248, 112820, 113409, 113490, 115079, 118146, 118560, 119821, 119850, 119920, 120811, 121113, 122957, 126968, 127784, 127793, 129165, 130005, 130068, 130113, 132514, 133552, 133736, 134342, 134751, 135407, 135416, 135697, 137146, 137451, 138032, 138076, 138799, 139051, 139738, 140166, 140255, 140395, 140747, 144270, 145441, 145840, 148891, 148923, 152343, 152993, 153132, 153269, 153963, 154186, 155125, 155666, 155792, 155842, 156284, 156424, 156512, 156889, 157318, 158919, 161299, 161567, 162923, 163849, 164935, 165293, 166627, 169525, 169554, 169663, 170351, 171021, 171031, 171069, 171093, 171129, 171152, 172352, 172744, 172875, 172984, 173013, 173899, 173925, 174007, 174910, 176510, 176939, 177316, 177404, 177544, 177670, 179988, 180211, 181426, 181846, 183021, 186545, 186887, 187027, 187116, 187544, 188233, 188484, 189207, 189251, 189832, 190137, 191586, 191867, 191876, 192532, 192941, 193548, 193732, 196126, 196692, 196742, 196868, 197408, 198344, 198744, 199727, 200792, 201544, 204982, 205431, 206080, 207721, 209377, 212438, 213562, 213584, 214268, 215359, 216165, 216652, 216927, 217153, 218780, 222928, 225043, 225132, 227447, 227644, 227887, 228221, 228511, 229614, 231065, 232180, 234306, 235317, 235648, 240151, 240539, 240913, 242500, 242762, 243210, 244676, 244685, 245082, 246301, 248115, 248412, 248824, 252013, 253657, 254576, 255340, 257458, 258253, 258397, 258509, 263678, 264491, 264754, 264835, 266523, 272073, 274004, 274289, 274843, 275171, 280510, 281552, 281744, 282697, 283688, 284051, 284086, 285696, 285827, 289829, 290921, 292114, 293394, 294480, 295216, 295463, 295541, 296529, 296619, 296666, 296688, 296743, 297452, 298265, 300030, 300165, 300447, 301087, 302337, 303430, 303775, 304979, 305572, 305584, 306559, 306617, 307163, 309846, 311090, 312659, 313326, 313334, 313418, 313746, 315506, 316731, 316959, 317278, 318473, 320032, 321284, 323330, 324048, 324199, 324425, 324583, 324911, 325022, 325096, 325282, 325570, 326300, 327236, 328264, 329039, 329654, 329857, 330470, 330776, 331165, 331417, 331438, 331529, 333140, 334242, 335027, 335104, 337813, 337868, 337890, 337937, 338027, 339093, 339340, 340076, 341162, 342446, 343639, 347506, 348399, 349686, 351314, 351461, 353952, 359726, 362750, 365116, 365154, 366194, 367763, 368244, 368566, 368575, 369179, 369981, 370825, 377002, 378226, 380058, 380657, 381712, 382463, 382844, 384607, 385676, 385877, 385915, 386191, 386429, 386577, 387277]
+
+Searching ACGT in the sequence (rolling hash)...
+Hash match at position 2205
+=> False positive
+Hash match at position 6373
+=> False positive
+Hash match at position 12954
+=> False positive
+Hash match at position 14196
+=> False positive
+Hash match at position 16087
+=> False positive
+Hash match at position 16479
+=> False positive
+Hash match at position 28799
+=> False positive
+Hash match at position 40931
+=> False positive
+Hash match at position 45378
+=> False positive
+Hash match at position 54233
+=> False positive
+Hash match at position 56472
+=> False positive
+Hash match at position 62590
+=> False positive
+Hash match at position 66523
+=> False positive
+Hash match at position 70805
+=> False positive
+Hash match at position 72998
+=> False positive
+Hash match at position 95694
+=> False positive
+Hash match at position 111110
+=> False positive
+Hash match at position 113640
+=> False positive
+Hash match at position 117003
+=> False positive
+Hash match at position 126606
+=> False positive
+Hash match at position 134592
+=> False positive
+Hash match at position 142190
+=> False positive
+Hash match at position 143582
+=> False positive
+Hash match at position 144833
+=> False positive
+Hash match at position 152670
+=> False positive
+Hash match at position 157126
+=> False positive
+Hash match at position 183862
+=> False positive
+Hash match at position 189224
+=> False positive
+Hash match at position 195311
+=> False positive
+Hash match at position 195350
+=> False positive
+Hash match at position 195972
+=> False positive
+Hash match at position 197090
+=> False positive
+Hash match at position 213266
+=> False positive
+Hash match at position 213618
+=> False positive
+Hash match at position 218768
+=> False positive
+Hash match at position 225624
+=> False positive
+Hash match at position 231613
+=> False positive
+Hash match at position 232308
+=> False positive
+Hash match at position 245358
+=> False positive
+Hash match at position 266712
+=> False positive
+Hash match at position 267010
+=> False positive
+Hash match at position 272362
+=> False positive
+Hash match at position 284700
+=> False positive
+Hash match at position 299659
+=> False positive
+Hash match at position 308836
+=> False positive
+Hash match at position 313218
+=> False positive
+Hash match at position 315397
+=> False positive
+Hash match at position 324268
+=> False positive
+Hash match at position 324848
+=> False positive
+Hash match at position 329852
+=> False positive
+Hash match at position 330578
+=> False positive
+Hash match at position 330906
+=> False positive
+Hash match at position 344318
+=> False positive
+Hash match at position 346430
+=> False positive
+Hash match at position 348288
+=> False positive
+Hash match at position 350788
+=> False positive
+Hash match at position 354756
+=> False positive
+Hash match at position 366826
+=> False positive
+Hash match at position 380496
+=> False positive
+Hash match at position 387102
+=> False positive
+Hash match at position 388787
+=> False positive
+Occurrences: []
+
+Computing k-mer histogram...
+K-mer histogram (kmers/count):
+- AAAA: 1175611
+- AAAC: 592605
+- AAAG: 1009217
+- AAAT: 781229
+- AACA: 428345
+- AACC: 198507
+- AACG: 143889
+- AACT: 577756
+- AAGA: 725774
+- AAGC: 291817
+- AAGG: 439126
+- AAGT: 426031
+- AATA: 584842
+- AATC: 386240
+- AATG: 628293
+- AATT: 413295
+- ACAA: 553292
+- ACAC: 228634
+- ACAG: 374733
+- ACAT: 379962
+- ACCA: 272469
+- ACCC: 152578
+- ACCG: 48967
+- ACCT: 233158
+- ACGA: 117310
+- ACGC: 19760
+- ACGG: 19777
+- ACGT: 103956
+- ACTA: 225547
+- ACTC: 336757
+- ACTG: 323813
+- ACTT: 395383
+- AGAA: 764137
+- AGAC: 208058
+- AGAG: 488851
+- AGAT: 486804
+- AGCA: 282363
+- AGCC: 199259
+- AGCG: 58006
+- AGCT: 285797
+- AGGA: 381807
+- AGGC: 322385
+- AGGG: 218979
+- AGGT: 312993
+- AGTA: 202194
+- AGTC: 191875
+- AGTG: 403423
+- AGTT: 658789
+- ATAA: 384886
+- ATAC: 254291
+- ATAG: 255899
+- ATAT: 638550
+- ATCA: 544681
+- ATCC: 374829
+- ATCG: 51114
+- ATCT: 376117
+- ATGA: 352159
+- ATGC: 407298
+- ATGG: 248757
+- ATGT: 422236
+- ATTA: 328822
+- ATTC: 480158
+- ATTG: 277827
+- ATTT: 616451
+- CAAA: 1160025
+- CAAC: 339887
+- CAAG: 226176
+- CAAT: 347394
+- CACA: 498118
+- CACC: 214464
+- CACG: 45495
+- CACT: 336532
+- CAGA: 547232
+- CAGC: 226023
+- CAGG: 289052
+- CAGT: 352994
+- CATA: 278596
+- CATC: 444599
+- CATG: 270898
+- CATT: 354977
+- CCAA: 506643
+- CCAC: 410796
+- CCAG: 258463
+- CCAT: 357414
+- CCCA: 265718
+- CCCC: 162653
+- CCCG: 129507
+- CCCT: 229539
+- CCGA: 35537
+- CCGC: 33789
+- CCGG: 21445
+- CCGT: 188174
+- CCTA: 151771
+- CCTC: 314128
+- CCTG: 289664
+- CCTT: 355294
+- CGAA: 195019
+- CGAC: 19670
+- CGAG: 57008
+- CGAT: 20153
+- CGCA: 39599
+- CGCC: 26346
+- CGCG: 5115
+- CGCT: 61558
+- CGGA: 32300
+- CGGC: 24269
+- CGGG: 26133
+- CGGT: 37131
+- CGTA: 47617
+- CGTC: 78825
+- CGTG: 67427
+- CGTT: 196299
+- CTAA: 203954
+- CTAC: 297972
+- CTAG: 168160
+- CTAT: 310682
+- CTCA: 388310
+- CTCC: 395302
+- CTCG: 73353
+- CTCT: 522428
+- CTGA: 445358
+- CTGC: 386881
+- CTGG: 268904
+- CTGT: 413674
+- CTTA: 200567
+- CTTC: 459048
+- CTTG: 341872
+- CTTT: 561621
+- GAAA: 725011
+- GAAC: 258832
+- GAAG: 470722
+- GAAT: 590617
+- GACA: 205961
+- GACC: 98841
+- GACG: 31274
+- GACT: 155226
+- GAGA: 436593
+- GAGC: 145298
+- GAGG: 292767
+- GAGT: 402316
+- GATA: 232148
+- GATC: 159086
+- GATG: 199667
+- GATT: 423158
+- GCAA: 294115
+- GCAC: 127547
+- GCAG: 403864
+- GCAT: 198530
+- GCCA: 223527
+- GCCC: 128294
+- GCCG: 20061
+- GCCT: 260304
+- GCGA: 36380
+- GCGC: 41978
+- GCGG: 58791
+- GCGT: 22413
+- GCTA: 181358
+- GCTC: 314922
+- GCTG: 233316
+- GCTT: 351866
+- GGAA: 406305
+- GGAC: 93015
+- GGAG: 249228
+- GGAT: 203915
+- GGCA: 196570
+- GGCC: 199076
+- GGCG: 26020
+- GGCT: 201531
+- GGGA: 256032
+- GGGC: 98165
+- GGGG: 117316
+- GGGT: 172815
+- GGTA: 125848
+- GGTC: 200007
+- GGTG: 199107
+- GGTT: 256618
+- GTAA: 168075
+- GTAC: 96394
+- GTAG: 176689
+- GTAT: 212807
+- GTCA: 195726
+- GTCC: 253476
+- GTCG: 40374
+- GTCT: 221768
+- GTGA: 429479
+- GTGC: 130381
+- GTGG: 228989
+- GTGT: 387431
+- GTTA: 221644
+- GTTC: 365100
+- GTTG: 274241
+- GTTT: 831132
+- TAAA: 491909
+- TAAC: 158133
+- TAAG: 179785
+- TAAT: 296553
+- TACA: 406100
+- TACC: 195575
+- TACG: 40160
+- TACT: 214082
+- TAGA: 241403
+- TAGC: 163290
+- TAGG: 215852
+- TAGT: 275266
+- TATA: 438366
+- TATC: 359197
+- TATG: 332743
+- TATT: 513098
+- TCAA: 720108
+- TCAC: 328384
+- TCAG: 377692
+- TCAT: 414551
+- TCCA: 770252
+- TCCC: 344157
+- TCCG: 79751
+- TCCT: 388066
+- TCGA: 102765
+- TCGC: 37104
+- TCGG: 20005
+- TCGT: 75840
+- TCTA: 422777
+- TCTC: 414391
+- TCTG: 669170
+- TCTT: 460545
+- TGAA: 678939
+- TGAC: 170455
+- TGAG: 481199
+- TGAT: 304456
+- TGCA: 504436
+- TGCC: 208124
+- TGCG: 70442
+- TGCT: 532425
+- TGGA: 282231
+- TGGC: 177301
+- TGGG: 280422
+- TGGT: 257907
+- TGTA: 277680
+- TGTC: 240123
+- TGTG: 503080
+- TGTT: 575702
+- TTAA: 369807
+- TTAC: 207236
+- TTAG: 294207
+- TTAT: 479726
+- TTCA: 714087
+- TTCC: 560032
+- TTCG: 70939
+- TTCT: 849599
+- TTGA: 406602
+- TTGC: 391294
+- TTGG: 250912
+- TTGT: 371033
+- TTTA: 600182
+- TTTC: 890566
+- TTTG: 525339
+- TTTT: 1047325
+Found 256 of 256 possible kmers (about 100.00% coverage)
+Cleaning up...
+cargo run --release -- show -i dataset/chrX.hprc-v1.0-pggb.local.gfa -c 1 -p   230.46s user 32.90s system 98% cpu 4:26.69 total

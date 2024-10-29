@@ -1,0 +1,2907 @@
+Estimating line count...
+Parsing GFA file...
+Skipped 2418 lines of type: P
+Number of entries: 8347110
+Removing 78 invalid nodes...
+
+Computing graph stats...
+Computing nodes degrees...
+Computing histogram...
+Stats:
+- Nodes: 3460777
+- Edges: 4886726
+Graph degrees histogram (degree/count):
+- 0: 3
+- 1: 2121
+- 2: 2017208
+- 3: 280128
+- 4: 1047576
+- 5: 69562
+- 6: 20938
+- 7: 8895
+- 8: 4708
+- 9: 2768
+- 10: 1740
+- 11: 1140
+- 12: 873
+- 13: 644
+- 14: 436
+- 15: 339
+- 16: 267
+- 17: 210
+- 18: 183
+- 19: 127
+- 20: 100
+- 21: 97
+- 22: 77
+- 23: 55
+- 24: 48
+- 25: 48
+- 26: 28
+- 27: 33
+- 28: 32
+- 29: 39
+- 30: 29
+- 31: 19
+- 32: 18
+- 33: 17
+- 34: 8
+- 35: 15
+- 36: 7
+- 37: 12
+- 38: 14
+- 39: 10
+- 40: 8
+- 41: 6
+- 42: 8
+- 43: 8
+- 44: 6
+- 45: 10
+- 46: 5
+- 47: 5
+- 48: 6
+- 49: 5
+- 50: 9
+- 51: 2
+- 52: 6
+- 53: 3
+- 54: 4
+- 55: 2
+- 56: 1
+- 57: 8
+- 58: 1
+- 59: 3
+- 60: 3
+- 61: 1
+- 62: 1
+- 63: 5
+- 64: 1
+- 65: 3
+- 66: 1
+- 67: 6
+- 68: 2
+- 69: 1
+- 71: 3
+- 72: 3
+- 73: 2
+- 74: 2
+- 75: 1
+- 78: 1
+- 79: 1
+- 80: 2
+- 81: 1
+- 83: 1
+- 84: 2
+- 85: 2
+- 87: 2
+- 90: 1
+- 91: 1
+- 93: 1
+- 96: 2
+- 97: 3
+- 99: 1
+- 100: 1
+- 101: 2
+- 105: 2
+- 108: 1
+- 110: 1
+- 112: 1
+- 115: 2
+- 116: 1
+- 118: 1
+- 119: 2
+- 126: 1
+- 127: 1
+- 130: 1
+- 131: 1
+- 132: 1
+- 135: 1
+- 136: 1
+- 142: 1
+- 143: 1
+- 150: 1
+- 151: 2
+- 164: 1
+- 165: 1
+- 168: 2
+- 176: 1
+- 183: 1
+- 186: 1
+- 197: 1
+- 206: 1
+- 208: 1
+- 211: 1
+- 229: 1
+- 235: 1
+- 269: 1
+- 310: 1
+- 439: 1
+- 454: 1
+In-degrees histogram (degree/count):
+- 0: 1312
+- 1: 2153708
+- 2: 1239763
+- 3: 49275
+- 4: 9903
+- 5: 2894
+- 6: 1249
+- 7: 663
+- 8: 366
+- 9: 240
+- 10: 199
+- 11: 146
+- 12: 118
+- 13: 92
+- 14: 90
+- 15: 62
+- 16: 59
+- 17: 59
+- 18: 41
+- 19: 39
+- 20: 41
+- 21: 33
+- 22: 29
+- 23: 30
+- 24: 26
+- 25: 24
+- 26: 15
+- 27: 15
+- 28: 14
+- 29: 19
+- 30: 15
+- 31: 12
+- 32: 10
+- 33: 10
+- 34: 7
+- 35: 6
+- 36: 14
+- 37: 9
+- 38: 3
+- 39: 7
+- 40: 7
+- 41: 5
+- 42: 2
+- 43: 9
+- 44: 8
+- 45: 5
+- 46: 4
+- 47: 8
+- 48: 3
+- 50: 2
+- 51: 2
+- 52: 3
+- 53: 4
+- 54: 2
+- 55: 3
+- 56: 3
+- 57: 1
+- 58: 2
+- 59: 1
+- 60: 1
+- 62: 1
+- 63: 3
+- 64: 2
+- 65: 4
+- 66: 4
+- 67: 1
+- 68: 1
+- 69: 1
+- 70: 2
+- 71: 1
+- 72: 1
+- 74: 3
+- 78: 3
+- 79: 1
+- 80: 1
+- 81: 2
+- 83: 2
+- 84: 1
+- 85: 2
+- 88: 1
+- 90: 2
+- 92: 2
+- 94: 1
+- 96: 1
+- 97: 1
+- 100: 3
+- 101: 1
+- 102: 1
+- 104: 1
+- 108: 2
+- 110: 1
+- 111: 1
+- 115: 2
+- 117: 1
+- 118: 1
+- 124: 1
+- 125: 1
+- 129: 1
+- 131: 4
+- 140: 1
+- 147: 1
+- 149: 1
+- 162: 2
+- 163: 1
+- 166: 2
+- 179: 2
+- 184: 1
+- 204: 2
+- 209: 1
+- 226: 1
+- 232: 1
+- 256: 1
+- 302: 1
+- 434: 1
+- 450: 1
+Out-degrees histogram (degree/count):
+- 0: 887
+- 1: 2203729
+- 2: 1169135
+- 3: 54639
+- 4: 15245
+- 5: 6598
+- 6: 3677
+- 7: 2248
+- 8: 1376
+- 9: 897
+- 10: 672
+- 11: 482
+- 12: 320
+- 13: 226
+- 14: 155
+- 15: 119
+- 16: 94
+- 17: 62
+- 18: 48
+- 19: 44
+- 20: 34
+- 21: 23
+- 22: 17
+- 23: 15
+- 24: 1
+- 25: 3
+- 26: 5
+- 27: 9
+- 28: 3
+- 29: 1
+- 30: 5
+- 32: 1
+- 34: 1
+- 35: 1
+- 41: 1
+- 43: 1
+- 44: 2
+- 58: 1
+
+Computing edge types...
+Computing edge types histogram...
+Node count: 3460774
+Edge count: 4853330, Total edge count: 4853330
+Edge types histogram (type/count):
+- TreeEdge: 3459200
+- ForwardEdge: 352721
+- CrossEdge: 1041409
+
+Computing connected components...
+Computing sizes histogram...
+Connected components histogram (size/count):
+- 2: 530
+- 3: 1
+- 4: 2
+- 8: 1
+- 92: 1
+- 135: 1
+- 293: 1
+- 305: 1
+- 2286: 1
+- 5040: 1
+- 5639: 1
+- 9714: 1
+- 12885: 1
+- 30694: 1
+- 40082: 1
+- 50661: 1
+- 58952: 1
+- 101785: 1
+- 149492: 1
+- 160217: 1
+- 518117: 1
+- 951450: 1
+- 1361856: 1
+
+Picking largest connected component...
+Computing graph stats...
+Computing nodes degrees...
+Computing histogram...
+Stats:
+- Nodes: 1361856
+- Edges: 1914711
+Graph degrees histogram (degree/count):
+- 1: 2545
+- 2: 790746
+- 3: 124057
+- 4: 397682
+- 5: 29479
+- 6: 8481
+- 7: 3512
+- 8: 1819
+- 9: 1032
+- 10: 666
+- 11: 448
+- 12: 346
+- 13: 207
+- 14: 167
+- 15: 139
+- 16: 92
+- 17: 81
+- 18: 58
+- 19: 44
+- 20: 35
+- 21: 29
+- 22: 28
+- 23: 24
+- 24: 24
+- 25: 11
+- 26: 4
+- 27: 13
+- 28: 9
+- 29: 13
+- 30: 5
+- 31: 4
+- 32: 2
+- 33: 3
+- 34: 5
+- 35: 2
+- 36: 4
+- 37: 1
+- 38: 1
+- 39: 1
+- 40: 1
+- 41: 1
+- 42: 1
+- 43: 5
+- 44: 4
+- 45: 2
+- 47: 1
+- 50: 1
+- 52: 1
+- 54: 2
+- 57: 1
+- 64: 1
+- 67: 1
+- 72: 1
+- 73: 1
+- 78: 1
+- 83: 1
+- 96: 1
+- 99: 1
+- 100: 1
+- 109: 1
+- 115: 1
+- 119: 1
+- 129: 1
+- 149: 1
+- 163: 1
+- 182: 1
+- 235: 1
+In-degrees histogram (degree/count):
+- 0: 223
+- 1: 859347
+- 2: 472782
+- 3: 21590
+- 4: 4517
+- 5: 1479
+- 6: 669
+- 7: 371
+- 8: 218
+- 9: 126
+- 10: 97
+- 11: 81
+- 12: 52
+- 13: 46
+- 14: 36
+- 15: 24
+- 16: 31
+- 17: 22
+- 18: 10
+- 19: 13
+- 20: 12
+- 21: 16
+- 22: 8
+- 23: 8
+- 24: 7
+- 25: 8
+- 26: 4
+- 27: 3
+- 28: 4
+- 29: 5
+- 30: 2
+- 31: 2
+- 32: 3
+- 33: 1
+- 34: 1
+- 35: 1
+- 36: 3
+- 37: 1
+- 38: 1
+- 39: 1
+- 40: 1
+- 41: 2
+- 43: 5
+- 44: 1
+- 45: 1
+- 48: 1
+- 51: 1
+- 53: 1
+- 56: 1
+- 63: 1
+- 66: 1
+- 70: 1
+- 71: 1
+- 74: 1
+- 83: 1
+- 96: 1
+- 97: 1
+- 100: 1
+- 108: 1
+- 115: 1
+- 118: 1
+- 129: 1
+- 149: 1
+- 162: 1
+- 179: 1
+- 232: 1
+Out-degrees histogram (degree/count):
+- 0: 5593
+- 1: 864226
+- 2: 455228
+- 3: 24556
+- 4: 6340
+- 5: 2439
+- 6: 1296
+- 7: 684
+- 8: 444
+- 9: 289
+- 10: 212
+- 11: 136
+- 12: 101
+- 13: 74
+- 14: 48
+- 15: 41
+- 16: 29
+- 17: 22
+- 18: 24
+- 19: 20
+- 20: 12
+- 21: 7
+- 22: 8
+- 23: 3
+- 25: 3
+- 26: 4
+- 27: 6
+- 29: 3
+- 30: 3
+- 33: 1
+- 41: 1
+- 42: 1
+- 44: 1
+- 52: 1
+
+Computing edge types...
+Computing edge types histogram...
+Node count: 1361856
+Edge count: 1914711, Total edge count: 1914711
+Edge types histogram (type/count):
+- TreeEdge: 1361619
+- ForwardEdge: 110203
+- CrossEdge: 442889
+
+Searching for a start node...
+Start node: ("1125070", Reverse)
+NodeDegree { degree: 2, in_degree: 0, out_degree: 2 }
+Orientation histogram:
+- Forward: 1361803
+- Reverse: 53
+
+Visiting the graph, searching 2 paths...
+Path #1 of length 4146
+Path #2 of length 4146
+Sequence #1 of length 390758
+Searching ACGT (naive)...
+Occurrences: [224, 516, 1163, 2921, 3458, 3487, 4201, 4506, 4778, 5847, 5949, 6053, 6266, 6532, 6568, 7026, 7564, 7816, 7935, 7950, 8998, 10867, 12258, 12779, 12970, 14877, 15383, 16423, 20017, 20535, 20802, 22518, 23177, 23947, 24491, 24597, 25118, 26238, 26363, 26926, 26944, 28530, 28798, 30151, 30571, 31459, 32440, 33105, 35476, 35585, 40104, 41617, 42223, 42423, 44627, 44660, 45366, 45588, 47850, 52405, 54283, 56647, 57635, 57942, 58069, 59830, 60076, 63424, 64128, 65087, 65197, 65791, 66269, 66791, 68001, 68581, 68931, 70623, 70907, 71916, 73213, 73445, 75357, 76757, 78201, 79140, 79723, 81794, 82887, 83147, 85157, 87135, 90712, 91304, 91700, 92410, 93060, 93948, 94493, 95003, 96089, 96977, 97917, 99575, 99922, 101150, 101372, 102309, 103486, 104836, 106491, 107057, 107146, 107710, 108252, 108838, 110492, 112248, 112820, 113409, 113490, 115079, 118146, 118560, 119821, 119850, 119920, 120811, 121113, 122957, 126968, 127784, 127793, 129165, 130005, 130068, 130113, 132514, 133552, 133736, 134342, 134751, 135407, 135416, 135697, 137146, 137451, 138032, 138076, 138799, 139051, 139738, 140166, 140255, 140395, 140747, 144270, 145441, 145840, 148891, 148923, 152343, 152993, 153132, 153269, 153963, 154186, 155125, 155666, 155792, 155842, 156284, 156424, 156512, 156889, 157318, 158919, 161299, 161567, 162923, 163849, 164935, 165293, 166627, 169525, 169554, 169663, 170351, 171021, 171031, 171069, 171093, 171129, 171152, 172352, 172744, 172875, 172984, 173013, 173899, 173925, 174007, 174910, 176510, 176939, 177316, 177404, 177544, 177670, 179988, 180211, 181426, 181846, 183021, 186545, 186887, 187027, 187116, 187544, 188233, 188484, 189207, 189251, 189832, 190137, 191586, 191867, 191876, 192532, 192941, 193548, 193732, 196126, 196692, 196742, 196868, 197408, 198344, 198744, 199727, 200792, 201544, 204982, 205431, 206080, 207721, 209377, 212438, 213562, 213584, 214268, 215359, 216165, 216652, 216927, 217153, 218780, 222928, 225043, 225132, 227447, 227644, 227887, 228221, 228511, 229614, 231065, 232180, 234306, 235317, 235648, 240151, 240539, 240913, 242500, 242762, 243210, 244676, 244685, 245082, 246301, 248115, 248412, 248824, 252013, 253657, 254576, 255340, 257458, 258253, 258397, 258509, 263678, 264491, 264754, 264835, 266523, 272073, 274004, 274289, 274843, 275171, 280510, 281552, 281744, 282697, 283688, 284051, 284086, 285696, 285827, 289829, 290921, 292114, 293394, 294480, 295216, 295463, 295541, 296529, 296619, 296666, 296688, 296743, 297452, 298265, 300030, 300165, 300447, 301087, 302337, 303430, 303775, 304979, 305572, 305584, 306559, 306617, 307163, 309846, 311090, 312659, 313326, 313334, 313418, 313746, 315506, 316731, 316959, 317278, 318473, 320032, 321284, 323330, 324048, 324199, 324425, 324583, 324911, 325022, 325096, 325282, 325570, 326300, 327236, 328264, 329039, 329654, 329857, 330470, 330776, 331165, 331417, 331438, 331529, 333140, 334242, 335027, 335104, 337813, 337868, 337890, 337937, 338027, 339093, 339340, 340076, 341162, 342446, 343639, 347506, 348399, 349686, 351314, 351461, 353952, 359726, 362750, 365116, 365154, 366194, 367763, 368244, 368566, 368575, 369179, 369981, 370825, 377002, 378226, 380058, 380657, 381712, 382463, 382844, 384607, 385676, 385877, 385915, 386191, 386429, 386577, 387277]
+
+Searching ACGT (rolling hash)...
+Hash match at position 16
+=> False positive
+Hash match at position 228
+=> Correct
+Hash match at position 520
+=> Correct
+Hash match at position 1167
+=> Correct
+Hash match at position 2925
+=> Correct
+Hash match at position 3462
+=> Correct
+Hash match at position 3491
+=> Correct
+Hash match at position 4205
+=> Correct
+Hash match at position 4510
+=> Correct
+Hash match at position 4782
+=> Correct
+Hash match at position 5851
+=> Correct
+Hash match at position 5953
+=> Correct
+Hash match at position 6057
+=> Correct
+Hash match at position 6270
+=> Correct
+Hash match at position 6536
+=> Correct
+Hash match at position 6572
+=> Correct
+Hash match at position 7030
+=> Correct
+Hash match at position 7568
+=> Correct
+Hash match at position 7820
+=> Correct
+Hash match at position 7939
+=> Correct
+Hash match at position 7954
+=> Correct
+Hash match at position 9002
+=> Correct
+Hash match at position 10234
+=> False positive
+Hash match at position 10871
+=> Correct
+Hash match at position 12262
+=> Correct
+Hash match at position 12783
+=> Correct
+Hash match at position 12974
+=> Correct
+Hash match at position 14881
+=> Correct
+Hash match at position 15387
+=> Correct
+Hash match at position 16427
+=> Correct
+Hash match at position 20021
+=> Correct
+Hash match at position 20539
+=> Correct
+Hash match at position 20806
+=> Correct
+Hash match at position 22522
+=> Correct
+Hash match at position 23181
+=> Correct
+Hash match at position 23951
+=> Correct
+Hash match at position 24495
+=> Correct
+Hash match at position 24601
+=> Correct
+Hash match at position 25122
+=> Correct
+Hash match at position 26242
+=> Correct
+Hash match at position 26367
+=> Correct
+Hash match at position 26930
+=> Correct
+Hash match at position 26948
+=> Correct
+Hash match at position 26993
+=> False positive
+Hash match at position 28534
+=> Correct
+Hash match at position 28802
+=> Correct
+Hash match at position 30155
+=> Correct
+Hash match at position 30575
+=> Correct
+Hash match at position 31463
+=> Correct
+Hash match at position 32444
+=> Correct
+Hash match at position 33109
+=> Correct
+Hash match at position 34521
+=> False positive
+Hash match at position 35480
+=> Correct
+Hash match at position 35589
+=> Correct
+Hash match at position 35624
+=> False positive
+Hash match at position 39274
+=> False positive
+Hash match at position 40108
+=> Correct
+Hash match at position 41621
+=> Correct
+Hash match at position 42051
+=> False positive
+Hash match at position 42227
+=> Correct
+Hash match at position 42250
+=> False positive
+Hash match at position 42427
+=> Correct
+Hash match at position 43820
+=> False positive
+Hash match at position 44631
+=> Correct
+Hash match at position 44664
+=> Correct
+Hash match at position 45370
+=> Correct
+Hash match at position 45592
+=> Correct
+Hash match at position 46017
+=> False positive
+Hash match at position 46817
+=> False positive
+Hash match at position 47854
+=> Correct
+Hash match at position 48428
+=> False positive
+Hash match at position 51674
+=> False positive
+Hash match at position 52409
+=> Correct
+Hash match at position 54287
+=> Correct
+Hash match at position 54894
+=> False positive
+Hash match at position 55402
+=> False positive
+Hash match at position 56651
+=> Correct
+Hash match at position 56723
+=> False positive
+Hash match at position 57262
+=> False positive
+Hash match at position 57639
+=> Correct
+Hash match at position 57946
+=> Correct
+Hash match at position 58073
+=> Correct
+Hash match at position 59786
+=> False positive
+Hash match at position 59834
+=> Correct
+Hash match at position 60080
+=> Correct
+Hash match at position 62585
+=> False positive
+Hash match at position 63192
+=> False positive
+Hash match at position 63428
+=> Correct
+Hash match at position 64132
+=> Correct
+Hash match at position 65091
+=> Correct
+Hash match at position 65201
+=> Correct
+Hash match at position 65795
+=> Correct
+Hash match at position 66027
+=> False positive
+Hash match at position 66273
+=> Correct
+Hash match at position 66795
+=> Correct
+Hash match at position 66813
+=> False positive
+Hash match at position 68005
+=> Correct
+Hash match at position 68585
+=> Correct
+Hash match at position 68935
+=> Correct
+Hash match at position 70627
+=> Correct
+Hash match at position 70911
+=> Correct
+Hash match at position 71920
+=> Correct
+Hash match at position 72966
+=> False positive
+Hash match at position 73217
+=> Correct
+Hash match at position 73308
+=> False positive
+Hash match at position 73449
+=> Correct
+Hash match at position 74785
+=> False positive
+Hash match at position 75361
+=> Correct
+Hash match at position 76761
+=> Correct
+Hash match at position 78205
+=> Correct
+Hash match at position 79144
+=> Correct
+Hash match at position 79727
+=> Correct
+Hash match at position 81798
+=> Correct
+Hash match at position 82883
+=> False positive
+Hash match at position 82891
+=> Correct
+Hash match at position 83151
+=> Correct
+Hash match at position 85161
+=> Correct
+Hash match at position 87139
+=> Correct
+Hash match at position 88163
+=> False positive
+Hash match at position 90551
+=> False positive
+Hash match at position 90716
+=> Correct
+Hash match at position 91308
+=> Correct
+Hash match at position 91704
+=> Correct
+Hash match at position 92414
+=> Correct
+Hash match at position 93064
+=> Correct
+Hash match at position 93952
+=> Correct
+Hash match at position 94497
+=> Correct
+Hash match at position 95007
+=> Correct
+Hash match at position 96093
+=> Correct
+Hash match at position 96143
+=> False positive
+Hash match at position 96981
+=> Correct
+Hash match at position 97921
+=> Correct
+Hash match at position 99579
+=> Correct
+Hash match at position 99926
+=> Correct
+Hash match at position 101154
+=> Correct
+Hash match at position 101376
+=> Correct
+Hash match at position 102313
+=> Correct
+Hash match at position 103490
+=> Correct
+Hash match at position 104840
+=> Correct
+Hash match at position 105084
+=> False positive
+Hash match at position 106495
+=> Correct
+Hash match at position 107061
+=> Correct
+Hash match at position 107150
+=> Correct
+Hash match at position 107714
+=> Correct
+Hash match at position 108256
+=> Correct
+Hash match at position 108842
+=> Correct
+Hash match at position 110496
+=> Correct
+Hash match at position 112252
+=> Correct
+Hash match at position 112824
+=> Correct
+Hash match at position 113413
+=> Correct
+Hash match at position 113494
+=> Correct
+Hash match at position 115083
+=> Correct
+Hash match at position 116350
+=> False positive
+Hash match at position 116872
+=> False positive
+Hash match at position 117227
+=> False positive
+Hash match at position 118150
+=> Correct
+Hash match at position 118452
+=> False positive
+Hash match at position 118564
+=> Correct
+Hash match at position 118980
+=> False positive
+Hash match at position 119825
+=> Correct
+Hash match at position 119854
+=> Correct
+Hash match at position 119924
+=> Correct
+Hash match at position 120591
+=> False positive
+Hash match at position 120815
+=> Correct
+Hash match at position 121117
+=> Correct
+Hash match at position 122961
+=> Correct
+Hash match at position 126746
+=> False positive
+Hash match at position 126972
+=> Correct
+Hash match at position 127788
+=> Correct
+Hash match at position 127797
+=> Correct
+Hash match at position 129169
+=> Correct
+Hash match at position 129732
+=> False positive
+Hash match at position 130009
+=> Correct
+Hash match at position 130072
+=> Correct
+Hash match at position 130117
+=> Correct
+Hash match at position 132518
+=> Correct
+Hash match at position 133110
+=> False positive
+Hash match at position 133556
+=> Correct
+Hash match at position 133740
+=> Correct
+Hash match at position 134346
+=> Correct
+Hash match at position 134755
+=> Correct
+Hash match at position 135411
+=> Correct
+Hash match at position 135420
+=> Correct
+Hash match at position 135701
+=> Correct
+Hash match at position 137150
+=> Correct
+Hash match at position 137455
+=> Correct
+Hash match at position 138036
+=> Correct
+Hash match at position 138080
+=> Correct
+Hash match at position 138803
+=> Correct
+Hash match at position 139055
+=> Correct
+Hash match at position 139742
+=> Correct
+Hash match at position 140170
+=> Correct
+Hash match at position 140259
+=> Correct
+Hash match at position 140399
+=> Correct
+Hash match at position 140751
+=> Correct
+Hash match at position 141992
+=> False positive
+Hash match at position 144274
+=> Correct
+Hash match at position 145445
+=> Correct
+Hash match at position 145844
+=> Correct
+Hash match at position 148895
+=> Correct
+Hash match at position 148927
+=> Correct
+Hash match at position 152347
+=> Correct
+Hash match at position 152997
+=> Correct
+Hash match at position 153136
+=> Correct
+Hash match at position 153196
+=> False positive
+Hash match at position 153273
+=> Correct
+Hash match at position 153967
+=> Correct
+Hash match at position 154190
+=> Correct
+Hash match at position 154481
+=> False positive
+Hash match at position 155129
+=> Correct
+Hash match at position 155670
+=> Correct
+Hash match at position 155796
+=> Correct
+Hash match at position 155846
+=> Correct
+Hash match at position 156040
+=> False positive
+Hash match at position 156288
+=> Correct
+Hash match at position 156428
+=> Correct
+Hash match at position 156516
+=> Correct
+Hash match at position 156893
+=> Correct
+Hash match at position 157322
+=> Correct
+Hash match at position 158923
+=> Correct
+Hash match at position 159392
+=> False positive
+Hash match at position 159727
+=> False positive
+Hash match at position 159728
+=> False positive
+Hash match at position 161303
+=> Correct
+Hash match at position 161374
+=> False positive
+Hash match at position 161571
+=> Correct
+Hash match at position 162927
+=> Correct
+Hash match at position 163853
+=> Correct
+Hash match at position 164939
+=> Correct
+Hash match at position 165297
+=> Correct
+Hash match at position 166631
+=> Correct
+Hash match at position 169529
+=> Correct
+Hash match at position 169558
+=> Correct
+Hash match at position 169667
+=> Correct
+Hash match at position 170355
+=> Correct
+Hash match at position 171025
+=> Correct
+Hash match at position 171035
+=> Correct
+Hash match at position 171073
+=> Correct
+Hash match at position 171097
+=> Correct
+Hash match at position 171133
+=> Correct
+Hash match at position 171156
+=> Correct
+Hash match at position 171862
+=> False positive
+Hash match at position 172356
+=> Correct
+Hash match at position 172748
+=> Correct
+Hash match at position 172879
+=> Correct
+Hash match at position 172988
+=> Correct
+Hash match at position 173017
+=> Correct
+Hash match at position 173337
+=> False positive
+Hash match at position 173903
+=> Correct
+Hash match at position 173929
+=> Correct
+Hash match at position 174011
+=> Correct
+Hash match at position 174857
+=> False positive
+Hash match at position 174914
+=> Correct
+Hash match at position 176514
+=> Correct
+Hash match at position 176943
+=> Correct
+Hash match at position 177320
+=> Correct
+Hash match at position 177408
+=> Correct
+Hash match at position 177548
+=> Correct
+Hash match at position 177674
+=> Correct
+Hash match at position 179992
+=> Correct
+Hash match at position 180215
+=> Correct
+Hash match at position 180794
+=> False positive
+Hash match at position 180857
+=> False positive
+Hash match at position 181430
+=> Correct
+Hash match at position 181850
+=> Correct
+Hash match at position 183025
+=> Correct
+Hash match at position 184972
+=> False positive
+Hash match at position 186549
+=> Correct
+Hash match at position 186891
+=> Correct
+Hash match at position 187031
+=> Correct
+Hash match at position 187120
+=> Correct
+Hash match at position 187548
+=> Correct
+Hash match at position 188237
+=> Correct
+Hash match at position 188488
+=> Correct
+Hash match at position 189211
+=> Correct
+Hash match at position 189255
+=> Correct
+Hash match at position 189836
+=> Correct
+Hash match at position 190141
+=> Correct
+Hash match at position 191590
+=> Correct
+Hash match at position 191871
+=> Correct
+Hash match at position 191880
+=> Correct
+Hash match at position 192536
+=> Correct
+Hash match at position 192945
+=> Correct
+Hash match at position 193552
+=> Correct
+Hash match at position 193736
+=> Correct
+Hash match at position 196130
+=> Correct
+Hash match at position 196696
+=> Correct
+Hash match at position 196746
+=> Correct
+Hash match at position 196872
+=> Correct
+Hash match at position 197412
+=> Correct
+Hash match at position 198348
+=> Correct
+Hash match at position 198748
+=> Correct
+Hash match at position 199731
+=> Correct
+Hash match at position 200796
+=> Correct
+Hash match at position 201548
+=> Correct
+Hash match at position 202229
+=> False positive
+Hash match at position 202783
+=> False positive
+Hash match at position 203266
+=> False positive
+Hash match at position 204986
+=> Correct
+Hash match at position 205435
+=> Correct
+Hash match at position 206084
+=> Correct
+Hash match at position 207725
+=> Correct
+Hash match at position 209381
+=> Correct
+Hash match at position 210057
+=> False positive
+Hash match at position 212442
+=> Correct
+Hash match at position 213566
+=> Correct
+Hash match at position 213588
+=> Correct
+Hash match at position 214272
+=> Correct
+Hash match at position 215001
+=> False positive
+Hash match at position 215363
+=> Correct
+Hash match at position 216169
+=> Correct
+Hash match at position 216206
+=> False positive
+Hash match at position 216656
+=> Correct
+Hash match at position 216931
+=> Correct
+Hash match at position 217157
+=> Correct
+Hash match at position 217385
+=> False positive
+Hash match at position 218784
+=> Correct
+Hash match at position 222932
+=> Correct
+Hash match at position 225047
+=> Correct
+Hash match at position 225136
+=> Correct
+Hash match at position 225211
+=> False positive
+Hash match at position 227451
+=> Correct
+Hash match at position 227648
+=> Correct
+Hash match at position 227835
+=> False positive
+Hash match at position 227891
+=> Correct
+Hash match at position 228225
+=> Correct
+Hash match at position 228515
+=> Correct
+Hash match at position 229283
+=> False positive
+Hash match at position 229618
+=> Correct
+Hash match at position 231069
+=> Correct
+Hash match at position 232184
+=> Correct
+Hash match at position 234310
+=> Correct
+Hash match at position 235321
+=> Correct
+Hash match at position 235652
+=> Correct
+Hash match at position 238675
+=> False positive
+Hash match at position 240155
+=> Correct
+Hash match at position 240543
+=> Correct
+Hash match at position 240917
+=> Correct
+Hash match at position 242504
+=> Correct
+Hash match at position 242766
+=> Correct
+Hash match at position 243214
+=> Correct
+Hash match at position 244680
+=> Correct
+Hash match at position 244689
+=> Correct
+Hash match at position 245086
+=> Correct
+Hash match at position 246305
+=> Correct
+Hash match at position 247751
+=> False positive
+Hash match at position 248119
+=> Correct
+Hash match at position 248416
+=> Correct
+Hash match at position 248828
+=> Correct
+Hash match at position 250664
+=> False positive
+Hash match at position 252017
+=> Correct
+Hash match at position 252362
+=> False positive
+Hash match at position 253661
+=> Correct
+Hash match at position 254580
+=> Correct
+Hash match at position 255344
+=> Correct
+Hash match at position 255637
+=> False positive
+Hash match at position 257462
+=> Correct
+Hash match at position 258257
+=> Correct
+Hash match at position 258401
+=> Correct
+Hash match at position 258513
+=> Correct
+Hash match at position 263682
+=> Correct
+Hash match at position 264495
+=> Correct
+Hash match at position 264758
+=> Correct
+Hash match at position 264839
+=> Correct
+Hash match at position 266527
+=> Correct
+Hash match at position 267309
+=> False positive
+Hash match at position 272077
+=> Correct
+Hash match at position 274008
+=> Correct
+Hash match at position 274293
+=> Correct
+Hash match at position 274847
+=> Correct
+Hash match at position 275175
+=> Correct
+Hash match at position 279448
+=> False positive
+Hash match at position 280514
+=> Correct
+Hash match at position 281051
+=> False positive
+Hash match at position 281556
+=> Correct
+Hash match at position 281748
+=> Correct
+Hash match at position 281769
+=> False positive
+Hash match at position 282701
+=> Correct
+Hash match at position 283692
+=> Correct
+Hash match at position 284055
+=> Correct
+Hash match at position 284090
+=> Correct
+Hash match at position 285700
+=> Correct
+Hash match at position 285831
+=> Correct
+Hash match at position 285910
+=> False positive
+Hash match at position 288284
+=> False positive
+Hash match at position 289833
+=> Correct
+Hash match at position 290925
+=> Correct
+Hash match at position 292118
+=> Correct
+Hash match at position 293398
+=> Correct
+Hash match at position 294484
+=> Correct
+Hash match at position 295220
+=> Correct
+Hash match at position 295467
+=> Correct
+Hash match at position 295545
+=> Correct
+Hash match at position 296533
+=> Correct
+Hash match at position 296623
+=> Correct
+Hash match at position 296670
+=> Correct
+Hash match at position 296692
+=> Correct
+Hash match at position 296747
+=> Correct
+Hash match at position 296966
+=> False positive
+Hash match at position 297456
+=> Correct
+Hash match at position 298089
+=> False positive
+Hash match at position 298269
+=> Correct
+Hash match at position 300034
+=> Correct
+Hash match at position 300169
+=> Correct
+Hash match at position 300451
+=> Correct
+Hash match at position 300753
+=> False positive
+Hash match at position 301091
+=> Correct
+Hash match at position 302341
+=> Correct
+Hash match at position 303434
+=> Correct
+Hash match at position 303779
+=> Correct
+Hash match at position 304983
+=> Correct
+Hash match at position 305576
+=> Correct
+Hash match at position 305588
+=> Correct
+Hash match at position 306563
+=> Correct
+Hash match at position 306621
+=> Correct
+Hash match at position 306638
+=> False positive
+Hash match at position 307167
+=> Correct
+Hash match at position 309850
+=> Correct
+Hash match at position 311094
+=> Correct
+Hash match at position 311985
+=> False positive
+Hash match at position 312663
+=> Correct
+Hash match at position 313066
+=> False positive
+Hash match at position 313330
+=> Correct
+Hash match at position 313338
+=> Correct
+Hash match at position 313422
+=> Correct
+Hash match at position 313750
+=> Correct
+Hash match at position 315510
+=> Correct
+Hash match at position 316735
+=> Correct
+Hash match at position 316963
+=> Correct
+Hash match at position 317282
+=> Correct
+Hash match at position 318477
+=> Correct
+Hash match at position 319941
+=> False positive
+Hash match at position 320036
+=> Correct
+Hash match at position 321288
+=> Correct
+Hash match at position 323334
+=> Correct
+Hash match at position 324052
+=> Correct
+Hash match at position 324203
+=> Correct
+Hash match at position 324429
+=> Correct
+Hash match at position 324587
+=> Correct
+Hash match at position 324615
+=> False positive
+Hash match at position 324915
+=> Correct
+Hash match at position 325026
+=> Correct
+Hash match at position 325100
+=> Correct
+Hash match at position 325286
+=> Correct
+Hash match at position 325574
+=> Correct
+Hash match at position 326304
+=> Correct
+Hash match at position 327240
+=> Correct
+Hash match at position 328268
+=> Correct
+Hash match at position 329043
+=> Correct
+Hash match at position 329658
+=> Correct
+Hash match at position 329861
+=> Correct
+Hash match at position 330325
+=> False positive
+Hash match at position 330474
+=> Correct
+Hash match at position 330780
+=> Correct
+Hash match at position 331169
+=> Correct
+Hash match at position 331421
+=> Correct
+Hash match at position 331442
+=> Correct
+Hash match at position 331458
+=> False positive
+Hash match at position 331533
+=> Correct
+Hash match at position 333144
+=> Correct
+Hash match at position 333495
+=> False positive
+Hash match at position 334246
+=> Correct
+Hash match at position 335031
+=> Correct
+Hash match at position 335108
+=> Correct
+Hash match at position 337817
+=> Correct
+Hash match at position 337872
+=> Correct
+Hash match at position 337894
+=> Correct
+Hash match at position 337941
+=> Correct
+Hash match at position 338031
+=> Correct
+Hash match at position 339097
+=> Correct
+Hash match at position 339344
+=> Correct
+Hash match at position 340080
+=> Correct
+Hash match at position 340590
+=> False positive
+Hash match at position 341166
+=> Correct
+Hash match at position 342450
+=> Correct
+Hash match at position 343643
+=> Correct
+Hash match at position 346962
+=> False positive
+Hash match at position 347510
+=> Correct
+Hash match at position 348403
+=> Correct
+Hash match at position 349690
+=> Correct
+Hash match at position 351318
+=> Correct
+Hash match at position 351465
+=> Correct
+Hash match at position 353956
+=> Correct
+Hash match at position 354417
+=> False positive
+Hash match at position 356973
+=> False positive
+Hash match at position 358943
+=> False positive
+Hash match at position 359730
+=> Correct
+Hash match at position 361973
+=> False positive
+Hash match at position 362754
+=> Correct
+Hash match at position 365120
+=> Correct
+Hash match at position 365158
+=> Correct
+Hash match at position 365638
+=> False positive
+Hash match at position 366198
+=> Correct
+Hash match at position 366556
+=> False positive
+Hash match at position 367767
+=> Correct
+Hash match at position 368248
+=> Correct
+Hash match at position 368570
+=> Correct
+Hash match at position 368579
+=> Correct
+Hash match at position 369183
+=> Correct
+Hash match at position 369985
+=> Correct
+Hash match at position 370829
+=> Correct
+Hash match at position 377006
+=> Correct
+Hash match at position 378020
+=> False positive
+Hash match at position 378230
+=> Correct
+Hash match at position 380062
+=> Correct
+Hash match at position 380661
+=> Correct
+Hash match at position 380919
+=> False positive
+Hash match at position 381716
+=> Correct
+Hash match at position 382467
+=> Correct
+Hash match at position 382727
+=> False positive
+Hash match at position 382848
+=> Correct
+Hash match at position 383375
+=> False positive
+Hash match at position 384611
+=> Correct
+Hash match at position 385680
+=> Correct
+Hash match at position 385881
+=> Correct
+Hash match at position 385919
+=> Correct
+Hash match at position 386195
+=> Correct
+Hash match at position 386433
+=> Correct
+Hash match at position 386546
+=> False positive
+Hash match at position 386581
+=> Correct
+Hash match at position 387281
+=> Correct
+Hash match at position 387308
+=> False positive
+Hash match at position 387689
+=> False positive
+Hash match at position 388911
+=> False positive
+Hash match at position 389026
+=> False positive
+Hash match at position 389111
+=> False positive
+Occurrences: [224, 516, 1163, 2921, 3458, 3487, 4201, 4506, 4778, 5847, 5949, 6053, 6266, 6532, 6568, 7026, 7564, 7816, 7935, 7950, 8998, 10867, 12258, 12779, 12970, 14877, 15383, 16423, 20017, 20535, 20802, 22518, 23177, 23947, 24491, 24597, 25118, 26238, 26363, 26926, 26944, 28530, 28798, 30151, 30571, 31459, 32440, 33105, 35476, 35585, 40104, 41617, 42223, 42423, 44627, 44660, 45366, 45588, 47850, 52405, 54283, 56647, 57635, 57942, 58069, 59830, 60076, 63424, 64128, 65087, 65197, 65791, 66269, 66791, 68001, 68581, 68931, 70623, 70907, 71916, 73213, 73445, 75357, 76757, 78201, 79140, 79723, 81794, 82887, 83147, 85157, 87135, 90712, 91304, 91700, 92410, 93060, 93948, 94493, 95003, 96089, 96977, 97917, 99575, 99922, 101150, 101372, 102309, 103486, 104836, 106491, 107057, 107146, 107710, 108252, 108838, 110492, 112248, 112820, 113409, 113490, 115079, 118146, 118560, 119821, 119850, 119920, 120811, 121113, 122957, 126968, 127784, 127793, 129165, 130005, 130068, 130113, 132514, 133552, 133736, 134342, 134751, 135407, 135416, 135697, 137146, 137451, 138032, 138076, 138799, 139051, 139738, 140166, 140255, 140395, 140747, 144270, 145441, 145840, 148891, 148923, 152343, 152993, 153132, 153269, 153963, 154186, 155125, 155666, 155792, 155842, 156284, 156424, 156512, 156889, 157318, 158919, 161299, 161567, 162923, 163849, 164935, 165293, 166627, 169525, 169554, 169663, 170351, 171021, 171031, 171069, 171093, 171129, 171152, 172352, 172744, 172875, 172984, 173013, 173899, 173925, 174007, 174910, 176510, 176939, 177316, 177404, 177544, 177670, 179988, 180211, 181426, 181846, 183021, 186545, 186887, 187027, 187116, 187544, 188233, 188484, 189207, 189251, 189832, 190137, 191586, 191867, 191876, 192532, 192941, 193548, 193732, 196126, 196692, 196742, 196868, 197408, 198344, 198744, 199727, 200792, 201544, 204982, 205431, 206080, 207721, 209377, 212438, 213562, 213584, 214268, 215359, 216165, 216652, 216927, 217153, 218780, 222928, 225043, 225132, 227447, 227644, 227887, 228221, 228511, 229614, 231065, 232180, 234306, 235317, 235648, 240151, 240539, 240913, 242500, 242762, 243210, 244676, 244685, 245082, 246301, 248115, 248412, 248824, 252013, 253657, 254576, 255340, 257458, 258253, 258397, 258509, 263678, 264491, 264754, 264835, 266523, 272073, 274004, 274289, 274843, 275171, 280510, 281552, 281744, 282697, 283688, 284051, 284086, 285696, 285827, 289829, 290921, 292114, 293394, 294480, 295216, 295463, 295541, 296529, 296619, 296666, 296688, 296743, 297452, 298265, 300030, 300165, 300447, 301087, 302337, 303430, 303775, 304979, 305572, 305584, 306559, 306617, 307163, 309846, 311090, 312659, 313326, 313334, 313418, 313746, 315506, 316731, 316959, 317278, 318473, 320032, 321284, 323330, 324048, 324199, 324425, 324583, 324911, 325022, 325096, 325282, 325570, 326300, 327236, 328264, 329039, 329654, 329857, 330470, 330776, 331165, 331417, 331438, 331529, 333140, 334242, 335027, 335104, 337813, 337868, 337890, 337937, 338027, 339093, 339340, 340076, 341162, 342446, 343639, 347506, 348399, 349686, 351314, 351461, 353952, 359726, 362750, 365116, 365154, 366194, 367763, 368244, 368566, 368575, 369179, 369981, 370825, 377002, 378226, 380058, 380657, 381712, 382463, 382844, 384607, 385676, 385877, 385915, 386191, 386429, 386577, 387277]
+
+Sequence #2 of length 390758
+Searching ACGT (naive)...
+Occurrences: [224, 516, 1163, 2921, 3458, 3487, 4201, 4506, 4778, 5847, 5949, 6053, 6266, 6532, 6568, 7026, 7564, 7816, 7935, 7950, 8998, 10867, 12258, 12779, 12970, 14877, 15383, 16423, 20017, 20535, 20802, 22518, 23177, 23947, 24491, 24597, 25118, 26238, 26363, 26926, 26944, 28530, 28798, 30151, 30571, 31459, 32440, 33105, 35476, 35585, 40104, 41617, 42223, 42423, 44627, 44660, 45366, 45588, 47850, 52405, 54283, 56647, 57635, 57942, 58069, 59830, 60076, 63424, 64128, 65087, 65197, 65791, 66269, 66791, 68001, 68581, 68931, 70623, 70907, 71916, 73213, 73445, 75357, 76757, 78201, 79140, 79723, 81794, 82887, 83147, 85157, 87135, 90712, 91304, 91700, 92410, 93060, 93948, 94493, 95003, 96089, 96977, 97917, 99575, 99922, 101150, 101372, 102309, 103486, 104836, 106491, 107057, 107146, 107710, 108252, 108838, 110492, 112248, 112820, 113409, 113490, 115079, 118146, 118560, 119821, 119850, 119920, 120811, 121113, 122957, 126968, 127784, 127793, 129165, 130005, 130068, 130113, 132514, 133552, 133736, 134342, 134751, 135407, 135416, 135697, 137146, 137451, 138032, 138076, 138799, 139051, 139738, 140166, 140255, 140395, 140747, 144270, 145441, 145840, 148891, 148923, 152343, 152993, 153132, 153269, 153963, 154186, 155125, 155666, 155792, 155842, 156284, 156424, 156512, 156889, 157318, 158919, 161299, 161567, 162923, 163849, 164935, 165293, 166627, 169525, 169554, 169663, 170351, 171021, 171031, 171069, 171093, 171129, 171152, 172352, 172744, 172875, 172984, 173013, 173899, 173925, 174007, 174910, 176510, 176939, 177316, 177404, 177544, 177670, 179988, 180211, 181426, 181846, 183021, 186545, 186887, 187027, 187116, 187544, 188233, 188484, 189207, 189251, 189832, 190137, 191586, 191867, 191876, 192532, 192941, 193548, 193732, 196126, 196692, 196742, 196868, 197408, 198344, 198744, 199727, 200792, 201544, 204982, 205431, 206080, 207721, 209377, 212438, 213562, 213584, 214268, 215359, 216165, 216652, 216927, 217153, 218780, 222928, 225043, 225132, 227447, 227644, 227887, 228221, 228511, 229614, 231065, 232180, 234306, 235317, 235648, 240151, 240539, 240913, 242500, 242762, 243210, 244676, 244685, 245082, 246301, 248115, 248412, 248824, 252013, 253657, 254576, 255340, 257458, 258253, 258397, 258509, 263678, 264491, 264754, 264835, 266523, 272073, 274004, 274289, 274843, 275171, 280510, 281552, 281744, 282697, 283688, 284051, 284086, 285696, 285827, 289829, 290921, 292114, 293394, 294480, 295216, 295463, 295541, 296529, 296619, 296666, 296688, 296743, 297452, 298265, 300030, 300165, 300447, 301087, 302337, 303430, 303775, 304979, 305572, 305584, 306559, 306617, 307163, 309846, 311090, 312659, 313326, 313334, 313418, 313746, 315506, 316731, 316959, 317278, 318473, 320032, 321284, 323330, 324048, 324199, 324425, 324583, 324911, 325022, 325096, 325282, 325570, 326300, 327236, 328264, 329039, 329654, 329857, 330470, 330776, 331165, 331417, 331438, 331529, 333140, 334242, 335027, 335104, 337813, 337868, 337890, 337937, 338027, 339093, 339340, 340076, 341162, 342446, 343639, 347506, 348399, 349686, 351314, 351461, 353952, 359726, 362750, 365116, 365154, 366194, 367763, 368244, 368566, 368575, 369179, 369981, 370825, 377002, 378226, 380058, 380657, 381712, 382463, 382844, 384607, 385676, 385877, 385915, 386191, 386429, 386577, 387277]
+
+Searching ACGT (rolling hash)...
+Hash match at position 16
+=> False positive
+Hash match at position 228
+=> Correct
+Hash match at position 520
+=> Correct
+Hash match at position 1167
+=> Correct
+Hash match at position 2925
+=> Correct
+Hash match at position 3462
+=> Correct
+Hash match at position 3491
+=> Correct
+Hash match at position 4205
+=> Correct
+Hash match at position 4510
+=> Correct
+Hash match at position 4782
+=> Correct
+Hash match at position 5851
+=> Correct
+Hash match at position 5953
+=> Correct
+Hash match at position 6057
+=> Correct
+Hash match at position 6270
+=> Correct
+Hash match at position 6536
+=> Correct
+Hash match at position 6572
+=> Correct
+Hash match at position 7030
+=> Correct
+Hash match at position 7568
+=> Correct
+Hash match at position 7820
+=> Correct
+Hash match at position 7939
+=> Correct
+Hash match at position 7954
+=> Correct
+Hash match at position 9002
+=> Correct
+Hash match at position 10234
+=> False positive
+Hash match at position 10871
+=> Correct
+Hash match at position 12262
+=> Correct
+Hash match at position 12783
+=> Correct
+Hash match at position 12974
+=> Correct
+Hash match at position 14881
+=> Correct
+Hash match at position 15387
+=> Correct
+Hash match at position 16427
+=> Correct
+Hash match at position 20021
+=> Correct
+Hash match at position 20539
+=> Correct
+Hash match at position 20806
+=> Correct
+Hash match at position 22522
+=> Correct
+Hash match at position 23181
+=> Correct
+Hash match at position 23951
+=> Correct
+Hash match at position 24495
+=> Correct
+Hash match at position 24601
+=> Correct
+Hash match at position 25122
+=> Correct
+Hash match at position 26242
+=> Correct
+Hash match at position 26367
+=> Correct
+Hash match at position 26930
+=> Correct
+Hash match at position 26948
+=> Correct
+Hash match at position 26993
+=> False positive
+Hash match at position 28534
+=> Correct
+Hash match at position 28802
+=> Correct
+Hash match at position 30155
+=> Correct
+Hash match at position 30575
+=> Correct
+Hash match at position 31463
+=> Correct
+Hash match at position 32444
+=> Correct
+Hash match at position 33109
+=> Correct
+Hash match at position 34521
+=> False positive
+Hash match at position 35480
+=> Correct
+Hash match at position 35589
+=> Correct
+Hash match at position 35624
+=> False positive
+Hash match at position 39274
+=> False positive
+Hash match at position 40108
+=> Correct
+Hash match at position 41621
+=> Correct
+Hash match at position 42051
+=> False positive
+Hash match at position 42227
+=> Correct
+Hash match at position 42250
+=> False positive
+Hash match at position 42427
+=> Correct
+Hash match at position 43820
+=> False positive
+Hash match at position 44631
+=> Correct
+Hash match at position 44664
+=> Correct
+Hash match at position 45370
+=> Correct
+Hash match at position 45592
+=> Correct
+Hash match at position 46017
+=> False positive
+Hash match at position 46817
+=> False positive
+Hash match at position 47854
+=> Correct
+Hash match at position 48428
+=> False positive
+Hash match at position 51674
+=> False positive
+Hash match at position 52409
+=> Correct
+Hash match at position 54287
+=> Correct
+Hash match at position 54894
+=> False positive
+Hash match at position 55402
+=> False positive
+Hash match at position 56651
+=> Correct
+Hash match at position 56723
+=> False positive
+Hash match at position 57262
+=> False positive
+Hash match at position 57639
+=> Correct
+Hash match at position 57946
+=> Correct
+Hash match at position 58073
+=> Correct
+Hash match at position 59786
+=> False positive
+Hash match at position 59834
+=> Correct
+Hash match at position 60080
+=> Correct
+Hash match at position 62585
+=> False positive
+Hash match at position 63192
+=> False positive
+Hash match at position 63428
+=> Correct
+Hash match at position 64132
+=> Correct
+Hash match at position 65091
+=> Correct
+Hash match at position 65201
+=> Correct
+Hash match at position 65795
+=> Correct
+Hash match at position 66027
+=> False positive
+Hash match at position 66273
+=> Correct
+Hash match at position 66795
+=> Correct
+Hash match at position 66813
+=> False positive
+Hash match at position 68005
+=> Correct
+Hash match at position 68585
+=> Correct
+Hash match at position 68935
+=> Correct
+Hash match at position 70627
+=> Correct
+Hash match at position 70911
+=> Correct
+Hash match at position 71920
+=> Correct
+Hash match at position 72966
+=> False positive
+Hash match at position 73217
+=> Correct
+Hash match at position 73308
+=> False positive
+Hash match at position 73449
+=> Correct
+Hash match at position 74785
+=> False positive
+Hash match at position 75361
+=> Correct
+Hash match at position 76761
+=> Correct
+Hash match at position 78205
+=> Correct
+Hash match at position 79144
+=> Correct
+Hash match at position 79727
+=> Correct
+Hash match at position 81798
+=> Correct
+Hash match at position 82883
+=> False positive
+Hash match at position 82891
+=> Correct
+Hash match at position 83151
+=> Correct
+Hash match at position 85161
+=> Correct
+Hash match at position 87139
+=> Correct
+Hash match at position 88163
+=> False positive
+Hash match at position 90551
+=> False positive
+Hash match at position 90716
+=> Correct
+Hash match at position 91308
+=> Correct
+Hash match at position 91704
+=> Correct
+Hash match at position 92414
+=> Correct
+Hash match at position 93064
+=> Correct
+Hash match at position 93952
+=> Correct
+Hash match at position 94497
+=> Correct
+Hash match at position 95007
+=> Correct
+Hash match at position 96093
+=> Correct
+Hash match at position 96143
+=> False positive
+Hash match at position 96981
+=> Correct
+Hash match at position 97921
+=> Correct
+Hash match at position 99579
+=> Correct
+Hash match at position 99926
+=> Correct
+Hash match at position 101154
+=> Correct
+Hash match at position 101376
+=> Correct
+Hash match at position 102313
+=> Correct
+Hash match at position 103490
+=> Correct
+Hash match at position 104840
+=> Correct
+Hash match at position 105084
+=> False positive
+Hash match at position 106495
+=> Correct
+Hash match at position 107061
+=> Correct
+Hash match at position 107150
+=> Correct
+Hash match at position 107714
+=> Correct
+Hash match at position 108256
+=> Correct
+Hash match at position 108842
+=> Correct
+Hash match at position 110496
+=> Correct
+Hash match at position 112252
+=> Correct
+Hash match at position 112824
+=> Correct
+Hash match at position 113413
+=> Correct
+Hash match at position 113494
+=> Correct
+Hash match at position 115083
+=> Correct
+Hash match at position 116350
+=> False positive
+Hash match at position 116872
+=> False positive
+Hash match at position 117227
+=> False positive
+Hash match at position 118150
+=> Correct
+Hash match at position 118452
+=> False positive
+Hash match at position 118564
+=> Correct
+Hash match at position 118980
+=> False positive
+Hash match at position 119825
+=> Correct
+Hash match at position 119854
+=> Correct
+Hash match at position 119924
+=> Correct
+Hash match at position 120591
+=> False positive
+Hash match at position 120815
+=> Correct
+Hash match at position 121117
+=> Correct
+Hash match at position 122961
+=> Correct
+Hash match at position 126746
+=> False positive
+Hash match at position 126972
+=> Correct
+Hash match at position 127788
+=> Correct
+Hash match at position 127797
+=> Correct
+Hash match at position 129169
+=> Correct
+Hash match at position 129732
+=> False positive
+Hash match at position 130009
+=> Correct
+Hash match at position 130072
+=> Correct
+Hash match at position 130117
+=> Correct
+Hash match at position 132518
+=> Correct
+Hash match at position 133110
+=> False positive
+Hash match at position 133556
+=> Correct
+Hash match at position 133740
+=> Correct
+Hash match at position 134346
+=> Correct
+Hash match at position 134755
+=> Correct
+Hash match at position 135411
+=> Correct
+Hash match at position 135420
+=> Correct
+Hash match at position 135701
+=> Correct
+Hash match at position 137150
+=> Correct
+Hash match at position 137455
+=> Correct
+Hash match at position 138036
+=> Correct
+Hash match at position 138080
+=> Correct
+Hash match at position 138803
+=> Correct
+Hash match at position 139055
+=> Correct
+Hash match at position 139742
+=> Correct
+Hash match at position 140170
+=> Correct
+Hash match at position 140259
+=> Correct
+Hash match at position 140399
+=> Correct
+Hash match at position 140751
+=> Correct
+Hash match at position 141992
+=> False positive
+Hash match at position 144274
+=> Correct
+Hash match at position 145445
+=> Correct
+Hash match at position 145844
+=> Correct
+Hash match at position 148895
+=> Correct
+Hash match at position 148927
+=> Correct
+Hash match at position 152347
+=> Correct
+Hash match at position 152997
+=> Correct
+Hash match at position 153136
+=> Correct
+Hash match at position 153196
+=> False positive
+Hash match at position 153273
+=> Correct
+Hash match at position 153967
+=> Correct
+Hash match at position 154190
+=> Correct
+Hash match at position 154481
+=> False positive
+Hash match at position 155129
+=> Correct
+Hash match at position 155670
+=> Correct
+Hash match at position 155796
+=> Correct
+Hash match at position 155846
+=> Correct
+Hash match at position 156040
+=> False positive
+Hash match at position 156288
+=> Correct
+Hash match at position 156428
+=> Correct
+Hash match at position 156516
+=> Correct
+Hash match at position 156893
+=> Correct
+Hash match at position 157322
+=> Correct
+Hash match at position 158923
+=> Correct
+Hash match at position 159392
+=> False positive
+Hash match at position 159727
+=> False positive
+Hash match at position 159728
+=> False positive
+Hash match at position 161303
+=> Correct
+Hash match at position 161374
+=> False positive
+Hash match at position 161571
+=> Correct
+Hash match at position 162927
+=> Correct
+Hash match at position 163853
+=> Correct
+Hash match at position 164939
+=> Correct
+Hash match at position 165297
+=> Correct
+Hash match at position 166631
+=> Correct
+Hash match at position 169529
+=> Correct
+Hash match at position 169558
+=> Correct
+Hash match at position 169667
+=> Correct
+Hash match at position 170355
+=> Correct
+Hash match at position 171025
+=> Correct
+Hash match at position 171035
+=> Correct
+Hash match at position 171073
+=> Correct
+Hash match at position 171097
+=> Correct
+Hash match at position 171133
+=> Correct
+Hash match at position 171156
+=> Correct
+Hash match at position 171862
+=> False positive
+Hash match at position 172356
+=> Correct
+Hash match at position 172748
+=> Correct
+Hash match at position 172879
+=> Correct
+Hash match at position 172988
+=> Correct
+Hash match at position 173017
+=> Correct
+Hash match at position 173337
+=> False positive
+Hash match at position 173903
+=> Correct
+Hash match at position 173929
+=> Correct
+Hash match at position 174011
+=> Correct
+Hash match at position 174857
+=> False positive
+Hash match at position 174914
+=> Correct
+Hash match at position 176514
+=> Correct
+Hash match at position 176943
+=> Correct
+Hash match at position 177320
+=> Correct
+Hash match at position 177408
+=> Correct
+Hash match at position 177548
+=> Correct
+Hash match at position 177674
+=> Correct
+Hash match at position 179992
+=> Correct
+Hash match at position 180215
+=> Correct
+Hash match at position 180794
+=> False positive
+Hash match at position 180857
+=> False positive
+Hash match at position 181430
+=> Correct
+Hash match at position 181850
+=> Correct
+Hash match at position 183025
+=> Correct
+Hash match at position 184972
+=> False positive
+Hash match at position 186549
+=> Correct
+Hash match at position 186891
+=> Correct
+Hash match at position 187031
+=> Correct
+Hash match at position 187120
+=> Correct
+Hash match at position 187548
+=> Correct
+Hash match at position 188237
+=> Correct
+Hash match at position 188488
+=> Correct
+Hash match at position 189211
+=> Correct
+Hash match at position 189255
+=> Correct
+Hash match at position 189836
+=> Correct
+Hash match at position 190141
+=> Correct
+Hash match at position 191590
+=> Correct
+Hash match at position 191871
+=> Correct
+Hash match at position 191880
+=> Correct
+Hash match at position 192536
+=> Correct
+Hash match at position 192945
+=> Correct
+Hash match at position 193552
+=> Correct
+Hash match at position 193736
+=> Correct
+Hash match at position 196130
+=> Correct
+Hash match at position 196696
+=> Correct
+Hash match at position 196746
+=> Correct
+Hash match at position 196872
+=> Correct
+Hash match at position 197412
+=> Correct
+Hash match at position 198348
+=> Correct
+Hash match at position 198748
+=> Correct
+Hash match at position 199731
+=> Correct
+Hash match at position 200796
+=> Correct
+Hash match at position 201548
+=> Correct
+Hash match at position 202229
+=> False positive
+Hash match at position 202783
+=> False positive
+Hash match at position 203266
+=> False positive
+Hash match at position 204986
+=> Correct
+Hash match at position 205435
+=> Correct
+Hash match at position 206084
+=> Correct
+Hash match at position 207725
+=> Correct
+Hash match at position 209381
+=> Correct
+Hash match at position 210057
+=> False positive
+Hash match at position 212442
+=> Correct
+Hash match at position 213566
+=> Correct
+Hash match at position 213588
+=> Correct
+Hash match at position 214272
+=> Correct
+Hash match at position 215001
+=> False positive
+Hash match at position 215363
+=> Correct
+Hash match at position 216169
+=> Correct
+Hash match at position 216206
+=> False positive
+Hash match at position 216656
+=> Correct
+Hash match at position 216931
+=> Correct
+Hash match at position 217157
+=> Correct
+Hash match at position 217385
+=> False positive
+Hash match at position 218784
+=> Correct
+Hash match at position 222932
+=> Correct
+Hash match at position 225047
+=> Correct
+Hash match at position 225136
+=> Correct
+Hash match at position 225211
+=> False positive
+Hash match at position 227451
+=> Correct
+Hash match at position 227648
+=> Correct
+Hash match at position 227835
+=> False positive
+Hash match at position 227891
+=> Correct
+Hash match at position 228225
+=> Correct
+Hash match at position 228515
+=> Correct
+Hash match at position 229283
+=> False positive
+Hash match at position 229618
+=> Correct
+Hash match at position 231069
+=> Correct
+Hash match at position 232184
+=> Correct
+Hash match at position 234310
+=> Correct
+Hash match at position 235321
+=> Correct
+Hash match at position 235652
+=> Correct
+Hash match at position 238675
+=> False positive
+Hash match at position 240155
+=> Correct
+Hash match at position 240543
+=> Correct
+Hash match at position 240917
+=> Correct
+Hash match at position 242504
+=> Correct
+Hash match at position 242766
+=> Correct
+Hash match at position 243214
+=> Correct
+Hash match at position 244680
+=> Correct
+Hash match at position 244689
+=> Correct
+Hash match at position 245086
+=> Correct
+Hash match at position 246305
+=> Correct
+Hash match at position 247751
+=> False positive
+Hash match at position 248119
+=> Correct
+Hash match at position 248416
+=> Correct
+Hash match at position 248828
+=> Correct
+Hash match at position 250664
+=> False positive
+Hash match at position 252017
+=> Correct
+Hash match at position 252362
+=> False positive
+Hash match at position 253661
+=> Correct
+Hash match at position 254580
+=> Correct
+Hash match at position 255344
+=> Correct
+Hash match at position 255637
+=> False positive
+Hash match at position 257462
+=> Correct
+Hash match at position 258257
+=> Correct
+Hash match at position 258401
+=> Correct
+Hash match at position 258513
+=> Correct
+Hash match at position 263682
+=> Correct
+Hash match at position 264495
+=> Correct
+Hash match at position 264758
+=> Correct
+Hash match at position 264839
+=> Correct
+Hash match at position 266527
+=> Correct
+Hash match at position 267309
+=> False positive
+Hash match at position 272077
+=> Correct
+Hash match at position 274008
+=> Correct
+Hash match at position 274293
+=> Correct
+Hash match at position 274847
+=> Correct
+Hash match at position 275175
+=> Correct
+Hash match at position 279448
+=> False positive
+Hash match at position 280514
+=> Correct
+Hash match at position 281051
+=> False positive
+Hash match at position 281556
+=> Correct
+Hash match at position 281748
+=> Correct
+Hash match at position 281769
+=> False positive
+Hash match at position 282701
+=> Correct
+Hash match at position 283692
+=> Correct
+Hash match at position 284055
+=> Correct
+Hash match at position 284090
+=> Correct
+Hash match at position 285700
+=> Correct
+Hash match at position 285831
+=> Correct
+Hash match at position 285910
+=> False positive
+Hash match at position 288284
+=> False positive
+Hash match at position 289833
+=> Correct
+Hash match at position 290925
+=> Correct
+Hash match at position 292118
+=> Correct
+Hash match at position 293398
+=> Correct
+Hash match at position 294484
+=> Correct
+Hash match at position 295220
+=> Correct
+Hash match at position 295467
+=> Correct
+Hash match at position 295545
+=> Correct
+Hash match at position 296533
+=> Correct
+Hash match at position 296623
+=> Correct
+Hash match at position 296670
+=> Correct
+Hash match at position 296692
+=> Correct
+Hash match at position 296747
+=> Correct
+Hash match at position 296966
+=> False positive
+Hash match at position 297456
+=> Correct
+Hash match at position 298089
+=> False positive
+Hash match at position 298269
+=> Correct
+Hash match at position 300034
+=> Correct
+Hash match at position 300169
+=> Correct
+Hash match at position 300451
+=> Correct
+Hash match at position 300753
+=> False positive
+Hash match at position 301091
+=> Correct
+Hash match at position 302341
+=> Correct
+Hash match at position 303434
+=> Correct
+Hash match at position 303779
+=> Correct
+Hash match at position 304983
+=> Correct
+Hash match at position 305576
+=> Correct
+Hash match at position 305588
+=> Correct
+Hash match at position 306563
+=> Correct
+Hash match at position 306621
+=> Correct
+Hash match at position 306638
+=> False positive
+Hash match at position 307167
+=> Correct
+Hash match at position 309850
+=> Correct
+Hash match at position 311094
+=> Correct
+Hash match at position 311985
+=> False positive
+Hash match at position 312663
+=> Correct
+Hash match at position 313066
+=> False positive
+Hash match at position 313330
+=> Correct
+Hash match at position 313338
+=> Correct
+Hash match at position 313422
+=> Correct
+Hash match at position 313750
+=> Correct
+Hash match at position 315510
+=> Correct
+Hash match at position 316735
+=> Correct
+Hash match at position 316963
+=> Correct
+Hash match at position 317282
+=> Correct
+Hash match at position 318477
+=> Correct
+Hash match at position 319941
+=> False positive
+Hash match at position 320036
+=> Correct
+Hash match at position 321288
+=> Correct
+Hash match at position 323334
+=> Correct
+Hash match at position 324052
+=> Correct
+Hash match at position 324203
+=> Correct
+Hash match at position 324429
+=> Correct
+Hash match at position 324587
+=> Correct
+Hash match at position 324615
+=> False positive
+Hash match at position 324915
+=> Correct
+Hash match at position 325026
+=> Correct
+Hash match at position 325100
+=> Correct
+Hash match at position 325286
+=> Correct
+Hash match at position 325574
+=> Correct
+Hash match at position 326304
+=> Correct
+Hash match at position 327240
+=> Correct
+Hash match at position 328268
+=> Correct
+Hash match at position 329043
+=> Correct
+Hash match at position 329658
+=> Correct
+Hash match at position 329861
+=> Correct
+Hash match at position 330325
+=> False positive
+Hash match at position 330474
+=> Correct
+Hash match at position 330780
+=> Correct
+Hash match at position 331169
+=> Correct
+Hash match at position 331421
+=> Correct
+Hash match at position 331442
+=> Correct
+Hash match at position 331458
+=> False positive
+Hash match at position 331533
+=> Correct
+Hash match at position 333144
+=> Correct
+Hash match at position 333495
+=> False positive
+Hash match at position 334246
+=> Correct
+Hash match at position 335031
+=> Correct
+Hash match at position 335108
+=> Correct
+Hash match at position 337817
+=> Correct
+Hash match at position 337872
+=> Correct
+Hash match at position 337894
+=> Correct
+Hash match at position 337941
+=> Correct
+Hash match at position 338031
+=> Correct
+Hash match at position 339097
+=> Correct
+Hash match at position 339344
+=> Correct
+Hash match at position 340080
+=> Correct
+Hash match at position 340590
+=> False positive
+Hash match at position 341166
+=> Correct
+Hash match at position 342450
+=> Correct
+Hash match at position 343643
+=> Correct
+Hash match at position 346962
+=> False positive
+Hash match at position 347510
+=> Correct
+Hash match at position 348403
+=> Correct
+Hash match at position 349690
+=> Correct
+Hash match at position 351318
+=> Correct
+Hash match at position 351465
+=> Correct
+Hash match at position 353956
+=> Correct
+Hash match at position 354417
+=> False positive
+Hash match at position 356973
+=> False positive
+Hash match at position 358943
+=> False positive
+Hash match at position 359730
+=> Correct
+Hash match at position 361973
+=> False positive
+Hash match at position 362754
+=> Correct
+Hash match at position 365120
+=> Correct
+Hash match at position 365158
+=> Correct
+Hash match at position 365638
+=> False positive
+Hash match at position 366198
+=> Correct
+Hash match at position 366556
+=> False positive
+Hash match at position 367767
+=> Correct
+Hash match at position 368248
+=> Correct
+Hash match at position 368570
+=> Correct
+Hash match at position 368579
+=> Correct
+Hash match at position 369183
+=> Correct
+Hash match at position 369985
+=> Correct
+Hash match at position 370829
+=> Correct
+Hash match at position 377006
+=> Correct
+Hash match at position 378020
+=> False positive
+Hash match at position 378230
+=> Correct
+Hash match at position 380062
+=> Correct
+Hash match at position 380661
+=> Correct
+Hash match at position 380919
+=> False positive
+Hash match at position 381716
+=> Correct
+Hash match at position 382467
+=> Correct
+Hash match at position 382727
+=> False positive
+Hash match at position 382848
+=> Correct
+Hash match at position 383375
+=> False positive
+Hash match at position 384611
+=> Correct
+Hash match at position 385680
+=> Correct
+Hash match at position 385881
+=> Correct
+Hash match at position 385919
+=> Correct
+Hash match at position 386195
+=> Correct
+Hash match at position 386433
+=> Correct
+Hash match at position 386546
+=> False positive
+Hash match at position 386581
+=> Correct
+Hash match at position 387281
+=> Correct
+Hash match at position 387308
+=> False positive
+Hash match at position 387689
+=> False positive
+Hash match at position 388911
+=> False positive
+Hash match at position 389026
+=> False positive
+Hash match at position 389111
+=> False positive
+Occurrences: [224, 516, 1163, 2921, 3458, 3487, 4201, 4506, 4778, 5847, 5949, 6053, 6266, 6532, 6568, 7026, 7564, 7816, 7935, 7950, 8998, 10867, 12258, 12779, 12970, 14877, 15383, 16423, 20017, 20535, 20802, 22518, 23177, 23947, 24491, 24597, 25118, 26238, 26363, 26926, 26944, 28530, 28798, 30151, 30571, 31459, 32440, 33105, 35476, 35585, 40104, 41617, 42223, 42423, 44627, 44660, 45366, 45588, 47850, 52405, 54283, 56647, 57635, 57942, 58069, 59830, 60076, 63424, 64128, 65087, 65197, 65791, 66269, 66791, 68001, 68581, 68931, 70623, 70907, 71916, 73213, 73445, 75357, 76757, 78201, 79140, 79723, 81794, 82887, 83147, 85157, 87135, 90712, 91304, 91700, 92410, 93060, 93948, 94493, 95003, 96089, 96977, 97917, 99575, 99922, 101150, 101372, 102309, 103486, 104836, 106491, 107057, 107146, 107710, 108252, 108838, 110492, 112248, 112820, 113409, 113490, 115079, 118146, 118560, 119821, 119850, 119920, 120811, 121113, 122957, 126968, 127784, 127793, 129165, 130005, 130068, 130113, 132514, 133552, 133736, 134342, 134751, 135407, 135416, 135697, 137146, 137451, 138032, 138076, 138799, 139051, 139738, 140166, 140255, 140395, 140747, 144270, 145441, 145840, 148891, 148923, 152343, 152993, 153132, 153269, 153963, 154186, 155125, 155666, 155792, 155842, 156284, 156424, 156512, 156889, 157318, 158919, 161299, 161567, 162923, 163849, 164935, 165293, 166627, 169525, 169554, 169663, 170351, 171021, 171031, 171069, 171093, 171129, 171152, 172352, 172744, 172875, 172984, 173013, 173899, 173925, 174007, 174910, 176510, 176939, 177316, 177404, 177544, 177670, 179988, 180211, 181426, 181846, 183021, 186545, 186887, 187027, 187116, 187544, 188233, 188484, 189207, 189251, 189832, 190137, 191586, 191867, 191876, 192532, 192941, 193548, 193732, 196126, 196692, 196742, 196868, 197408, 198344, 198744, 199727, 200792, 201544, 204982, 205431, 206080, 207721, 209377, 212438, 213562, 213584, 214268, 215359, 216165, 216652, 216927, 217153, 218780, 222928, 225043, 225132, 227447, 227644, 227887, 228221, 228511, 229614, 231065, 232180, 234306, 235317, 235648, 240151, 240539, 240913, 242500, 242762, 243210, 244676, 244685, 245082, 246301, 248115, 248412, 248824, 252013, 253657, 254576, 255340, 257458, 258253, 258397, 258509, 263678, 264491, 264754, 264835, 266523, 272073, 274004, 274289, 274843, 275171, 280510, 281552, 281744, 282697, 283688, 284051, 284086, 285696, 285827, 289829, 290921, 292114, 293394, 294480, 295216, 295463, 295541, 296529, 296619, 296666, 296688, 296743, 297452, 298265, 300030, 300165, 300447, 301087, 302337, 303430, 303775, 304979, 305572, 305584, 306559, 306617, 307163, 309846, 311090, 312659, 313326, 313334, 313418, 313746, 315506, 316731, 316959, 317278, 318473, 320032, 321284, 323330, 324048, 324199, 324425, 324583, 324911, 325022, 325096, 325282, 325570, 326300, 327236, 328264, 329039, 329654, 329857, 330470, 330776, 331165, 331417, 331438, 331529, 333140, 334242, 335027, 335104, 337813, 337868, 337890, 337937, 338027, 339093, 339340, 340076, 341162, 342446, 343639, 347506, 348399, 349686, 351314, 351461, 353952, 359726, 362750, 365116, 365154, 366194, 367763, 368244, 368566, 368575, 369179, 369981, 370825, 377002, 378226, 380058, 380657, 381712, 382463, 382844, 384607, 385676, 385877, 385915, 386191, 386429, 386577, 387277]
+
+Computing k-mer histogram...
+K-mer histogram (kmers/count):
+- CGCG: 5115
+- CGAC: 19670
+- ACGC: 19760
+- ACGG: 19777
+- TCGG: 20005
+- GCCG: 20061
+- CGAT: 20153
+- CCGG: 21445
+- GCGT: 22413
+- CGGC: 24269
+- GGCG: 26020
+- CGGG: 26133
+- CGCC: 26346
+- GACG: 31274
+- CGGA: 32300
+- CCGC: 33789
+- CCGA: 35537
+- GCGA: 36380
+- TCGC: 37104
+- CGGT: 37131
+- CGCA: 39599
+- TACG: 40160
+- GTCG: 40374
+- GCGC: 41978
+- CACG: 45495
+- CGTA: 47617
+- ACCG: 48967
+- ATCG: 51114
+- CGAG: 57008
+- AGCG: 58006
+- GCGG: 58791
+- CGCT: 61558
+- CGTG: 67427
+- TGCG: 70442
+- TTCG: 70939
+- CTCG: 73353
+- TCGT: 75840
+- CGTC: 78825
+- TCCG: 79751
+- GGAC: 93015
+- GTAC: 96394
+- GGGC: 98165
+- GACC: 98841
+- TCGA: 102765
+- ACGT: 103956
+- ACGA: 117310
+- GGGG: 117316
+- GGTA: 125848
+- GCAC: 127547
+- GCCC: 128294
+- CCCG: 129507
+- GTGC: 130381
+- AACG: 143889
+- GAGC: 145298
+- CCTA: 151771
+- ACCC: 152578
+- GACT: 155226
+- TAAC: 158133
+- GATC: 159086
+- CCCC: 162653
+- TAGC: 163290
+- GTAA: 168075
+- CTAG: 168160
+- TGAC: 170455
+- GGGT: 172815
+- GTAG: 176689
+- TGGC: 177301
+- TAAG: 179785
+- GCTA: 181358
+- CCGT: 188174
+- AGTC: 191875
+- CGAA: 195019
+- TACC: 195575
+- GTCA: 195726
+- CGTT: 196299
+- GGCA: 196570
+- AACC: 198507
+- GCAT: 198530
+- GGCC: 199076
+- GGTG: 199107
+- AGCC: 199259
+- GATG: 199667
+- GGTC: 200007
+- CTTA: 200567
+- GGCT: 201531
+- AGTA: 202194
+- GGAT: 203915
+- CTAA: 203954
+- GACA: 205961
+- TTAC: 207236
+- AGAC: 208058
+- TGCC: 208124
+- GTAT: 212807
+- TACT: 214082
+- CACC: 214464
+- TAGG: 215852
+- AGGG: 218979
+- GTTA: 221644
+- GTCT: 221768
+- GCCA: 223527
+- ACTA: 225547
+- CAGC: 226023
+- CAAG: 226176
+- ACAC: 228634
+- GTGG: 228989
+- CCCT: 229539
+- GATA: 232148
+- ACCT: 233158
+- GCTG: 233316
+- TGTC: 240123
+- TAGA: 241403
+- ATGG: 248757
+- GGAG: 249228
+- TTGG: 250912
+- GTCC: 253476
+- ATAC: 254291
+- ATAG: 255899
+- GGGA: 256032
+- GGTT: 256618
+- TGGT: 257907
+- CCAG: 258463
+- GAAC: 258832
+- GCCT: 260304
+- CCCA: 265718
+- CTGG: 268904
+- CATG: 270898
+- ACCA: 272469
+- GTTG: 274241
+- TAGT: 275266
+- TGTA: 277680
+- ATTG: 277827
+- CATA: 278596
+- TGGG: 280422
+- TGGA: 282231
+- AGCA: 282363
+- AGCT: 285797
+- CAGG: 289052
+- CCTG: 289664
+- AAGC: 291817
+- GAGG: 292767
+- GCAA: 294115
+- TTAG: 294207
+- TAAT: 296553
+- CTAC: 297972
+- TGAT: 304456
+- CTAT: 310682
+- AGGT: 312993
+- CCTC: 314128
+- GCTC: 314922
+- AGGC: 322385
+- ACTG: 323813
+- TCAC: 328384
+- ATTA: 328822
+- TATG: 332743
+- CACT: 336532
+- ACTC: 336757
+- CAAC: 339887
+- CTTG: 341872
+- TCCC: 344157
+- CAAT: 347394
+- GCTT: 351866
+- ATGA: 352159
+- CAGT: 352994
+- CATT: 354977
+- CCTT: 355294
+- CCAT: 357414
+- TATC: 359197
+- GTTC: 365100
+- TTAA: 369807
+- TTGT: 371033
+- ACAG: 374733
+- ATCC: 374829
+- ATCT: 376117
+- TCAG: 377692
+- ACAT: 379962
+- AGGA: 381807
+- ATAA: 384886
+- AATC: 386240
+- CTGC: 386881
+- GTGT: 387431
+- TCCT: 388066
+- CTCA: 388310
+- TTGC: 391294
+- CTCC: 395302
+- ACTT: 395383
+- GAGT: 402316
+- AGTG: 403423
+- GCAG: 403864
+- TACA: 406100
+- GGAA: 406305
+- TTGA: 406602
+- ATGC: 407298
+- CCAC: 410796
+- AATT: 413295
+- CTGT: 413674
+- TCTC: 414391
+- TCAT: 414551
+- ATGT: 422236
+- TCTA: 422777
+- GATT: 423158
+- AAGT: 426031
+- AACA: 428345
+- GTGA: 429479
+- GAGA: 436593
+- TATA: 438366
+- AAGG: 439126
+- CATC: 444599
+- CTGA: 445358
+- CTTC: 459048
+- TCTT: 460545
+- GAAG: 470722
+- TTAT: 479726
+- ATTC: 480158
+- TGAG: 481199
+- AGAT: 486804
+- AGAG: 488851
+- TAAA: 491909
+- CACA: 498118
+- TGTG: 503080
+- TGCA: 504436
+- CCAA: 506643
+- TATT: 513098
+- CTCT: 522428
+- TTTG: 525339
+- TGCT: 532425
+- ATCA: 544681
+- CAGA: 547232
+- ACAA: 553292
+- TTCC: 560032
+- CTTT: 561621
+- TGTT: 575702
+- AACT: 577756
+- AATA: 584842
+- GAAT: 590617
+- AAAC: 592605
+- TTTA: 600182
+- ATTT: 616451
+- AATG: 628293
+- ATAT: 638550
+- AGTT: 658789
+- TCTG: 669170
+- TGAA: 678939
+- TTCA: 714087
+- TCAA: 720108
+- GAAA: 725011
+- AAGA: 725774
+- AGAA: 764137
+- TCCA: 770252
+- AAAT: 781229
+- GTTT: 831132
+- TTCT: 849599
+- TTTC: 890566
+- AAAG: 1009217
+- TTTT: 1047325
+- CAAA: 1160025
+- AAAA: 1175611
+Found 256 of 256 possible kmers (about 100.00% coverage)
+Cleaning up...
+cargo run --release -- show -i dataset/chrX.hprc-v1.0-pggb.local.gfa -c 2 -p   209.11s user 30.70s system 96% cpu 4:08.38 total

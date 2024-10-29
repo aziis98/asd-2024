@@ -141,16 +141,9 @@ pub fn parse_source<R: Read>(reader: R, line_count: u64) -> io::Result<Vec<Entry
     let mut entries = Vec::new();
     let mut skipped = Vec::new();
 
-    for line in BufReader::new(reader)
-        .lines()
-        .progress_count(line_count)
-        .with_style(
-            indicatif::ProgressStyle::default_bar()
-                .template("{prefix} {spinner} [{elapsed_precise}] [{wide_bar}] {pos}/{len}")
-                .unwrap(),
-        )
-        .with_prefix("parsing source file")
-    {
+    println!("Parsing GFA file...");
+
+    for line in BufReader::new(reader).lines().progress_count(line_count) {
         let line = line?;
         let line = line.trim();
 
@@ -174,6 +167,7 @@ pub fn parse_source<R: Read>(reader: R, line_count: u64) -> io::Result<Vec<Entry
         entries.push(entry);
     }
 
+    // Print skipped lines by compacting same ones together
     for (s, count) in skipped.iter().fold(Vec::new(), |mut acc, s| {
         if let Some((last, count)) = acc.last_mut() {
             if *last == s {
@@ -187,11 +181,7 @@ pub fn parse_source<R: Read>(reader: R, line_count: u64) -> io::Result<Vec<Entry
 
         acc
     }) {
-        if count > 1 {
-            eprintln!("skipped {} lines of type: {}", count, s);
-        } else {
-            eprintln!("skipped line type: {}", s);
-        }
+        eprintln!("Skipped {} lines of type: {}", count, s);
     }
 
     Ok(entries)

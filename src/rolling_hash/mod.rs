@@ -66,9 +66,10 @@ where
         };
 
         // Shift lhs to the right by the difference in offsets
-        let shifted_lhs = (lhs.hash
-            * wrapping_pow_correct(self.alphabet_size, rhs.offset - lhs.offset))
-            % self.modulus;
+        let shifted_lhs = (lhs.hash.wrapping_mul(wrapping_pow_correct(
+            self.alphabet_size,
+            rhs.offset - lhs.offset,
+        ))) % self.modulus;
 
         shifted_lhs == rhs.hash
     }
@@ -100,7 +101,11 @@ where
         //     wrapping_pow_correct(self.alphabet_size, i),
         //     self.hash
         // );
-        self.hash += value.into() * wrapping_pow_correct(self.alphabet_size, i);
+        self.hash = self.hash.wrapping_add(
+            value
+                .into()
+                .wrapping_mul(wrapping_pow_correct(self.alphabet_size, i)),
+        );
     }
 
     pub fn remove_first(&mut self) {
@@ -108,7 +113,11 @@ where
 
         let i = self.offset;
 
-        self.hash -= value.into() * wrapping_pow_correct(self.alphabet_size, i);
+        self.hash = self.hash.wrapping_sub(
+            value
+                .into()
+                .wrapping_mul(wrapping_pow_correct(self.alphabet_size, i)),
+        );
 
         self.offset += 1;
     }

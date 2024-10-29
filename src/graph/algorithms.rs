@@ -13,35 +13,41 @@ impl<V> Graph<V> for AdjacencyGraph<V>
 where
     V: Ord + Clone,
 {
-    fn nodes(&self) -> &BTreeSet<V> {
-        &self.nodes
+    fn nodes(&self) -> BTreeSet<V> {
+        self.nodes.clone()
     }
 
-    fn adjacencies(&self) -> &BTreeMap<V, BTreeSet<V>> {
-        &self.adjacencies
+    fn adjacencies(&self) -> BTreeMap<V, BTreeSet<V>> {
+        self.adjacencies.clone()
     }
 
-    fn edges(&self) -> BTreeMap<V, V> {
+    fn edges(&self) -> BTreeSet<(V, V)> {
         self.adjacencies
             .iter()
             .flat_map(|(from, tos)| tos.iter().map(move |to| (from.clone(), to.clone())))
             .collect()
     }
+
+    // pub fn edges(&self) -> impl Iterator<Item = (&V, &V)> {
+    //     self.adjacencies
+    //         .iter()
+    //         .flat_map(|(from, tos)| tos.iter().map(move |to| (from, to)))
+    // }
 }
 
 impl<V> Graph<V> for UndirectedGraph<V>
 where
     V: Ord + Clone,
 {
-    fn nodes(&self) -> &BTreeSet<V> {
+    fn nodes(&self) -> BTreeSet<V> {
         self.directed.nodes()
     }
 
-    fn adjacencies(&self) -> &BTreeMap<V, BTreeSet<V>> {
+    fn adjacencies(&self) -> BTreeMap<V, BTreeSet<V>> {
         self.directed.adjacencies()
     }
 
-    fn edges(&self) -> BTreeMap<V, V> {
+    fn edges(&self) -> BTreeSet<(V, V)> {
         self.directed.edges()
     }
 }

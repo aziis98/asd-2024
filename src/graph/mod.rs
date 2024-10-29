@@ -7,9 +7,9 @@ pub trait Graph<V>
 where
     V: Clone,
 {
-    fn nodes(&self) -> &BTreeSet<V>;
-    fn adjacencies(&self) -> &BTreeMap<V, BTreeSet<V>>;
-    fn edges(&self) -> BTreeMap<V, V>;
+    fn nodes(&self) -> BTreeSet<V>;
+    fn adjacencies(&self) -> BTreeMap<V, BTreeSet<V>>;
+    fn edges(&self) -> BTreeSet<(V, V)>;
 }
 
 #[derive(Debug)]

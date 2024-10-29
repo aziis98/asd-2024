@@ -164,6 +164,7 @@ where
         },
     );
 
+    println!("Node count: {}", graph.nodes().len());
     println!(
         "Edge count: {}, Total edge count: {}",
         graph.edges().count(),
@@ -226,14 +227,14 @@ where
     let progress_bar = indicatif::ProgressBar::new(graph.edges().len() as u64);
 
     for (from, tos) in graph.adjacencies() {
-        *vertices_degrees.entry(from).or_insert(0) += tos.len();
-        *vertices_out_degrees.entry(from).or_insert(0) += tos.len();
+        *vertices_degrees.entry(from.clone()).or_insert(0) += tos.len();
+        *vertices_out_degrees.entry(from.clone()).or_insert(0) += tos.len();
 
         for to in tos {
             progress_bar.inc(1);
 
-            *vertices_degrees.entry(to).or_insert(0) += 1;
-            *vertices_in_degrees.entry(to).or_insert(0) += 1;
+            *vertices_degrees.entry(to.clone()).or_insert(0) += 1;
+            *vertices_in_degrees.entry(to.clone()).or_insert(0) += 1;
         }
     }
 

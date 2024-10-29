@@ -78,7 +78,6 @@ pub struct DirectedAcyclicGraph<V>(pub AdjacencyGraph<V>)
 where
     V: Clone;
 
-pub mod algorithms;
 pub mod dag;
 pub mod directed;
 pub mod edge_types;

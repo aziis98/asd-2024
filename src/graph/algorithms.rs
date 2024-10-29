@@ -132,15 +132,13 @@ where
     }
 
     pub fn restricted(&self, nodes: &Vec<V>) -> AdjacencyGraph<V> {
-        let index = nodes.iter().collect::<BTreeSet<_>>();
+        let nodes_index = nodes.iter().collect::<BTreeSet<_>>();
         let mut restricted = AdjacencyGraph::new();
 
         for node in nodes {
-            restricted.add_node(node.clone());
-
             if let Some(adjacencies) = self.get_adjacencies(&node) {
                 for adj in adjacencies {
-                    if index.contains(adj) {
+                    if nodes_index.contains(adj) {
                         restricted.add_edge(node.clone(), adj.clone());
                     }
                 }

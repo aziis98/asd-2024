@@ -164,6 +164,11 @@ where
         },
     );
 
+    println!(
+        "Edge count: {}, Total edge count: {}",
+        graph.edges().count(),
+        edge_types.len()
+    );
     println!("Edge types histogram (type/count):");
     for (edge_type, count) in histogram.iter() {
         println!("- {:?}: {}", edge_type, count);

@@ -1,4 +1,9 @@
-use std::collections::{BTreeMap, BTreeSet};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    fmt::Debug,
+};
+
+use indicatif::ProgressBar;
 
 use super::{AdjacencyGraph, Graph, UndirectedGraph};
 
@@ -51,5 +56,132 @@ where
     fn remove_edge(&mut self, from: &V, to: &V) {
         self.directed.remove_edge(from, to);
         self.directed.remove_edge(to, from);
+    }
+}
+
+impl<V> UndirectedGraph<V>
+where
+    V: Ord + Eq + Clone + Debug,
+{
+    pub fn add_edge(&mut self, from: V, to: V) {
+        self.directed.add_edge(from.clone(), to.clone());
+        self.directed.add_edge(to.clone(), from.clone());
+    }
+
+    pub fn remove_edge(&mut self, from: &V, to: &V) {
+        self.directed.remove_edge(from, to);
+        self.directed.remove_edge(to, from);
+    }
+
+    pub fn connected_components(&self) -> Vec<Vec<V>> {
+        let mut visited = BTreeSet::new();
+        let mut result = Vec::new();
+
+        let pb = ProgressBar::new(self.directed.nodes.len() as u64);
+
+        for node in self.directed.nodes.iter() {
+            if visited.contains(node) {
+                continue;
+            }
+
+            let mut cc: BTreeSet<V> = BTreeSet::new();
+            let mut stack: Vec<V> = vec![node.clone()];
+
+            while let Some(node) = stack.pop() {
+                if cc.contains(&node) {
+                    continue;
+                }
+
+                pb.inc(1);
+                cc.insert(node.clone());
+
+                for adj in self.neighbors(&node) {
+                    stack.push(adj);
+                }
+            }
+
+            visited.extend(cc.iter().map(|x| x.to_owned()));
+            result.push(cc.iter().map(|x| x.to_owned()).collect());
+        }
+
+        pb.finish();
+
+        result
+    }
+
+    // This runs a depth-first search on the graph searching for o--o--o paths and removes the middle node
+    // recursively until no more o--o--o paths are found.
+    pub fn compact_chains(&mut self) {
+        let mut visited = BTreeSet::new();
+
+        let nodes = self.directed.nodes.clone();
+
+        let pb = ProgressBar::new(nodes.len() as u64);
+
+        let mut compacted_count = 0;
+
+        for node in nodes {
+            if visited.contains(&node) {
+                continue;
+            }
+
+            let mut stack = vec![node];
+
+            while let Some(node) = stack.pop() {
+                if visited.contains(&node) {
+                    continue;
+                }
+
+                pb.inc(1);
+                visited.insert(node.clone());
+
+                // while adj has only one neighbor
+                let mut curr = node;
+                let mut path = vec![curr.clone()];
+
+                loop {
+                    let adjacencies = self.neighbors(&curr);
+                    if adjacencies.is_empty() {
+                        break;
+                    }
+
+                    let probes = adjacencies
+                        .iter()
+                        .filter(|&x| !path.contains(x))
+                        .collect::<Vec<_>>();
+
+                    if probes.len() != 1 {
+                        break;
+                    }
+
+                    curr = probes[0].clone();
+
+                    visited.insert(curr.clone());
+                    path.push(curr.clone());
+                }
+
+                if path.len() < 3 {
+                    continue;
+                }
+
+                path.windows(2).for_each(|x| {
+                    self.remove_edge(&x[0], &x[1]);
+                });
+
+                self.add_edge(path[0].clone(), path[path.len() - 1].clone());
+
+                compacted_count += path.len() - 2;
+
+                for adj in self.neighbors(&curr) {
+                    stack.push(adj);
+                }
+            }
+        }
+
+        println!("Compacted {} nodes", compacted_count);
+
+        self.directed.gc();
+
+        pb.finish();
     }
 }

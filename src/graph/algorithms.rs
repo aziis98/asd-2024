@@ -9,110 +9,57 @@ use indicatif::{ProgressBar, ProgressIterator};
 
 use super::{AdjacencyGraph, Graph, UndirectedGraph};
 
-impl<V> Graph<V> for AdjacencyGraph<V>
+#[allow(dead_code)]
+impl<V> AdjacencyGraph<V>
 where
-    V: Ord + Clone,
+    V: Ord + Eq + Clone + Debug,
 {
-    fn nodes(&self) -> BTreeSet<V> {
-        self.nodes.clone()
-    }
+    // pub fn new() -> Self {
+    //     AdjacencyGraph {
+    //         nodes: BTreeSet::new(),
+    //         adjacencies: BTreeMap::new(),
+    //     }
+    // }
 
-    fn adjacencies(&self) -> BTreeMap<V, BTreeSet<V>> {
-        self.adjacencies.clone()
-    }
+    // pub fn add_node(&mut self, node: V) {
+    //     self.nodes.insert(node);
+    // }
 
-    fn edges(&self) -> BTreeSet<(V, V)> {
-        self.adjacencies
-            .iter()
-            .flat_map(|(from, tos)| tos.iter().map(move |to| (from.clone(), to.clone())))
-            .collect()
-    }
+    // pub fn add_edge(&mut self, from: V, to: V) {
+    //     self.add_node(from.clone());
+    //     self.add_node(to.clone());
+
+    //     self.adjacencies
+    //         .entry(from)
+    //         .or_insert_with(BTreeSet::new)
+    //         .insert(to);
+    // }
+
+    // pub fn remove_edge(&mut self, from: &V, to: &V) {
+    //     if let Some(adjacencies) = self.adjacencies.get_mut(from) {
+    //         adjacencies.remove(to);
+    //     }
+    // }
+
+    // pub fn get_adjacencies(&self, node: &V) -> Option<&BTreeSet<V>> {
+    //     self.adjacencies.get(node)
+    // }
+
+    // pub fn adjacencies(&self) -> &BTreeMap<V, BTreeSet<V>> {
+    //     &self.adjacencies
+    // }
+
+    // pub fn nodes(&self) -> &BTreeSet<V> {
+    //     &self.nodes
+    // }
 
     // pub fn edges(&self) -> impl Iterator<Item = (&V, &V)> {
     //     self.adjacencies
     //         .iter()
     //         .flat_map(|(from, tos)| tos.iter().map(move |to| (from, to)))
     // }
-}
 
-impl<V> Graph<V> for UndirectedGraph<V>
-where
-    V: Ord + Clone,
-{
-    fn nodes(&self) -> BTreeSet<V> {
-        self.directed.nodes()
-    }
-
-    fn adjacencies(&self) -> BTreeMap<V, BTreeSet<V>> {
-        self.directed.adjacencies()
-    }
-
-    fn edges(&self) -> BTreeSet<(V, V)> {
-        self.directed.edges()
-    }
-}
-
-#[allow(dead_code)]
-impl<V> AdjacencyGraph<V>
-where
-    V: Ord + Eq + Clone + Debug,
-{
-    pub fn new() -> Self {
-        AdjacencyGraph {
-            nodes: BTreeSet::new(),
-            adjacencies: BTreeMap::new(),
-        }
-    }
-
-    pub fn from_edges(edges: &[(V, V)]) -> Self {
-        let mut graph = AdjacencyGraph::new();
-
-        for (from, to) in edges {
-            graph.add_edge(from.clone(), to.clone());
-        }
-
-        graph
-    }
-
-    pub fn add_node(&mut self, node: V) {
-        self.nodes.insert(node);
-    }
-
-    pub fn add_edge(&mut self, from: V, to: V) {
-        self.add_node(from.clone());
-        self.add_node(to.clone());
-
-        self.adjacencies
-            .entry(from)
-            .or_insert_with(BTreeSet::new)
-            .insert(to);
-    }
-
-    pub fn remove_edge(&mut self, from: &V, to: &V) {
-        if let Some(adjacencies) = self.adjacencies.get_mut(from) {
-            adjacencies.remove(to);
-        }
-    }
-
-    pub fn get_adjacencies(&self, node: &V) -> Option<&BTreeSet<V>> {
-        self.adjacencies.get(node)
-    }
-
-    pub fn adjacencies(&self) -> &BTreeMap<V, BTreeSet<V>> {
-        &self.adjacencies
-    }
-
-    pub fn nodes(&self) -> &BTreeSet<V> {
-        &self.nodes
-    }
-
-    pub fn edges(&self) -> impl Iterator<Item = (&V, &V)> {
-        self.adjacencies
-            .iter()
-            .flat_map(|(from, tos)| tos.iter().map(move |to| (from, to)))
-    }
-
-    pub fn opposite(&self) -> AdjacencyGraph<&V> {
+    pub fn opposite(&self) -> AdjacencyGraph<V> {
         let mut opposite = AdjacencyGraph::new();
 
         // O(|E|)
@@ -142,11 +89,9 @@ where
         let mut restricted = AdjacencyGraph::new();
 
         for node in nodes {
-            if let Some(adjacencies) = self.get_adjacencies(&node) {
-                for adj in adjacencies {
-                    if nodes_index.contains(adj) {
-                        restricted.add_edge(node.clone(), adj.clone());
-                    }
+            for adj in self.neighbors(&node) {
+                if nodes_index.contains(&adj) {
+                    restricted.add_edge(node.clone(), adj.clone());
                 }
             }
         }
@@ -155,66 +100,56 @@ where
     }
 
     pub fn has_edge(&self, from: &V, to: &V) -> bool {
-        // O(1)
-        if let Some(adjacencies) = self.get_adjacencies(from) {
-            // O(1)
-            adjacencies.contains(&to.to_owned())
-        } else {
-            false
-        }
+        self.neighbors(from).contains(to)
     }
 
-    pub fn dfs<'a>(&'a self, node: &'a V) -> impl Iterator<Item = V> + 'a {
-        let mut visited = BTreeSet::new();
-        let mut stack = VecDeque::from([node]);
+    // pub fn dfs<'a>(&'a self, node: &'a V) -> impl Iterator<Item = V> + 'a {
+    //     let mut visited = BTreeSet::new();
+    //     let mut stack = VecDeque::from([node]);
 
-        std::iter::from_fn(move || {
-            while let Some(node) = stack.pop_back() {
-                if !visited.insert(node.clone()) {
-                    continue;
-                }
+    //     std::iter::from_fn(move || {
+    //         while let Some(node) = stack.pop_back() {
+    //             if !visited.insert(node.clone()) {
+    //                 continue;
+    //             }
 
-                if let Some(adjacencies) = self.get_adjacencies(node) {
-                    stack.extend(adjacencies);
-                }
+    //             stack.extend(self.neighbors(node).iter());
 
-                return Some(node.clone());
-            }
+    //             return Some(node.clone());
+    //         }
 
-            None
-        })
-    }
+    //         None
+    //     })
+    // }
 
-    pub fn shortest_path_matrix(&self) -> BTreeMap<&V, BTreeMap<&V, usize>> {
+    pub fn shortest_path_matrix(&self) -> BTreeMap<V, BTreeMap<V, usize>> {
         let mut result = BTreeMap::new();
 
         for node in self.nodes.iter() {
             let mut distances = BTreeMap::new();
             let mut visited = BTreeSet::new();
-            let mut queue = VecDeque::from([node]);
+            let mut queue = VecDeque::from([node.clone()]);
 
-            distances.insert(node, 0);
+            distances.insert(node.clone(), 0);
 
             while let Some(node) = queue.pop_front() {
-                if visited.contains(node) {
+                if visited.contains(&node) {
                     continue;
                 }
 
                 visited.insert(node.clone());
 
-                let distance = *distances.get(node).unwrap();
+                let distance = *distances.get(&node).unwrap();
 
-                if let Some(adjacencies) = self.get_adjacencies(node) {
-                    for adj in adjacencies {
-                        if !distances.contains_key(adj) {
-                            distances.insert(adj, distance + 1);
-                            queue.push_back(adj);
-                        }
+                for adj in self.neighbors(&node) {
+                    if !distances.contains_key(&adj) {
+                        distances.insert(adj.clone(), distance + 1);
+                        queue.push_back(adj.clone());
                     }
                 }
             }
 
-            result.insert(node, distances);
+            result.insert(node.clone(), distances);
         }
 
         result
@@ -242,25 +177,21 @@ where
             }
 
             let mut cc: BTreeSet<V> = BTreeSet::new();
-            let mut stack: Vec<&V> = vec![node];
+            let mut stack: Vec<V> = vec![node.clone()];
 
             while let Some(node) = stack.pop() {
-                if cc.contains(node) {
+                if cc.contains(&node) {
                     continue;
                 }
 
                 cc.insert(node.clone());
 
-                if let Some(adjacencies) = self.get_adjacencies(&node) {
-                    for adj in adjacencies {
-                        stack.push(adj);
-                    }
+                for adj in self.neighbors(&node) {
+                    stack.push(adj);
                 }
 
-                if let Some(adjacencies) = op.get_adjacencies(&node) {
-                    for adj in adjacencies {
-                        stack.push(adj);
-                    }
+                for adj in op.neighbors(&node) {
+                    stack.push(adj);
                 }
             }
 
@@ -275,10 +206,8 @@ where
         let mut to_remove = Vec::new();
 
         for node in self.nodes.iter() {
-            if let Some(adjacencies) = self.get_adjacencies(node) {
-                if adjacencies.is_empty() {
-                    to_remove.push(node.clone());
-                }
+            if self.neighbors(node).is_empty() {
+                to_remove.push(node.clone());
             }
         }
 
@@ -315,20 +244,18 @@ where
             }
 
             let mut cc: BTreeSet<V> = BTreeSet::new();
-            let mut stack: Vec<&V> = vec![node];
+            let mut stack: Vec<V> = vec![node.clone()];
 
             while let Some(node) = stack.pop() {
-                if cc.contains(node) {
+                if cc.contains(&node) {
                     continue;
                 }
 
                 pb.inc(1);
                 cc.insert(node.clone());
 
-                if let Some(adjacencies) = self.directed.get_adjacencies(&node) {
-                    for adj in adjacencies {
-                        stack.push(adj);
-                    }
+                for adj in self.neighbors(&node) {
+                    stack.push(adj);
                 }
             }
 
@@ -371,7 +298,12 @@ where
                 let mut curr = node;
                 let mut path = vec![curr.clone()];
 
-                while let Some(adjacencies) = self.directed.get_adjacencies(&curr) {
+                loop {
+                    let adjacencies = self.neighbors(&curr);
+                    if adjacencies.is_empty() {
+                        break;
+                    }
+
                     let probes = adjacencies
                         .iter()
                         .filter(|&x| !path.contains(x))
@@ -399,10 +331,8 @@ where
 
                 compacted_count += path.len() - 2;
 
-                if let Some(adjacencies) = self.directed.get_adjacencies(&curr) {
-                    for adj in adjacencies {
-                        stack.push(adj.clone());
-                    }
+                for adj in self.neighbors(&curr) {
+                    stack.push(adj);
                 }
             }
         }

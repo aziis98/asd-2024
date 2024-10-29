@@ -5,14 +5,58 @@ use std::{
 
 pub trait Graph<V>
 where
-    V: Clone,
+    V: Ord + Clone,
 {
+    fn new() -> Self
+    where
+        Self: Sized;
+
+    fn from_edges(edges: &[(V, V)]) -> Self
+    where
+        Self: Sized,
+    {
+        let mut graph = Self::new();
+
+        for (from, to) in edges {
+            graph.add_edge(from.clone(), to.clone());
+        }
+
+        graph
+    }
+
+    fn to_adjecency_graph(&self) -> AdjacencyGraph<V>;
+
     fn nodes(&self) -> BTreeSet<V>;
     fn adjacencies(&self) -> BTreeMap<V, BTreeSet<V>>;
     fn edges(&self) -> BTreeSet<(V, V)>;
+    fn neighbors(&self, from: &V) -> BTreeSet<V>;
+
+    fn add_node(&mut self, node: V);
+    fn add_edge(&mut self, from: V, to: V);
+
+    fn remove_node(&mut self, node: &V);
+    fn remove_edge(&mut self, from: &V, to: &V);
+
+    fn restricted(&self, nodes: &Vec<V>) -> Self
+    where
+        Self: Sized,
+    {
+        let nodes_index = nodes.iter().collect::<BTreeSet<_>>();
+        let mut restricted = Self::new();
+
+        for node in nodes {
+            for adj in self.neighbors(&node) {
+                if nodes_index.contains(&adj) {
+                    restricted.add_edge(node.clone(), adj.clone());
+                }
+            }
+        }
+
+        restricted
+    }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct AdjacencyGraph<V>
 where
     V: Clone,
@@ -29,8 +73,16 @@ where
     pub directed: AdjacencyGraph<V>,
 }
 
+#[derive(Debug)]
+pub struct DirectedAcyclicGraph<V>(pub AdjacencyGraph<V>)
+where
+    V: Clone;
+
 pub mod algorithms;
+pub mod dag;
+pub mod directed;
 pub mod edge_types;
+pub mod undirected;
 
 #[cfg(test)]
 mod tests {
@@ -140,5 +192,30 @@ mod tests {
         println!("{:?}", g);
         g.compact_chains();
         println!("{:?}", g);
+    }
+
+    #[test]
+    fn test_all_paths() {
+        let g = AdjacencyGraph::from_edges(&[
+            //
+            ("u", "v"),
+            ("u", "x"),
+            ("v", "y"),
+            ("y", "x"),
+            ("y", "w"),
+            ("w", "z"),
+            ("z", "x"),
+            ("x", "h"),
+            ("x", "g"),
+            ("h", "i"),
+            ("g", "i"),
+        ]);
+
+        let g = g.dag();
+
+        g.all_paths(&"u", |path| {
+            println!("{:?}", path);
+            false
+        });
     }
 }

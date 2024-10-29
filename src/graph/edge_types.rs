@@ -8,7 +8,7 @@ use std::{
 
 use indicatif::ProgressBar;
 
-use super::AdjacencyGraph;
+use super::{AdjacencyGraph, DirectedAcyclicGraph, Graph};
 
 #[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
 pub enum EdgeType {
@@ -63,21 +63,19 @@ where
                 .insert((parent.clone(), node.clone()), EdgeType::TreeEdge);
         }
 
-        if let Some(adjacencies) = graph.get_adjacencies(node) {
-            for adj in adjacencies.iter() {
-                if !self.visited.contains(adj) {
-                    self.dfs(graph, adj, Some(node));
+        for adj in graph.neighbors(node) {
+            if !self.visited.contains(&adj) {
+                self.dfs(graph, &adj, Some(node));
+            } else {
+                if !self.finished_nodes.contains(&adj) {
+                    self.edge_types
+                        .insert((node.clone(), adj.clone()), EdgeType::BackEdge);
+                } else if self.start_times.get(node) < self.start_times.get(&adj) {
+                    self.edge_types
+                        .insert((node.clone(), adj.clone()), EdgeType::ForwardEdge);
                 } else {
-                    if !self.finished_nodes.contains(adj) {
-                        self.edge_types
-                            .insert((node.clone(), adj.clone()), EdgeType::BackEdge);
-                    } else if self.start_times.get(node) < self.start_times.get(adj) {
-                        self.edge_types
-                            .insert((node.clone(), adj.clone()), EdgeType::ForwardEdge);
-                    } else {
-                        self.edge_types
-                            .insert((node.clone(), adj.clone()), EdgeType::CrossEdge);
-                    }
+                    self.edge_types
+                        .insert((node.clone(), adj.clone()), EdgeType::CrossEdge);
                 }
             }
         }
@@ -152,39 +150,31 @@ where
                         node,
                         continue_from: index,
                     } => {
-                        if let Some(adjacencies) = self.get_adjacencies(&node) {
-                            for (i, adj) in adjacencies.iter().enumerate() {
-                                if i < index {
-                                    continue;
-                                }
+                        for (i, adj) in self.neighbors(&node).iter().enumerate() {
+                            if i < index {
+                                continue;
+                            }
 
-                                if !visited.contains(adj) {
-                                    continuations.push(Continuation::Neighbors {
-                                        node: node.clone(),
-                                        continue_from: i + 1,
-                                    });
-                                    continuations.push(Continuation::Start {
-                                        node: adj.clone(),
-                                        parent: Some(node.clone()),
-                                    });
-                                    break;
+                            if !visited.contains(adj) {
+                                continuations.push(Continuation::Neighbors {
+                                    node: node.clone(),
+                                    continue_from: i + 1,
+                                });
+                                continuations.push(Continuation::Start {
+                                    node: adj.clone(),
+                                    parent: Some(node.clone()),
+                                });
+                                break;
+                            } else {
+                                if !finished_nodes.contains(adj) {
+                                    edge_types
+                                        .insert((node.clone(), adj.clone()), EdgeType::BackEdge);
+                                } else if start_times.get(&node) < start_times.get(adj) {
+                                    edge_types
+                                        .insert((node.clone(), adj.clone()), EdgeType::ForwardEdge);
                                 } else {
-                                    if !finished_nodes.contains(adj) {
-                                        edge_types.insert(
-                                            (node.clone(), adj.clone()),
-                                            EdgeType::BackEdge,
-                                        );
-                                    } else if start_times.get(&node) < start_times.get(adj) {
-                                        edge_types.insert(
-                                            (node.clone(), adj.clone()),
-                                            EdgeType::ForwardEdge,
-                                        );
-                                    } else {
-                                        edge_types.insert(
-                                            (node.clone(), adj.clone()),
-                                            EdgeType::CrossEdge,
-                                        );
-                                    }
+                                    edge_types
+                                        .insert((node.clone(), adj.clone()), EdgeType::CrossEdge);
                                 }
                             }
                         }
@@ -199,5 +189,23 @@ where
 
         progress_bar.finish();
         return edge_types;
+    }
+
+    // Constructs a Directed Acyclic Graph from the current graph by stripping out the back edges
+    pub fn dag(&self) -> DirectedAcyclicGraph<V> {
+        let edge_types = self.compute_edge_types();
+
+        let mut graph = AdjacencyGraph::new();
+
+        for ((from, to), edge_type) in edge_types.iter() {
+            match edge_type {
+                EdgeType::BackEdge => {}
+                _ => {
+                    graph.add_edge(from.clone(), to.clone());
+                }
+            }
+        }
+
+        return DirectedAcyclicGraph(graph);
     }
 }

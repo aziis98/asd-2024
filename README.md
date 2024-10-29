@@ -16,6 +16,10 @@
 
     `cargo run -- ../../dataset/DRB1-3123_unsorted.gfa`
 
+-   Running the project with all the flags:
+
+    `cargo run --release -- show -i dataset/chrX.hprc-v1.0-pggb.local.gfa -c 2 -p ACGT -k 3`
+
 ## Example GFA
 
 ```

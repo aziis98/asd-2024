@@ -16,7 +16,7 @@ use gfa::{Entry, Orientation};
 use graph::{AdjacencyGraph, DirectedAcyclicGraph, Graph};
 use indicatif::ProgressIterator;
 use rand::seq::SliceRandom;
-use rolling_hash::RollingHash;
+use rolling_hash::RollingHasher;
 
 #[derive(FromArgs, PartialEq, Debug)]
 /// Strumento CLI per il progetto di Algoritmi e Strutture Dati 2024
@@ -264,7 +264,7 @@ fn compute_sequence_occurrences_rolling_hash(sequence: &str, pattern: &str) -> V
 
     let mut occurrences = vec![];
 
-    let mut rl = RollingHash::new(3000, 5);
+    let mut rl = RollingHasher::new(3000, 5);
     // let mut rl = RollingHash::new(1_000_000, 5);
 
     let pattern_hash = rl.hash_pattern(&pattern.chars().map(letter_to_number).collect::<Vec<_>>());

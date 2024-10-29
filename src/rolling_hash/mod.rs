@@ -1,6 +1,6 @@
 use std::{collections::VecDeque, fmt::Debug};
 
-pub struct RollingHash<T: Into<u64> + Clone> {
+pub struct RollingHasher<T: Into<u64> + Clone> {
     modulus: u64,
     alphabet_size: u64,
 
@@ -15,27 +15,12 @@ pub struct Hashed {
     offset: u64,
 }
 
-fn wrapping_pow_correct(a: u64, b: u64) -> u64 {
-    // // println!("Wrapping pow: {}^{}", a, b);
-
-    // let mut result = 1u64;
-    // for _ in 0..b {
-    //     result = result.wrapping_mul(a);
-    // }
-
-    // // println!("=> {}", result);
-
-    // result
-
-    a.wrapping_pow(b as u32)
-}
-
-impl<T> RollingHash<T>
+impl<T> RollingHasher<T>
 where
     T: Into<u64> + Clone + Debug,
 {
     pub fn new(modulus: u64, alphabet_size: u64) -> Self {
-        RollingHash {
+        RollingHasher {
             modulus,
             alphabet_size,
 
@@ -45,10 +30,6 @@ where
         }
     }
 
-    // pub fn hash(&self) -> u64 {
-    //     self.hash % self.modulus
-    // }
-
     pub fn hash(&self) -> Hashed {
         Hashed {
             hash: self.hash % self.modulus,
@@ -57,8 +38,6 @@ where
     }
 
     pub fn compare(&self, lhs: &Hashed, rhs: &Hashed) -> bool {
-        // println!("Comparing: {:?} {:?}", lhs, rhs);
-
         let (lhs, rhs) = if lhs.offset < rhs.offset {
             (lhs, rhs)
         } else {
@@ -66,10 +45,10 @@ where
         };
 
         // Shift lhs to the right by the difference in offsets
-        let shifted_lhs = (lhs.hash.wrapping_mul(wrapping_pow_correct(
-            self.alphabet_size,
-            rhs.offset - lhs.offset,
-        ))) % self.modulus;
+        let shifted_lhs = (lhs.hash.wrapping_mul(
+            self.alphabet_size
+                .wrapping_pow((rhs.offset - lhs.offset) as u32),
+        )) % self.modulus;
 
         shifted_lhs == rhs.hash
     }
@@ -78,8 +57,7 @@ where
         let mut hash = 0;
 
         for (i, value) in pattern.iter().enumerate() {
-            let char_hash =
-                value.clone().into() * wrapping_pow_correct(self.alphabet_size, i as u64);
+            let char_hash = value.clone().into() * self.alphabet_size.wrapping_pow(i as u32);
 
             hash += char_hash;
         }
@@ -91,20 +69,10 @@ where
         self.current_word.push_back(value.clone());
 
         let i = self.offset + (self.current_word.len() as u64) - 1;
-
-        // println!("Alphabet size: {}", self.alphabet_size);
-        // println!("Index: {}", i);
-
-        // println!(
-        //     "Adding: {:?} * {} to {}",
-        //     value,
-        //     wrapping_pow_correct(self.alphabet_size, i),
-        //     self.hash
-        // );
         self.hash = self.hash.wrapping_add(
             value
                 .into()
-                .wrapping_mul(wrapping_pow_correct(self.alphabet_size, i)),
+                .wrapping_mul(self.alphabet_size.wrapping_pow(i as u32)),
         );
     }
 
@@ -116,7 +84,7 @@ where
         self.hash = self.hash.wrapping_sub(
             value
                 .into()
-                .wrapping_mul(wrapping_pow_correct(self.alphabet_size, i)),
+                .wrapping_mul(self.alphabet_size.wrapping_pow(i as u32)),
         );
 
         self.offset += 1;
@@ -137,7 +105,7 @@ where
             panic!("Invalid position");
         }
 
-        (hash * wrapping_pow_correct(self.alphabet_size, diff as u64)) % self.modulus
+        (hash * self.alphabet_size.wrapping_pow(diff as u32)) % self.modulus
     }
 
     pub fn hash_value_at_caret(&self, h: &Hashed) -> u64 {
@@ -156,7 +124,7 @@ mod tests {
         let modulus = 42;
         let alphabet_size = 4;
 
-        let mut rh = RollingHash::<u64>::new(modulus, alphabet_size);
+        let mut rh = RollingHasher::<u64>::new(modulus, alphabet_size);
         let initial_pattern_hash = rh.hash_pattern(&[1, 2, 3, 4, 5]);
         println!("Initial pattern hash: {:?}", initial_pattern_hash);
 
@@ -206,7 +174,7 @@ mod tests {
         let modulus = 10_000_000;
         let alphabet_size = 2;
 
-        let mut rh = RollingHash::<u64>::new(modulus, alphabet_size);
+        let mut rh = RollingHasher::<u64>::new(modulus, alphabet_size);
 
         let initial_pattern_hash = rh.hash_pattern(&[1, 1, 1, 1]);
 
@@ -225,23 +193,5 @@ mod tests {
             "Shifted pattern hash: {:?}",
             rh.hash_value_at(&initial_pattern_hash, rh.offset)
         );
-    }
-
-    #[test]
-    fn test_wrappping_pow() {
-        println!("Wrapping pow test");
-
-        let a = 2;
-        let b = 3;
-
-        let result = wrapping_pow_correct(a, b);
-
-        assert_eq!(result, 8);
-
-        let a = 3;
-        let b = 100;
-        let result = wrapping_pow_correct(a, b);
-
-        assert_ne!(result, 0);
     }
 }

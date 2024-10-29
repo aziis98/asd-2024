@@ -24,7 +24,7 @@ where
         graph
     }
 
-    fn to_adjecency_graph(&self) -> AdjacencyGraph<V>;
+    fn to_adjecency_graph(&self) -> &AdjacencyGraph<V>;
 
     fn nodes(&self) -> BTreeSet<V>;
     fn adjacencies(&self) -> BTreeMap<V, BTreeSet<V>>;
@@ -65,16 +65,13 @@ where
     adjacencies: BTreeMap<V, BTreeSet<V>>,
 }
 
-#[derive(Debug)]
-pub struct UndirectedGraph<V>
+#[derive(Debug, Clone)]
+pub struct UndirectedGraph<V>(AdjacencyGraph<V>)
 where
-    V: Clone,
-{
-    pub directed: AdjacencyGraph<V>,
-}
+    V: Clone;
 
-#[derive(Debug)]
-pub struct DirectedAcyclicGraph<V>(pub AdjacencyGraph<V>)
+#[derive(Debug, Clone)]
+pub struct DirectedAcyclicGraph<V>(AdjacencyGraph<V>)
 where
     V: Clone;
 

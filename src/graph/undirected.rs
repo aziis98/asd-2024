@@ -15,47 +15,45 @@ where
     where
         Self: Sized,
     {
-        UndirectedGraph {
-            directed: AdjacencyGraph::new(),
-        }
+        UndirectedGraph(AdjacencyGraph::new())
     }
 
-    fn to_adjecency_graph(&self) -> AdjacencyGraph<V> {
-        self.directed.clone()
+    fn to_adjecency_graph(&self) -> &AdjacencyGraph<V> {
+        &self.0
     }
 
     fn nodes(&self) -> BTreeSet<V> {
-        self.directed.nodes()
+        self.0.nodes()
     }
 
     fn adjacencies(&self) -> BTreeMap<V, BTreeSet<V>> {
-        self.directed.adjacencies()
+        self.0.adjacencies()
     }
 
     fn neighbors(&self, from: &V) -> BTreeSet<V> {
-        self.directed.neighbors(from)
+        self.0.neighbors(from)
     }
 
     fn edges(&self) -> BTreeSet<(V, V)> {
-        self.directed.edges()
+        self.0.edges()
     }
 
     fn add_node(&mut self, node: V) {
-        self.directed.add_node(node);
+        self.0.add_node(node);
     }
 
     fn add_edge(&mut self, from: V, to: V) {
-        self.directed.add_edge(from.clone(), to.clone());
-        self.directed.add_edge(to, from);
+        self.0.add_edge(from.clone(), to.clone());
+        self.0.add_edge(to, from);
     }
 
     fn remove_node(&mut self, node: &V) {
-        self.directed.remove_node(node);
+        self.0.remove_node(node);
     }
 
     fn remove_edge(&mut self, from: &V, to: &V) {
-        self.directed.remove_edge(from, to);
-        self.directed.remove_edge(to, from);
+        self.0.remove_edge(from, to);
+        self.0.remove_edge(to, from);
     }
 }
 
@@ -64,22 +62,22 @@ where
     V: Ord + Eq + Clone + Debug,
 {
     pub fn add_edge(&mut self, from: V, to: V) {
-        self.directed.add_edge(from.clone(), to.clone());
-        self.directed.add_edge(to.clone(), from.clone());
+        self.0.add_edge(from.clone(), to.clone());
+        self.0.add_edge(to.clone(), from.clone());
     }
 
     pub fn remove_edge(&mut self, from: &V, to: &V) {
-        self.directed.remove_edge(from, to);
-        self.directed.remove_edge(to, from);
+        self.0.remove_edge(from, to);
+        self.0.remove_edge(to, from);
     }
 
     pub fn connected_components(&self) -> Vec<Vec<V>> {
         let mut visited = BTreeSet::new();
         let mut result = Vec::new();
 
-        let pb = ProgressBar::new(self.directed.nodes.len() as u64);
+        let pb = ProgressBar::new(self.0.nodes.len() as u64);
 
-        for node in self.directed.nodes.iter() {
+        for node in self.0.nodes.iter() {
             if visited.contains(node) {
                 continue;
             }
@@ -114,7 +112,7 @@ where
     pub fn compact_chains(&mut self) {
         let mut visited = BTreeSet::new();
 
-        let nodes = self.directed.nodes.clone();
+        let nodes = self.0.nodes.clone();
 
         let pb = ProgressBar::new(nodes.len() as u64);
 
@@ -180,7 +178,7 @@ where
 
         println!("Compacted {} nodes", compacted_count);
 
-        self.directed.gc();
+        self.0.gc();
 
         pb.finish();
     }

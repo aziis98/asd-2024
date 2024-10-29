@@ -13,8 +13,8 @@ where
         DirectedAcyclicGraph(AdjacencyGraph::new())
     }
 
-    fn to_adjecency_graph(&self) -> AdjacencyGraph<V> {
-        self.0.clone()
+    fn to_adjecency_graph(&self) -> &AdjacencyGraph<V> {
+        &self.0
     }
 
     fn nodes(&self) -> BTreeSet<V> {

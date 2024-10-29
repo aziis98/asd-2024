@@ -21,8 +21,8 @@ where
         }
     }
 
-    fn to_adjecency_graph(&self) -> AdjacencyGraph<V> {
-        self.clone()
+    fn to_adjecency_graph(&self) -> &AdjacencyGraph<V> {
+        &self
     }
 
     fn nodes(&self) -> BTreeSet<V> {
@@ -103,9 +103,7 @@ where
             undirected.add_edge(to.clone(), from.clone());
         }
 
-        UndirectedGraph {
-            directed: undirected,
-        }
+        UndirectedGraph(undirected)
     }
 
     pub fn has_edge(&self, from: &V, to: &V) -> bool {

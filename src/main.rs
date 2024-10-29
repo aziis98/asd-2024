@@ -115,9 +115,9 @@ fn main() -> std::io::Result<()> {
 
             let dag = graph.dag();
 
-            compute_edge_types(&dag.0);
+            compute_edge_types(&dag);
 
-            let ccs = compute_ccs(&dag.0);
+            let ccs = compute_ccs(&dag);
 
             println!("Picking largest connected component...");
             // pick the largest connected component
@@ -351,12 +351,15 @@ fn compute_orientation_histogram(graph: &impl Graph<(String, Orientation)>) {
     println!();
 }
 
-fn compute_ccs<V>(graph: &AdjacencyGraph<V>) -> Vec<Vec<V>>
+fn compute_ccs<V>(graph: &impl Graph<V>) -> Vec<Vec<V>>
 where
     V: Ord + Eq + Clone + Debug,
 {
     println!("Computing connected components...");
-    let ccs = graph.undirected().connected_components();
+    let ccs = graph
+        .to_adjecency_graph()
+        .undirected()
+        .connected_components();
 
     println!("Computing sizes histogram...");
     let hist: BTreeMap<_, _> = ccs

@@ -4,29 +4,33 @@ Creazione e analisi di un Pangenome Graph.
 
 ## Obbiettivi / Features
 
-- [x] Caricare un Pangenome Graph dal formato GFA
+-   [x] Caricare un Pangenome Graph dal formato GFA
 
-- [x] Classificare i nodi del grafo in base al tipo tree, back, forward, cross
+-   [x] Classificare i nodi del grafo in base al tipo tree, back, forward, cross
 
-- [x] Rimuovere tutti i nodi di tipo back per rendere il grafo un DAG
+-   [x] Rimuovere tutti i nodi di tipo back per rendere il grafo un DAG
 
-- [x] Restringere il grafo alla componente connessa più grande
+-   [x] Restringere il grafo alla componente connessa più grande
 
-- [x] Ricostruire le sequenze dei nodi del grafo in base ai cammini ed alla direzione di percorrenza dei nodi (forward o reverse)
+-   [x] Ricostruire le sequenze dei nodi del grafo in base ai cammini ed alla
+        direzione di percorrenza dei nodi (forward o reverse)
 
-- [x] Ricerca di un pattern k-mer in queste sequenze utilizzando il rolling hash
+-   [x] Ricerca di un pattern k-mer in queste sequenze utilizzando il rolling
+        hash
 
-- [ ] (WIP) (Opzionale) Calcolare le frequenze di occorrenza di tutti i k-mer presenti nel grafo
+-   [ ] (WIP) (Opzionale) Calcolare le frequenze di occorrenza di tutti i k-mer
+        presenti nel grafo
 
 ## CLI Options
 
-- `-i, --input <input>`: file to read
+-   `-i, --input <input>`: file to read
 
-- `-c, --path_count <path_count>`: number of paths to visit when searching for the pattern (default: 1)
+-   `-c, --path_count <path_count>`: number of paths to visit when searching for
+    the pattern (default: 1)
 
-- `-p, --pattern <pattern>`: k-mer pattern to search (default: "ACGT")
+-   `-p, --pattern <pattern>`: k-mer pattern to search (default: "ACGT")
 
-- `-k, --kmer_size <kmer_size>`: k-mer length (default: 4)
+-   `-k, --kmer_size <kmer_size>`: k-mer length (default: 4)
 
 ## Usage
 
@@ -100,15 +104,10 @@ W	sample	2	B	0	4	>21>22>24>25
 
 ## Stats
 
-```
-==========================================================
- Language    Files    Lines    Code    Comments    Blanks
-==========================================================
- Rust           21     3606    2452         464       690
- Python          2      249     164          40        45
- TOML            8      110      99           2         9
- Markdown        4      131       0          82        34
-==========================================================
- Total          35     4096    2715         588       778
-==========================================================
-```
+| Language  | Files  | Lines    | Code     | Comments | Blanks  |
+| --------- | ------ | -------- | -------- | -------- | ------- |
+| Rust      | 21     | 3606     | 2452     | 464      | 690     |
+| Python    | 2      | 249      | 164      | 40       | 45      |
+| TOML      | 8      | 110      | 99       | 2        | 9       |
+| Markdown  | 4      | 131      | 0        | 82       | 34      |
+| **Total** | **35** | **4096** | **2715** | **588**  | **778** |

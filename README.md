@@ -1,8 +1,8 @@
 # Progetto ASD 2023/2024
 
-Creazione e analisi di un Pangenome Graph
+Creazione e analisi di un Pangenome Graph.
 
-## Obbiettivi
+## Obbiettivi / Features
 
 - [x] Caricare un Pangenome Graph dal formato GFA
 
@@ -16,7 +16,7 @@ Creazione e analisi di un Pangenome Graph
 
 - [x] Ricerca di un pattern k-mer in queste sequenze utilizzando il rolling hash
 
-- [ ] (Opzionale) Calcolare le frequenze di occorrenza di tutti i k-mer presenti nel grafo
+- [ ] (WIP) (Opzionale) Calcolare le frequenze di occorrenza di tutti i k-mer presenti nel grafo
 
 ## CLI Options
 
@@ -45,7 +45,7 @@ Creazione e analisi di un Pangenome Graph
     cargo run --release -- -i dataset/chrX.hprc-v1.0-pggb.local.gfa -c 2 -p ACGT -k 3
     ```
 
-    altri dataset sono elencati in [Note](#Note)
+    altri dataset sono elencati in [Note](#note)
 
 ## Example GFA
 
@@ -97,3 +97,18 @@ W	sample	2	B	0	4	>21>22>24>25
     -   [chrY.gfa](https://s3-us-west-2.amazonaws.com/human-pangenomics/pangenomes/freeze/freeze1/pggb/chroms/chrY.hprc-v1.0-pggb.gfa.gz)
 
     -   [chrX.gfa](https://s3-us-west-2.amazonaws.com/human-pangenomics/pangenomes/freeze/freeze1/pggb/chroms/chrX.hprc-v1.0-pggb.gfa.gz)
+
+## Stats
+
+```
+==========================================================
+ Language    Files    Lines    Code    Comments    Blanks
+==========================================================
+ Rust           21     3606    2452         464       690
+ Python          2      249     164          40        45
+ TOML            8      110      99           2         9
+ Markdown        4      131       0          82        34
+==========================================================
+ Total          35     4096    2715         588       778
+==========================================================
+```

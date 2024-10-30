@@ -16,7 +16,7 @@ Creazione e analisi di un Pangenome Graph
 
 - [x] Ricerca di un pattern k-mer in queste sequenze utilizzando il rolling hash
 
-- [~] Calcolare le frequenze di occorrenza di tutti i k-mer presenti nel grafo
+- [ ] (Opzionale) Calcolare le frequenze di occorrenza di tutti i k-mer presenti nel grafo
 
 ## CLI Options
 

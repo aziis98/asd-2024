@@ -1,24 +1,51 @@
 # Progetto ASD 2023/2024
 
+Creazione e analisi di un Pangenome Graph
+
+## Obbiettivi
+
+- [x] Caricare un Pangenome Graph dal formato GFA
+
+- [x] Classificare i nodi del grafo in base al tipo tree, back, forward, cross
+
+- [x] Rimuovere tutti i nodi di tipo back per rendere il grafo un DAG
+
+- [x] Restringere il grafo alla componente connessa più grande
+
+- [x] Ricostruire le sequenze dei nodi del grafo in base ai cammini ed alla direzione di percorrenza dei nodi (forward o reverse)
+
+- [x] Ricerca di un pattern k-mer in queste sequenze utilizzando il rolling hash
+
+- [~] Calcolare le frequenze di occorrenza di tutti i k-mer presenti nel grafo
+
+## CLI Options
+
+- `-i, --input <input>`: file to read
+
+- `-c, --path_count <path_count>`: number of paths to visit when searching for the pattern (default: 1)
+
+- `-p, --pattern <pattern>`: k-mer pattern to search (default: "ACGT")
+
+- `-k, --kmer_size <kmer_size>`: k-mer length (default: 4)
+
 ## Usage
 
--   `cargo run -- --help`
+-   To show help message:
 
-    Display help message.
+    ```
+    cargo run -- --help`
+    ```
 
--   `cargo run -- show -i ./dataset/example.gfa`
+-   For example to try out the `chrX` dataset:
 
-    Parses the GFA file and prints the graph and various information.
+    ```bash
+    GFA_URL='https://s3-us-west-2.amazonaws.com/human-pangenomics/pangenomes/freeze/freeze1/pggb/chroms/chrX.hprc-v1.0-pggb.gfa.gz'
+    wget $GFA_URL -O dataset/chrX.hprc-v1.0-pggb.local.gfa.gz
+    gunzip dataset/chrX.hprc-v1.0-pggb.local.gfa.gz
+    cargo run --release -- -i dataset/chrX.hprc-v1.0-pggb.local.gfa -c 2 -p ACGT -k 3
+    ```
 
--   Visualize the graph using EGUI, go to `examples/configurable` and run:
-
-    `cargo run -- ../../dataset/example.gfa`
-
-    `cargo run -- ../../dataset/DRB1-3123_unsorted.gfa`
-
--   Running the project with all the flags:
-
-    `cargo run --release -- show -i dataset/chrX.hprc-v1.0-pggb.local.gfa -c 2 -p ACGT -k 3`
+    altri dataset sono elencati in [Note](#Note)
 
 ## Example GFA
 

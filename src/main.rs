@@ -21,20 +21,6 @@ use rolling_hash::RollingHasher;
 #[derive(FromArgs, PartialEq, Debug)]
 /// Strumento CLI per il progetto di Algoritmi e Strutture Dati 2024
 struct CliTool {
-    #[argh(subcommand)]
-    nested: CliSubcommands,
-}
-
-#[derive(FromArgs, PartialEq, Debug)]
-#[argh(subcommand)]
-enum CliSubcommands {
-    Show(CommandShow),
-}
-
-#[derive(FromArgs, PartialEq, Debug)]
-/// Parse and show the content of a file
-#[argh(subcommand, name = "show")]
-struct CommandShow {
     #[argh(option, short = 'i')]
     /// file to read
     input: String,
@@ -55,125 +41,120 @@ struct CommandShow {
 fn main() -> std::io::Result<()> {
     let opts = argh::from_env::<CliTool>();
 
-    match opts.nested {
-        CliSubcommands::Show(opts) => {
-            // validate opts.pattern is a valid DNA sequence
-            if opts.pattern.chars().any(|c| !"ACGT".contains(c)) {
-                eprintln!("Invalid pattern: {:?}", opts.pattern);
-                process::exit(1);
-            }
+    // validate opts.pattern is a valid DNA sequence
+    if opts.pattern.chars().any(|c| !"ACGT".contains(c)) {
+        eprintln!("Invalid pattern: {:?}", opts.pattern);
+        process::exit(1);
+    }
 
-            println!("Estimating line count...");
+    println!("Estimating line count...");
 
-            let file_lines_count = BufReader::new(std::fs::File::open(&opts.input)?)
-                .lines()
-                .progress_with(indicatif::ProgressBar::new_spinner())
-                .count() as u64;
+    let file_lines_count = BufReader::new(std::fs::File::open(&opts.input)?)
+        .lines()
+        .progress_with(indicatif::ProgressBar::new_spinner())
+        .count() as u64;
 
-            let entries =
-                gfa::parser::parse_source(std::fs::File::open(opts.input)?, file_lines_count)?;
+    let entries = gfa::parser::parse_source(std::fs::File::open(opts.input)?, file_lines_count)?;
 
-            println!("Number of entries: {}", entries.len());
+    println!("Number of entries: {}", entries.len());
 
-            let mut sequence_map = HashMap::new();
-            let mut graph: AdjacencyGraph<(String, Orientation)> = AdjacencyGraph::new();
+    let mut sequence_map = HashMap::new();
+    let mut graph: AdjacencyGraph<(String, Orientation)> = AdjacencyGraph::new();
 
-            let mut invalid_nodes = vec![];
+    let mut invalid_nodes = vec![];
 
-            for entry in entries {
-                match entry {
-                    Entry::Segment { id, sequence } => {
-                        // validate sequence is a valid DNA sequence
-                        if sequence.chars().any(|c| !"ACGT".contains(c)) {
-                            invalid_nodes.push(id.clone());
-                            continue;
-                        }
-
-                        sequence_map.insert(id.clone(), sequence);
-                    }
-                    Entry::Link {
-                        from,
-                        from_orient,
-                        to,
-                        to_orient,
-                    } => {
-                        graph.add_edge((from.clone(), from_orient), (to.clone(), to_orient));
-                    }
-                    _ => {}
+    for entry in entries {
+        match entry {
+            Entry::Segment { id, sequence } => {
+                // validate sequence is a valid DNA sequence
+                if sequence.chars().any(|c| !"ACGT".contains(c)) {
+                    invalid_nodes.push(id.clone());
+                    continue;
                 }
+
+                sequence_map.insert(id.clone(), sequence);
             }
-
-            println!("Removing {} invalid nodes...", invalid_nodes.len());
-            // remove invalid nodes
-            for id in invalid_nodes.iter().progress() {
-                graph.remove_node(&(id.clone(), Orientation::Forward));
-                graph.remove_node(&(id.clone(), Orientation::Reverse));
+            Entry::Link {
+                from,
+                from_orient,
+                to,
+                to_orient,
+            } => {
+                graph.add_edge((from.clone(), from_orient), (to.clone(), to_orient));
             }
-            println!();
-
-            compute_graph_degrees(&graph);
-
-            let dag = graph.dag();
-
-            compute_edge_types(&dag);
-
-            let ccs = compute_ccs(&dag);
-
-            println!("Picking largest connected component...");
-            // pick the largest connected component
-            let largest_cc = ccs
-                .iter()
-                .max_by_key(|cc| cc.len())
-                .expect("at least one connected components");
-
-            let largest_cc_graph = dag.restricted(largest_cc);
-
-            let degrees = compute_graph_degrees(&largest_cc_graph);
-            compute_edge_types(&largest_cc_graph); // to double check this is a DAG
-
-            println!("Searching for a start node...");
-            let start_node = degrees
-                .iter()
-                .find(|(_, degree)| degree.in_degree == 0)
-                .expect("no start node found")
-                .0;
-
-            println!("Start node: {:?}", start_node);
-            println!("{:?}", degrees.get(start_node).unwrap());
-
-            compute_orientation_histogram(&largest_cc_graph);
-
-            println!("Visiting the graph, searching {} paths...", opts.path_count);
-
-            let sequences = compute_sequences(
-                &sequence_map,
-                &largest_cc_graph,
-                start_node,
-                opts.path_count,
-            );
-
-            for (i, sequence) in sequences.iter().enumerate() {
-                println!("Sequence #{} of length {}", i + 1, sequence.len());
-
-                println!("Searching {} (naive)...", opts.pattern);
-                println!(
-                    "Occurrences: {:?}\n",
-                    compute_sequence_occurrences_naive(sequence, &opts.pattern)
-                );
-
-                println!("Searching {} (rolling hash)...", opts.pattern);
-                println!(
-                    "Occurrences: {:?}\n",
-                    compute_sequence_occurrences_rolling_hash(sequence, &opts.pattern)
-                );
-            }
-
-            compute_kmer_histogram_lb(&sequence_map, &largest_cc_graph, opts.kmer_size);
-
-            println!("Cleaning up...");
-            process::exit(0);
+            _ => {}
         }
     }
+
+    println!("Removing {} invalid nodes...", invalid_nodes.len());
+    // remove invalid nodes
+    for id in invalid_nodes.iter().progress() {
+        graph.remove_node(&(id.clone(), Orientation::Forward));
+        graph.remove_node(&(id.clone(), Orientation::Reverse));
+    }
+    println!();
+
+    compute_graph_degrees(&graph);
+
+    let dag = graph.dag();
+
+    compute_edge_types(&dag);
+
+    let ccs = compute_ccs(&dag);
+
+    println!("Picking largest connected component...");
+    // pick the largest connected component
+    let largest_cc = ccs
+        .iter()
+        .max_by_key(|cc| cc.len())
+        .expect("at least one connected components");
+
+    let largest_cc_graph = dag.restricted(largest_cc);
+
+    let degrees = compute_graph_degrees(&largest_cc_graph);
+    compute_edge_types(&largest_cc_graph); // to double check this is a DAG
+
+    println!("Searching for a start node...");
+    let start_node = degrees
+        .iter()
+        .find(|(_, degree)| degree.in_degree == 0)
+        .expect("no start node found")
+        .0;
+
+    println!("Start node: {:?}", start_node);
+    println!("{:?}", degrees.get(start_node).unwrap());
+
+    compute_orientation_histogram(&largest_cc_graph);
+
+    println!("Visiting the graph, searching {} paths...", opts.path_count);
+
+    let sequences = compute_sequences(
+        &sequence_map,
+        &largest_cc_graph,
+        start_node,
+        opts.path_count,
+    );
+
+    for (i, sequence) in sequences.iter().enumerate() {
+        println!("Sequence #{} of length {}", i + 1, sequence.len());
+
+        println!("Searching {} (naive)...", opts.pattern);
+        println!(
+            "Occurrences: {:?}\n",
+            compute_sequence_occurrences_naive(sequence, &opts.pattern)
+        );
+
+        println!("Searching {} (rolling hash)...", opts.pattern);
+        println!(
+            "Occurrences: {:?}\n",
+            compute_sequence_occurrences_rolling_hash(sequence, &opts.pattern)
+        );
+    }
+
+    compute_kmer_histogram_lb(&sequence_map, &largest_cc_graph, opts.kmer_size);
+
+    println!("Cleaning up...");
+    process::exit(0);
 }
 
 fn compute_kmer_histogram_lb(

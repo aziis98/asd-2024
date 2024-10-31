@@ -5,7 +5,7 @@ mod graph;
 mod rolling_hash;
 
 use std::{
-    collections::{BTreeMap, HashMap},
+    collections::{BTreeMap, BTreeSet, HashMap},
     fmt::Debug,
     io::{BufRead, BufReader},
     process,
@@ -55,42 +55,104 @@ fn main() -> std::io::Result<()> {
         .count() as u64;
 
     let entries = gfa::parser::parse_source(std::fs::File::open(opts.input)?, file_lines_count)?;
-
     println!("Number of entries: {}", entries.len());
+    println!();
 
     let mut sequence_map = HashMap::new();
     let mut graph: AdjacencyGraph<(String, Orientation)> = AdjacencyGraph::new();
 
-    let mut invalid_nodes = vec![];
+    let mut invalid_nodes = BTreeSet::new();
 
-    for entry in entries {
+    println!("Populating nodes...");
+    for entry in &entries {
         match entry {
             Entry::Segment { id, sequence } => {
                 // validate sequence is a valid DNA sequence
                 if sequence.chars().any(|c| !"ACGT".contains(c)) {
-                    invalid_nodes.push(id.clone());
+                    invalid_nodes.insert(id.clone());
                     continue;
                 }
 
-                sequence_map.insert(id.clone(), sequence);
+                sequence_map.insert(id.clone(), sequence.clone());
             }
+            _ => {}
+        }
+    }
+    println!("Number of nodes: {}", sequence_map.len());
+    println!();
+
+    println!("Populating edges...");
+    for entry in &entries {
+        match entry {
             Entry::Link {
                 from,
                 from_orient,
                 to,
                 to_orient,
             } => {
-                graph.add_edge((from.clone(), from_orient), (to.clone(), to_orient));
+                if invalid_nodes.contains(from) || invalid_nodes.contains(to) {
+                    continue;
+                }
+
+                graph.add_edge(
+                    (from.clone(), from_orient.clone()),
+                    (to.clone(), to_orient.clone()),
+                );
             }
             _ => {}
         }
     }
+    println!("Number of edges: {}", graph.edges().len());
+    println!();
 
-    println!("Removing {} invalid nodes...", invalid_nodes.len());
-    // remove invalid nodes
-    for id in invalid_nodes.iter().progress() {
-        graph.remove_node(&(id.clone(), Orientation::Forward));
-        graph.remove_node(&(id.clone(), Orientation::Reverse));
+    println!("Sequences stats:");
+    let mut sequence_lengths: Vec<_> = sequence_map.values().map(|seq| seq.len()).collect();
+    sequence_lengths.sort();
+
+    let sequence_lengths_average =
+        sequence_lengths.iter().sum::<usize>() as f64 / sequence_lengths.len() as f64;
+
+    println!("- Average length: {:.2}", sequence_lengths_average);
+    println!(
+        "- Standard deviation: {:.2}",
+        (sequence_lengths
+            .iter()
+            .map(|len| (*len as f64 - sequence_lengths_average).powi(2))
+            .sum::<f64>()
+            / sequence_lengths.len() as f64)
+            .sqrt()
+    );
+    println!(
+        "- Max length: {}",
+        sequence_lengths
+            .iter()
+            .max()
+            .expect("at least one sequence")
+    );
+    println!(
+        "- Min length: {}",
+        sequence_lengths
+            .iter()
+            .min()
+            .expect("at least one sequence")
+    );
+    println!(
+        "- Median length: {}",
+        sequence_lengths[sequence_lengths.len() / 2]
+    );
+    println!();
+
+    let sequence_lengths_histogram: BTreeMap<usize, usize> =
+        sequence_lengths
+            .iter()
+            .fold(BTreeMap::new(), |mut acc, len| {
+                *acc.entry(*len).or_insert(0) += 1;
+                acc
+            });
+
+    println!("Sequence lengths histogram (length/count):");
+    for (length, count) in sequence_lengths_histogram.iter() {
+        println!("- {}: {}", length, count);
     }
     println!();
 
